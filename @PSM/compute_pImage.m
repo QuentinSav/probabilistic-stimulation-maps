@@ -1,19 +1,29 @@
-function pImage = compute_pImage(obj, statTest, h0Type)
+function pImage = compute_pImage(obj, statTestType, h0Type)
 
 disp('--------------------------------------------------');
 disp('Computing p-image');
 
 pImage = zeros(obj.features.coordSize);
 
+% Define the null hypothesis
 if strcmpi(h0Type, 'zero')
-    h0 = @(voxel) 0;
+    get_h0 = @(voxel) 0;
 
 elseif strcmpi(h0Type, 'h0_meanEffAmplitude')
-    h0 = @(voxel) h0Image.img(voxel(1), voxel(2), voxel(3));
+    get_h0 = @(voxel) h0Image.img(voxel(1), voxel(2), voxel(3));
 
 end
 
-obj.threshold(15);
+% 
+if strcmpi(statTestType, 'exactWilcoxon')
+    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.eArrayImage(xx, yy, zz, :)), ...
+        h0, 'tail', 'right', 'method', 'exact');
+
+elseif strcmpi(statTestType, 'approxWilcoxon')
+
+
+end
+
 voxels = obj.nii2voxelArray(obj.nImage, 'array', 'voxel');
 
 k = 1;
@@ -30,8 +40,13 @@ for voxel = voxels.coord'
     xx = voxel(1);
     yy = voxel(2);
     zz = voxel(3);
-
-    pImage(xx, yy, zz) = signrank(squeeze(obj.eArrayImage(xx, yy, zz, :)), h0(voxel), 'tail', 'right', 'method', 'exact');
+    
+    % Get the null-hypothesis
+    h0 = get_h0(voxel);
+    
+    % Compute the p-value of the statistical test
+    pImage(xx, yy, zz) = statTest(xx, yy, zz, h0);
+    
     k = k + 1;
 
 end

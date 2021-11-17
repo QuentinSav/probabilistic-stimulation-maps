@@ -5,23 +5,30 @@ function status = check_voxsize(obj)
     % Return 1 in case, all the voxel size are the same and return 0 
     % otherwise.
     
-    status = 1;
+    % Define object state before loading the data
     obj.state = 'idle';
     
+    % Initialize the status
+    status = 1;
+    
+    % Load the first VTA and take its voxel size as reference
     VTA = obj.loadVTA(1);
     expectedVoxelSize = obj.get_voxelSize(VTA.mat);
     
     nDigit = 0;
     
     for k = 1:obj.nData
+        % Feedback to user (print only for multiples of 10)
         if mod(k, 10) == 0 || k == obj.nData
             fprintf(repmat('\b', 1, nDigit))
             nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.nData);
         end
-    
+        
+        % Load VTA and get the voxel size
         VTA = obj.loadVTA(k);
         voxelSize = obj.get_voxelSize(VTA.mat);
-    
+        
+        % Compare the voxel size of the current VTA to the reference and 
         if voxelSize ~= expectedVoxelSize
             status = 0;
             return

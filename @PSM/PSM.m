@@ -1,27 +1,41 @@
 classdef PSM < handle
-    % PSM (Probabilistic Stimulation Map object)
+    % PSM Class 
+    % (Probabilistic Stimulation Map) 
+    % 
+    % This class allows to handle a probilistic stimulation map instance.
+    % The input arguments for the 
+    %
     % Requirement: CV toolbox, UAV toolbox, ROS toolbox
-
-    % Detailed explanation goes here
-    % TODO finish the litterature review to select around 5 algorithm
-
+    
+    % TODO: - Dembek use approximate method of wilcoxon, Nguyen use exact
+    %       - Modify check_voxsize to check_voxSize
+    %       - Modify crossValidation to set_validationMethod
+    %       - Finish compute_pImage: add Reich test(to be checked)
     properties
-
+        
+        % Input properties
         algorithm
-        validationMethod
         hemisphere
+        clinicalData
+        
         pipeline
+        validationMethod
         features
         voxelSize
+        
+
+        alpha = 0.05
         pThreshold
+        
+        % Output properties
         nImage
         meanImage
         h0Image
         pImage
         significantMeanImage
-        eArrayImage % 4D-image containing all the efficiencies of the voxels (used to speed up p-image computation)
+        eArrayImage 
         sweetspot
-        clinicalData
+        
         nData
         trainingData
         nTrainingData
@@ -30,19 +44,17 @@ classdef PSM < handle
         filterImg
         results
         kFold
-        state
-        alpha
-        
+        state = 'idle'
+
         arrayVectVTA
 
     end
 
     methods
         function obj = PSM(varargin)
-
-            tmp = struct2cell(load('multicentricTableAllImprovedOnlyRev04.mat'));
             
             % Define expected and default input arguments
+            tmp = struct2cell(load('multicentricTableAllImprovedOnlyRev04.mat'));
             defaultData = tmp{1};
             expectedAlgorithm = {
                 'Nguyen, 2019', ...
@@ -79,12 +91,7 @@ classdef PSM < handle
             
         end
 
-        set_filter(obj, method);
-        compute_featureImages(obj, method, images);
-        compute_pImage(obj, statTest, h0);
-        compute_significantpImage(obj);
-        hPartition = crossValidation(obj, method, KFold);
-
+        status = check_voxsize(obj);
     end
 
     methods (Static)

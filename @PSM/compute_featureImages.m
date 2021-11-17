@@ -1,4 +1,5 @@
 function compute_featureImages(obj, imageTypes)
+    % imageTypes: n, mean, h0_meanEffAmplitude, eArray
 
 disp('--------------------------------------------------');
 disp('Computing feature images');
@@ -14,25 +15,29 @@ nDigit = 0;
 
 for k = 1:obj.features.n
     % TODO avoid if within the loop by using function handles
-    % Print only for multiples of 10'000
+    % Feedback to user (print only for multiples of 10'000)
     if mod(k, 100000) == 0 || k == obj.features.n
         fprintf(repmat('\b', 1, nDigit));
         nDigit = fprintf('mean-image: Processing feature # %d / %d\n', k, obj.features.n);
     end
-
+    
+    % Get coordinates of the voxel in integers
     xx = obj.features.coord(k, 1);
     yy = obj.features.coord(k, 2);
     zz = obj.features.coord(k, 3);
-
+    
     if any(strcmp(imageTypes, 'n'))
+        % Add the weigth of the voxel to the n-image
         nImage(xx, yy, zz) = nImage(xx, yy, zz) + obj.features.weights(k);
     end
 
     if any(strcmp(imageTypes, 'mean'))
+        % Add the efficiency of the voxel to the sum-image
         sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.efficiencies(k);
     end
 
     if any(strcmp(imageTypes, 'h0_meanEffAmplitude'))
+        % Add the "mean-efficiency"
         h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanEfficiencies(k);
     end
 
@@ -79,6 +84,4 @@ if any(strcmp(imageTypes, 'eArray'))
     obj.eArrayImage = eArrayImage;
     
 end
-
-
 end

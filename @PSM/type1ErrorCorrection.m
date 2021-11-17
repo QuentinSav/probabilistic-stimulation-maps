@@ -1,4 +1,8 @@
 function type1ErrorCorrection(obj, method)
+    % Function to apply type 1 error (false positive) either by adjusting
+    % the p-values of the statistical tests or modifying the
+    % null-hypothesis rejection threshold (alpha otherwise) depending on
+    % the method
 
     if strcmpi(method, 'Benjamini-Hochberg')
 
@@ -31,8 +35,6 @@ function type1ErrorCorrection(obj, method)
 
     elseif strcmpi(method, 'Benjamini-Hochberg, Genovese')
         
-    elseif strcmpi(method, 'Permuation tests')
-        
     elseif strcmpi(method, 'Bonferroni correction')
 
         % Get features array from the p-image (only to know the number of 
@@ -41,6 +43,8 @@ function type1ErrorCorrection(obj, method)
 
         % The threshold for rejecting null-hypothesis is updated
         obj.pThreshold = obj.alpha/voxelsArray.n;
+
+    elseif strcmpi(method, 'Permuation tests')
 
     end
 end

@@ -1,4 +1,5 @@
 function compute_map(obj)
+    % High-level function that launch the computation of the map
     
     % Initialize results array
     obj.results.weightedSum.nVoxels = [];
