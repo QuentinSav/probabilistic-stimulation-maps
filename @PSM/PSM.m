@@ -3,7 +3,7 @@ classdef PSM < handle
     % (Probabilistic Stimulation Map) 
     % 
     % This class allows to handle a probilistic stimulation map instance.
-    % The input arguments for the 
+    % The input arguments for the constructor
     %
     % Requirement: CV toolbox, UAV toolbox, ROS toolbox
     

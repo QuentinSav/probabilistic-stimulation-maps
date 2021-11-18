@@ -5,17 +5,12 @@ close all;
 tic
 
 % Create PSM instance
-psm = PSM('algorithm', 'Dembek, 2019', 'hemisphere', 'Left');
+psm = PSM('algorithm', 'Reich, 2019', 'hemisphere', 'Left');
 psm.compute_map();
 psm.showResults('weightedSum');
 psm.showResults('overlapRatio');
 
 toc
-
-%%
-
-
-
 
 
 

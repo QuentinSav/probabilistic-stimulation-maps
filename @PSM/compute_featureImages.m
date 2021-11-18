@@ -78,6 +78,16 @@ if any(strcmp(imageTypes, 'h0_meanEffAmplitude'))
 
 end
 
+if any(strcmp(imageTypes, 'h0_effExcludeVox'))
+    
+    h0Image = repmat(obj.trainingData.efficiency, 1, obj.features.coordSize(1), obj.features.coordSize(2),obj.features.coordSize(3));
+    h0Image = permute(h0Image, [2 3 4 1]);
+    
+    h0Image(~isnan(eArrayImage)) = NaN;
+    
+    obj.h0Image = h0Image;
+end
+
 if any(strcmp(imageTypes, 'eArray'))
     % Efficacies array image
     obj.eArrayImage = eArrayImage;

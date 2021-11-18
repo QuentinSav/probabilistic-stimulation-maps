@@ -13,8 +13,8 @@ if strcmpi(h0Type, 'zero')
 elseif strcmpi(h0Type, 'h0_meanEffAmplitude')
     get_h0 = @(voxel) obj.h0Image.img(voxel(1), voxel(2), voxel(3));
 
-elseif strcmpi(h0Type, 'meanEffExcludeVox')
-    get_h0 = @(voxel) obj.h0Image.img(voxel(1), voxel(2), voxel(3));
+elseif strcmpi(h0Type, 'h0_effExcludeVox')
+    get_h0 = @(voxel) obj.h0Image(voxel(1), voxel(2), voxel(3), :);
 
 end
 
