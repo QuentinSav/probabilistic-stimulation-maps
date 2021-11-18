@@ -5,7 +5,7 @@ classdef PSM < handle
     % This class allows to handle a probilistic stimulation map instance.
     % The input arguments for the constructor
     %
-    % Requirement: CV toolbox, UAV toolbox, ROS toolbox
+    % Requirement: CV toolbox,
     
     % TODO: 
     %       - Modify check_voxsize to check_voxSize
@@ -20,16 +20,19 @@ classdef PSM < handle
         
         % Data
         clinicalData
-        nData
         trainingData
+        testingData
+
+        nData
         nTrainingData
-        validationData
-        nValidationData
+        nTestingData
         
-        % Parameters
+        % General parameters
         filterImg
-        pipeline
+        pipeline 
         validationMethod
+
+        % Parameters
         features
         voxelSize
         alpha = 0.05
@@ -93,26 +96,47 @@ classdef PSM < handle
             
         end
         
+        
         status = check_voxsize(obj);
         compute_featureImages(obj, imageTypes);
         compute_map(obj);
         pImage = compute_pImage(obj, statTestType, h0Type);
         compute_significantMeanImage(obj);
-        create_pipeline(obj);
+        
         hPartition = crossValidation(obj, method, varargin);
         filter_data(obj);
         get_features(obj, features);
         get_matVectVTA(obj);
         VTA = loadVTA(obj, varargin);
         voxelArray = nii2voxelArray(obj, image, type, outputSpace);
-        set_filter(obj, method);
+        
         showImage(obj, imageToPlot, holdFlag, colorName);
         showResults(obj, resultType);
-        test(obj);
-        threshold(obj, thresholdValue);
-        train(obj);
-        type1ErrorCorrection(obj, method);
+        
+        
 
+        type1ErrorCorrection(obj, method);
+        
+        % Setup function
+        create_pipeline(obj);
+
+        
+        % TRAINING --------------------------------------------------------
+        % High-level function
+        train(obj);
+        
+        % Low-level function
+        set_filter(obj, method);
+        threshold(obj, thresholdValue);
+
+        % TESTING ---------------------------------------------------------
+        test(obj);
+        
+        
+        
+        % Low level function
+
+        
     end
 
     methods (Static)

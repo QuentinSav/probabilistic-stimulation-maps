@@ -3,9 +3,9 @@ classdef PSM < handle
     % (Probabilistic Stimulation Map) 
     % 
     % This class allows to handle a probilistic stimulation map instance.
-    % The input arguments for the constru
+    % The input arguments for the constructor
     %
-    % Requirement: CV toolbox, UAV toolbox, ROS toolbox
+    % Requirement: CV toolbox,
     
     % TODO: 
     %       - Modify check_voxsize to check_voxSize
@@ -20,16 +20,19 @@ classdef PSM < handle
         
         % Data
         clinicalData
-        nData
         trainingData
+        testingData
+
+        nData
         nTrainingData
-        validationData
-        nValidationData
+        nTestingData
         
-        % Parameters
+        % General parameters
         filterImg
-        pipeline
+        pipeline 
         validationMethod
+
+        % Parameters
         features
         voxelSize
         alpha = 0.05
@@ -93,6 +96,7 @@ classdef PSM < handle
             
         end
         
+        % Setup function
         status = check_voxsize(obj);
         compute_featureImages(obj, imageTypes);
         compute_map(obj);
@@ -112,7 +116,13 @@ classdef PSM < handle
         threshold(obj, thresholdValue);
         train(obj);
         type1ErrorCorrection(obj, method);
-
+        
+        % High-level function
+        
+        
+        % Low level function
+        
+        
     end
 
     methods (Static)
