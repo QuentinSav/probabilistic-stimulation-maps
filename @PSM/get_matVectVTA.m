@@ -1,6 +1,7 @@
 function get_matVectVTA(obj)
 
-
+% To be deleted
+obj.features.matVectVTA = [];
 
 for k = 1:obj.nTrainingData
 

@@ -12,7 +12,7 @@ nDigit = 0;
 % Loop over the current training data
 for k = 1:obj.nTrainingData
 
-    % Feedback of the progress
+    % Progress feedback to the user
     if mod(k, 10) == 0 || k == obj.nTrainingData
         fprintf(repmat('\b', 1, nDigit))
         nDigit = fprintf('VTA # %d / %d\n', k, obj.nTrainingData);
@@ -70,7 +70,7 @@ if any(strcmp(features, 'stimAmplitudes'))
 
 end
 
-if any(strcmp(features, 'meanEfficiencies'))
+if any(strcmp(features, 'meanEffAmplitudes'))
 
     amplitudeKeys = unique(obj.trainingData.amplitude);
 

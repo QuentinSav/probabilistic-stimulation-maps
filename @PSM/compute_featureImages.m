@@ -15,7 +15,6 @@ nDigit = 0;
 
 for k = 1:obj.features.n
     % TODO avoid if within the loop by using function handles
-    % Feedback to user (print only for multiples of 10'000)
     if mod(k, 100000) == 0 || k == obj.features.n
         fprintf(repmat('\b', 1, nDigit));
         nDigit = fprintf('mean-image: Processing feature # %d / %d\n', k, obj.features.n);

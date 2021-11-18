@@ -45,6 +45,10 @@ function type1ErrorCorrection(obj, method)
         obj.pThreshold = obj.alpha/voxelsArray.n;
 
     elseif strcmpi(method, 'Permuation tests')
+    
+    elseif strcmpi(method, 'No correction')
 
+        obj.pThreshold = obj.alpha;
+        
     end
 end

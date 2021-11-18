@@ -3,7 +3,7 @@ function compute_significantMeanImage(obj)
 % Compute the significant mean image
 % Set the insignificant voxels from mean-image to zero
 obj.significantMeanImage = obj.meanImage;
-obj.significantMeanImage.img(obj.pImage.img > obj.sweetspot.significanceThreshold) = 0;
+obj.significantMeanImage.img(obj.pImage.img > obj.pThreshold) = 0;
 
 % Compute the sweet spot
 obj.sweetspot.ratio = 0.1;
