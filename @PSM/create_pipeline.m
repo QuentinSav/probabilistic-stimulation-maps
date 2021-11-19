@@ -1,7 +1,7 @@
 function create_pipeline(obj)
 
 switch obj.algorithm
-    case 'Nguyen, 2019'
+    case 'Nguyen2019'
 
         obj.pipeline.training = {
             @(method) obj.set_filter('rounded'), ...
@@ -24,7 +24,7 @@ switch obj.algorithm
         obj.pipeline.validationMethod = {@(method, KFold) obj.crossValidation('KFold', 5)};
 
 
-    case 'Dembek, 2019'
+    case 'DembekRoediger2019'
 
         obj.pipeline.training = {
             @(method) obj.set_filter('rounded'), ...
@@ -50,7 +50,7 @@ switch obj.algorithm
 
         obj.pipeline.validationMethod = {@(method, ratio) obj.crossValidation('Out-of-sample', 0.2)};
 
-    case 'Reich, 2019'
+    case 'ReichHorn2019'
         
         obj.pipeline.training = {
             @(method) obj.set_filter('rounded'), ...

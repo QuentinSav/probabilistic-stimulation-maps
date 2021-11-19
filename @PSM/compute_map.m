@@ -29,20 +29,20 @@ function compute_map(obj)
     
     for k = 1:hPartition.NumTestSets
         
-        obj.kFold = k;
+        obj.param.kFold = k;
 
         disp('==================================================');
         disp("Cross-validation fold # " + k + "/" + hPartition.NumTestSets);
     
         % Creates training set
         indexTrain = training(hPartition, k);
-        obj.trainingData = obj.clinicalData(indexTrain, :);
-        obj.nTrainingData = height(obj.trainingData);
+        obj.data.training.table = obj.data.clinical.table(indexTrain, :);
+        obj.data.training.n = height(obj.data.training.table);
     
-        % Creates validation set
-        indexValid = test(hPartition, k);
-        obj.validationData = obj.clinicalData(indexValid, :);
-        obj.nValidationData = height(obj.validationData);
+        % Creates test set
+        indexTest = test(hPartition, k);
+        obj.data.testing.table = obj.data.training.table(indexTest, :);
+        obj.data.testing.n = height(obj.validationData);
         
         obj.train();
         obj.test();

@@ -20,17 +20,28 @@ psm = PSM(tableMulticentric, ...
     'hemisphere', 'Left');
 
 psm = PSM(tableMulticentric, ...
-    'algorithm', 'Nguyen, 2019', ...
+    'algorithm', 'Nguyen2019', ...
     'hemisphere', 'Left');
 
 psm = PSM(tableMulticentric, ...
     'mode', 'analysis', ...
-    'algorithm', 'Nguyen, 2019', ...
+    'algorithm', 'Nguyen2019', ...
     'hemisphere', 'Left');
+
+% It is possible to have a preview of all the information about the map
+% with the following function
+psm.information();
 
 % Call the function compute_map will lauch the computation of the PSM
 tic;
 psm.compute_map();
 toc;
 
-   
+% We can now vizualize the images. If the lead dbs 3D-renderer is open, it 
+% will plot the image inside. Otherwise it will open a new figure.
+psm.showImage('significantMean')
+psm.showImage('p-image')
+
+% It is also possible to vizualize the prediction on new samples made by
+% the map.
+

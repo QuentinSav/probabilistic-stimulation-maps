@@ -8,10 +8,10 @@ function hPartition = crossValidation(obj, method, varargin)
     elseif strcmpi(method, 'KFold')
         KFold = varargin{1};
 
-        hPartition = cvpartition(obj.nData, ...
+        hPartition = cvpartition(obj.data.clinical.n, ...
             'KFold', KFold, ...
             'Stratify', false);
-        obj.validationMethod = [num2str(KFold),'-Fold CV'];
+        obj.param.validationMethod = [num2str(KFold),'-Fold CV'];
         
     elseif strcmpi(method, 'Out-of-sample')
         holdoutRatio = varargin{1};

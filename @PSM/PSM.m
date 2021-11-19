@@ -15,13 +15,12 @@ classdef PSM < handle
 
     properties (Access = public)
         
-        information
         map
         results
 
     end
 
-    properties (Access = private)
+    properties (Access = public) % TODO make it private
     
         % Input properties
         algorithm
@@ -29,38 +28,10 @@ classdef PSM < handle
         
         % Data
         data
-%         data.properties.hemisphere
-%         data.properties.
-% 
-%         data.clinical.table
-%         data.clinical.n
-% 
-%         data.training.table
-%         data.testing.table
-% 
-%         data.training.n
-%         data.testing.n
         
         % General parameters
         param
-%         param.filterImg
-%         param.voxelSize
-%         param.alpha = 0.05
-%         param.pThreshold
 
-        % Output properties
-%         map.features
-%         map.n
-%         map.mean
-%         map.h0
-%         map.p
-%         map.t
-%         map.significantMeanImage
-%         map.eArray
-%         map.sweetspot
-        
-        
-        
         % Object state
         state
         mode
@@ -74,21 +45,21 @@ classdef PSM < handle
             
             % Define expected and default input arguments
             expectedAlgorithm = {
-                'Nguyen, 2019', ...
-                'Dembek, 2019', ...
-                'Reich, 2019', ...
+                'Nguyen2019', ...
+                'DembekRoediger2019', ...
+                'ReichHorn2019', ...
                 'Proposed'};
-            defaultAlgorithm = 'Nguyen, 2019';
+            defaultAlgorithm = 'Nguyen2019';
             expectedHemiphere = {
                 '', ...
-                'Both', ...
-                'Right', ...
-                'Left'};
+                'both', ...
+                'right', ...
+                'left'};
             defaultHemisphere = '';
             expectedMode = {
-                'Standard', ...
-                'Analysis'};
-            defaultMode = 'Standard';
+                'standard', ...
+                'analysis'};
+            defaultMode = 'standard';
 
             % Create parser
             p = inputParser();
@@ -103,7 +74,7 @@ classdef PSM < handle
             
             % Assign input arguments to object properties
             obj.data.clinical.table = p.Results.data;
-            obj.data.clinical.n = height(obj.clinicalData);
+            obj.data.clinical.n = height(obj.data.clinical.table);
            
             obj.data.screen.hemisphere = p.Results.hemisphere; 
     
@@ -118,26 +89,20 @@ classdef PSM < handle
             
         end
         
-        status = check_voxsize(obj);
+        screen_data(obj);
+
         compute_featureImages(obj, imageTypes);
         compute_map(obj);
         pImage = compute_pImage(obj, statTestType, h0Type);
         compute_significantMeanImage(obj);
         
-        hPartition = crossValidation(obj, method, varargin);
-        filter_data(obj);
-
-        get_matVectVTA(obj);
-        VTA = loadVTA(obj, varargin);
-        voxelArray = nii2voxelArray(obj, image, type, outputSpace);
-        
-        showImage(obj, imageToPlot, holdFlag, colorName);
-        showResults(obj, resultType);
-
         
         % SETUP -----------------------------------------------------------
-        create_pipeline(obj);
-
+        create_pipeline(obj);        
+        hPartition = crossValidation(obj, method, varargin);
+        
+        status = check_voxSize(obj);
+        
         % TRAINING (map generation) ---------------------------------------
         train(obj); % High-level function
         
@@ -147,15 +112,22 @@ classdef PSM < handle
         threshold(obj, thresholdValue);
         type1ErrorCorrection(obj, method);
         
+        get_matVectVTA(obj); % for proposed pipeline
+        
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
         
         % Low level function
         
         % DISPLAY ---------------------------------------------------------
-        
+        information(obj);
+        showImage(obj, imageToPlot, holdFlag, colorName);
+        showResults(obj, resultType);
+
         % GENERAL USE -----------------------------------------------------
-        
+        VTA = loadVTA(obj, varargin);
+        voxelArray = nii2voxelArray(obj, image, type, outputSpace);
+    
     end
 
     methods (Static)
