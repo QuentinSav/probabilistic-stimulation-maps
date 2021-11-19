@@ -74,7 +74,7 @@ classdef PSM < handle
             
             % Assign input arguments to object properties
             obj.data.clinical.table = p.Results.data;
-            obj.data.clinical.n = height(obj.data.clinical.table);
+
            
             obj.data.screen.hemisphere = p.Results.hemisphere; 
     
@@ -83,9 +83,12 @@ classdef PSM < handle
             
             % Keep the correct hemispheric data
             obj.screen_data();
+            obj.data.clinical.n = height(obj.data.clinical.table);
 
             % Create the pipeline (list of function that will be executed)
             obj.create_pipeline();
+
+            % TODO obj.check_voxelSize()
             
         end
         

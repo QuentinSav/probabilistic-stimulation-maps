@@ -41,8 +41,8 @@ function compute_map(obj)
     
         % Creates test set
         indexTest = test(hPartition, k);
-        obj.data.testing.table = obj.data.training.table(indexTest, :);
-        obj.data.testing.n = height(obj.validationData);
+        obj.data.testing.table = obj.data.clinical.table(indexTest, :);
+        obj.data.testing.n = height(obj.data.testing.table);
         
         obj.train();
         obj.test();
