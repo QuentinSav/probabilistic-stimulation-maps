@@ -1,42 +1,36 @@
+% Example script for PSM Class usage
 clc;
 clear all;
 close all;
 
-tic
+% Load a clinical data table, the table shall contain one row per VTA with
+% at least the fields filename and score
+load('multicentricTableAllImprovedOnlyRev04.mat');
 
-% Create PSM instance
-psm = PSM('algorithm', 'Nguyen, 2019', 'hemisphere', 'Left');
+% In this example case, the table does not include a score fields. Thus the
+% table needs to be formated.
+tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore');
+
+% Then the PSM can be instantiated by specifying the table and additional
+% optional parameters. Several examples below (not exhaustive, refer to the
+% class documentation for more informations).
+psm = PSM(tableMulticentric);
+
+psm = PSM(tableMulticentric, ...
+    'hemisphere', 'Left');
+
+psm = PSM(tableMulticentric, ...
+    'algorithm', 'Nguyen, 2019', ...
+    'hemisphere', 'Left');
+
+psm = PSM(tableMulticentric, ...
+    'mode', 'analysis', ...
+    'algorithm', 'Nguyen, 2019', ...
+    'hemisphere', 'Left');
+
+% Call the function compute_map will lauch the computation of the PSM
+tic;
 psm.compute_map();
-psm.showResults('weightedSum');
-psm.showResults('overlapRatio');
+toc;
 
-toc
-
-
-
-
-
-
-
-
-
-
-%%
-% check the overlap calculation                                        DONE
-% 
-% n-image and mean-image computation                                   DONE
-% 
-% Statistical test:                                                    TODO
-%    - Wilcoxon sign rank test,                                        DONE
-%    - Mann-Whitney U test                                             TODO
-%
-% Null-hypothesis:                                                     TODO     
-%    - zero,                                                           DONE
-%    - mean efficacy of the same amplitude VTAs,                       DONE
-%    - mean efficacy of all VTAs that do not include a specific voxel, TODO
-%    - custom                                                          TODO
-%
-% Type 1 error correction:                                             TODO   
-%    - false discovery rate                                            DONE
-%    - Bonferroni correction                                           DONE
-%    - permutation tests                                               TODO    
+   

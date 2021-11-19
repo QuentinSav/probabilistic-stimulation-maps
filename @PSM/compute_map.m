@@ -1,6 +1,17 @@
 function compute_map(obj)
     % High-level function that launch the computation of the map
     
+    % Will not allow the map computation in case the VTA do not have the
+    % same voxel size
+    if strcmpi(obj.state, 'error')
+        
+        warning(['The map cannot be computed because the VTA voxel ' ...
+            'size are not consistent. Reslice all VTAs before ' ...
+            'computing the map.']);
+        return;
+
+    end
+
     % Initialize results array
     obj.results.weightedSum.nVoxels = [];
     obj.results.weightedSum.value = [];

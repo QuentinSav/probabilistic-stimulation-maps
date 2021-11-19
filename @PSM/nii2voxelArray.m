@@ -2,7 +2,7 @@ function voxelArray = nii2voxelArray(obj, image, type, outputSpace)
             % Input:    - image:            NIFTI structure
             % Output:   - ptCloud:          ptCloud object
 
-            % TODO : implement input parser
+            % TODO : make it static
 
             if strcmpi(type, 'ptCloud')
                 nColor = 250;

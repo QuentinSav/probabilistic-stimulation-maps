@@ -4,63 +4,68 @@ classdef PSM < handle
     % 
     % This class allows to handle a probilistic stimulation map instance.
     % The input arguments for the constructor
-    %
-    % Requirement: CV toolbox,
-    
-    % TODO: 
-    %       - Modify check_voxsize to check_voxSize
-    %       - Modify crossValidation to set_validationMethod
-    %       - Finish compute_pImage: add Reich test(to be checked)
-    
-    properties
+    % 
+    % The map computation can be performed in 2 different modes:
+    %   - Standard: computes the map on 95% of the dataset
+    %   - Analysis: perform multiple maps and perform cross-validation. 
+
+    properties (Access = public)
         
+        information
+        map
+
+    end
+
+    properties (Access = private)
+    
         % Input properties
         algorithm
-        hemisphere
+        pipeline 
         
         % Data
-        clinicalData
-        trainingData
-        testingData
+        data.properties.hemisphere
+        data.properties.
 
-        nData
-        nTrainingData
-        nTestingData
+        data.clinical.table
+        data.clinical.n
+
+        data.training.table
+        data.testing.table
+
+        data.training.n
+        data.testing.n
         
         % General parameters
-        filterImg
-        pipeline 
-        validationMethod
-
-        % Parameters
-        features
-        voxelSize
-        alpha = 0.05
-        pThreshold
+        param.filterImg
+        param.voxelSize
+        param.alpha = 0.05
+        param.pThreshold
 
         % Output properties
-        nImage
-        meanImage
-        h0Image
-        pImage
-        tImage
-        significantMeanImage
-        eArrayImage 
-        sweetspot
+        map.features
+        map.n
+        map.mean
+        map.h0
+        map.p
+        map.t
+        map.significantMeanImage
+        map.eArray
+        map.sweetspot
+        
         results
         
-        % State
-        kFold
-        state = 'idle'
+        % Object state
+        state
+        mode
 
     end
 
     methods
         function obj = PSM(varargin)
             
+            obj.state = 'idle';
+            
             % Define expected and default input arguments
-            tmp = struct2cell(load('multicentricTableAllImprovedOnlyRev04.mat'));
-            defaultData = tmp{1};
             expectedAlgorithm = {
                 'Nguyen, 2019', ...
                 'Dembek, 2019', ...
@@ -68,64 +73,84 @@ classdef PSM < handle
                 'Proposed'};
             defaultAlgorithm = 'Nguyen, 2019';
             expectedHemiphere = {
+                '', ...
                 'Both', ...
                 'Right', ...
                 'Left'};
-            defaultHemisphere = 'Both';
-            
+            defaultHemisphere = '';
+            expectedMode = {
+                'Standard', ...
+                'Analysis'};
+            defaultMode = 'Standard';
+
             % Create parser
             p = inputParser();
-            addOptional(p,'data', defaultData, @istable);
+            addRequired(p,'data', @istable);
             addParameter(p, 'algorithm', defaultAlgorithm, ...
                 @(x) any(validatestring(x, expectedAlgorithm)));
             addParameter(p, 'hemisphere', defaultHemisphere,...
                 @(x) any(validatestring(x, expectedHemiphere)));
+            addParameter(p, 'mode', defaultMode,...
+                @(x) any(validatestring(x, expectedMode)));
             parse(p, varargin{:});
             
             % Assign input arguments to object properties
+            obj.data.clinical = p.Results.data;
             obj.algorithm = p.Results.algorithm;
-            obj.hemisphere = p.Results.hemisphere;
-            obj.clinicalData = p.Results.data;
-
+            obj.data.hemisphere = p.Results.hemisphere;
+            obj.mode = p.Results.mode;
+            
             % Keep the correct hemispheric data
             obj.filter_data();
-            obj.nData = height(obj.clinicalData);
+            obj.data.clinical.n = height(obj.clinicalData);
 
             % Create the pipeline (list of function that will be executed)
             obj.create_pipeline();
             
         end
         
-        % Setup function
         status = check_voxsize(obj);
         compute_featureImages(obj, imageTypes);
         compute_map(obj);
         pImage = compute_pImage(obj, statTestType, h0Type);
         compute_significantMeanImage(obj);
-        create_pipeline(obj);
+        
         hPartition = crossValidation(obj, method, varargin);
         filter_data(obj);
-        get_features(obj, features);
+
         get_matVectVTA(obj);
         VTA = loadVTA(obj, varargin);
         voxelArray = nii2voxelArray(obj, image, type, outputSpace);
-        set_filter(obj, method);
+        
         showImage(obj, imageToPlot, holdFlag, colorName);
         showResults(obj, resultType);
-        test(obj);
+
+        
+        % SETUP -----------------------------------------------------------
+        create_pipeline(obj);
+
+        % TRAINING (map generation) ---------------------------------------
+        train(obj); % High-level function
+        
+        % Low-level function
+        set_filter(obj, method);
         threshold(obj, thresholdValue);
-        train(obj);
         type1ErrorCorrection(obj, method);
-        
-        % High-level function
-        
+        get_features(obj, features);
+
+        % TESTING ---------------------------------------------------------
+        test(obj); % High-level function
         
         % Low level function
         
-        
+        % DISPLAY ---------------------------------------------------------
+    
+        % GENERAL USE -----------------------------------------------------
+    
     end
 
     methods (Static)
+        
         
         voxsize = get_voxelSize(transform);
         newCoordinates = transform(oldCoordinates, image, direction);
