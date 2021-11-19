@@ -30,4 +30,7 @@ TODO:
 - [ ] Finish the implementation of the get_matVectVTA function
 - [ ] Finish the implementation of the Dembek, 2019 pipeline (without permutation tests)
 - [ ] Finish the implementation of Reich, 2019
+- [ ] Gitignore the asv files
+- [ ] Integrate the psm constructor additional filters
+- [ ] Finish the implementation of Reich, 2019
     
