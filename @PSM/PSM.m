@@ -12,10 +12,12 @@ classdef PSM < handle
     %   - Analysis: perform multiple maps and perform cross-validation. 
     %
     % The user can also specify
+
     properties (Access = public)
         
         information
         map
+        results
 
     end
 
@@ -26,23 +28,25 @@ classdef PSM < handle
         pipeline 
         
         % Data
-        data.properties.hemisphere
-        data.properties.
-
-        data.clinical.table
-        data.clinical.n
-
-        data.training.table
-        data.testing.table
-
-        data.training.n
-        data.testing.n
+        data
+%         data.properties.hemisphere
+%         data.properties.
+% 
+%         data.clinical.table
+%         data.clinical.n
+% 
+%         data.training.table
+%         data.testing.table
+% 
+%         data.training.n
+%         data.testing.n
         
         % General parameters
-        param.filterImg
-        param.voxelSize
-        param.alpha = 0.05
-        param.pThreshold
+        param
+%         param.filterImg
+%         param.voxelSize
+%         param.alpha = 0.05
+%         param.pThreshold
 
         % Output properties
 %         map.features
@@ -55,7 +59,7 @@ classdef PSM < handle
 %         map.eArray
 %         map.sweetspot
         
-        results
+        
         
         % Object state
         state
@@ -98,14 +102,16 @@ classdef PSM < handle
             parse(p, varargin{:});
             
             % Assign input arguments to object properties
-            obj.data.clinical = p.Results.data;
+            obj.data.clinical.table = p.Results.data;
+            obj.data.clinical.n = height(obj.clinicalData);
+           
+            obj.data.screen.hemisphere = p.Results.hemisphere; 
+    
             obj.algorithm = p.Results.algorithm;
-            obj.data.hemisphere = p.Results.hemisphere;
             obj.mode = p.Results.mode;
             
             % Keep the correct hemispheric data
-            obj.filter_data();
-            obj.data.clinical.n = height(obj.clinicalData);
+            obj.screen_data();
 
             % Create the pipeline (list of function that will be executed)
             obj.create_pipeline();
@@ -137,19 +143,19 @@ classdef PSM < handle
         
         % Low-level function
         set_filter(obj, method);
+        get_features(obj, features);
         threshold(obj, thresholdValue);
         type1ErrorCorrection(obj, method);
-        get_features(obj, features);
-
+        
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
         
         % Low level function
         
         % DISPLAY ---------------------------------------------------------
-    
+        
         % GENERAL USE -----------------------------------------------------
-    
+        
     end
 
     methods (Static)
