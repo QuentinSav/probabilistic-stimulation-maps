@@ -1,4 +1,4 @@
-function status = check_voxsize(obj)
+function status = util_checkBatch(obj)
     % For the use of the PSM class, the VTAs shall be already preprocessed
     % and have the same voxel size.
     % This function check the voxel size all the VTA from the data.

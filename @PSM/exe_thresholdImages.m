@@ -1,4 +1,4 @@
-function threshold(obj, thresholdValue)
+function exe_thresholdImages(obj, thresholdValue)
 
 obj.nImage.img(obj.nImage.img < thresholdValue) = 0;
 obj.meanImage.img(obj.nImage.img < thresholdValue) = 0;

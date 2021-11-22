@@ -1,4 +1,4 @@
-function screen_data(obj)
+function util_dataScreening(obj)
     % The hemisphere property can be ['left', 'right', 'both'].
     % This function filters the data in function of the desired hemisphere. 
     

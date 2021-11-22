@@ -1,4 +1,4 @@
-function voxelArray = nii2voxelArray(obj, image, type, outputSpace)
+function voxelArray = util_nii2voxelArray(obj, image, type, outputSpace)
             % Input:    - image:            NIFTI structure
             % Output:   - ptCloud:          ptCloud object
 

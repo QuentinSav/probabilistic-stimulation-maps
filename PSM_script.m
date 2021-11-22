@@ -17,20 +17,20 @@ tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore')
 psm = PSM(tableMulticentric);
 
 psm = PSM(tableMulticentric, ...
-    'hemisphere', 'Left');
+    'hemisphere', 'left');
 
 psm = PSM(tableMulticentric, ...
     'algorithm', 'Nguyen2019', ...
-    'hemisphere', 'Left');
+    'hemisphere', 'left');
 
 psm = PSM(tableMulticentric, ...
     'mode', 'analysis', ...
     'algorithm', 'Nguyen2019', ...
-    'hemisphere', 'Left');
+    'hemisphere', 'left');
 
 % It is possible to have a preview of all the information about the map
 % with the following function
-psm.information();
+psm.info();
 
 % Call the function compute_map will lauch the computation of the PSM
 tic;

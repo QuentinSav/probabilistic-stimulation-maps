@@ -1,4 +1,4 @@
-function compute_significantMeanImage(obj)
+function exe_computeSignMeanImage(obj)
 
 % Compute the significant mean image
 % Set the insignificant voxels from mean-image to zero

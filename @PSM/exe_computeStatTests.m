@@ -1,4 +1,4 @@
-function pImage = compute_pImage(obj, statTestType, h0Type)
+function pImage = exe_computeStatTests(obj, statTestType, h0Type)
 
 disp('--------------------------------------------------');
 disp('Computing p-image');

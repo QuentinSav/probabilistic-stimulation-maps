@@ -1,4 +1,4 @@
-function get_features(obj, features)
+function exe_compileFeatures(obj, features)
 
 disp('--------------------------------------------------');
 disp('Extracting features');

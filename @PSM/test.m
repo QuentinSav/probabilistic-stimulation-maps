@@ -2,7 +2,7 @@ function test(obj)
 disp('--------------------------------------------------');
 disp('TESTING');
 
-obj.state = 'validation';
+obj.state = 'testing';
 
 nDigit = 0;
 

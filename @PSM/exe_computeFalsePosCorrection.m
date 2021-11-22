@@ -1,4 +1,4 @@
-function type1ErrorCorrection(obj, method)
+function exe_computeFalsePosCorrection(obj, method)
     % Function to apply type 1 error (false positive) either by adjusting
     % the p-values of the statistical tests or modifying the
     % null-hypothesis rejection threshold (alpha otherwise) depending on

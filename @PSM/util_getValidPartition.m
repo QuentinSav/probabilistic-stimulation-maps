@@ -1,5 +1,5 @@
 % Methods of class PSM
-function hPartition = get_validPartition(obj, method, varargin)
+function hPartition = util_getValidPartition(obj, method, varargin)
 
     if strcmpi(method, 'LOO')
         hPartition = cvpartition(obj.nData, 'Leaveout');

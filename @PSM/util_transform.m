@@ -1,4 +1,4 @@
-function newCoordinates = transform(oldCoordinates, image, direction)
+function newCoordinates = util_transform(oldCoordinates, image, direction)
     % Input:    - OldCoordinates:   Array [mx3]
     %           - image:            NIFTI structure
     %           - direction:        'VoxelToWorld' or 'WorldToVoxel'

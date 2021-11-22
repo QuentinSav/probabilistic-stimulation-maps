@@ -1,4 +1,4 @@
-function showImage(obj, imageToPlot, holdFlag, colorName)
+function show_image(obj, imageToPlot, holdFlag, colorName)
 
 disp('--------------------------------------------------');
 disp("Showing image");

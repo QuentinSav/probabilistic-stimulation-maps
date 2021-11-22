@@ -1,4 +1,4 @@
-function set_filter(obj, method)
+function util_setFilter(obj, method)
     if strcmpi(method, 'rounded')
         obj.param.filterImg = @(image) round(image);
     

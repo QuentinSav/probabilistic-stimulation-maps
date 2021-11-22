@@ -1,4 +1,4 @@
-function showResults(obj, resultType)
+function show_results(obj, resultType)
 
 if strcmpi(resultType, 'OverlapRatio')
 

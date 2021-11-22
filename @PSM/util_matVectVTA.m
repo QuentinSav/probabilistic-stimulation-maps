@@ -1,4 +1,4 @@
-function get_matVectVTA(obj)
+function util_matVectVTA(obj)
 
 % To be deleted
 obj.features.matVectVTA = [];

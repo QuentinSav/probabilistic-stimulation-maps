@@ -1,4 +1,4 @@
-function compute_featureImages(obj, imageTypes)
+function exe_computeFeatureImages(obj, imageTypes)
     % imageTypes: n, mean, h0_meanEffAmplitude, eArray
 
 disp('--------------------------------------------------');

@@ -1,4 +1,4 @@
-function compute_map(obj)
+function compute(obj)
     % High-level function that launch the computation of the map
     
     % Will not allow the map computation in case the VTA do not have the

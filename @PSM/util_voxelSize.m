@@ -1,4 +1,4 @@
-function voxsize = get_voxelSize(transform)
+function voxsize = util_voxelSize(transform)
 % Input:    - Transformation matrix:    Array [4x4]
 % Output:   - voxel size array:         Array [3x1]
 

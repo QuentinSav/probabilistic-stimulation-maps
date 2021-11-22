@@ -1,4 +1,4 @@
-function create_pipeline(obj)
+function util_createPipeline(obj)
 
 switch obj.algorithm
     case 'Nguyen2019'
