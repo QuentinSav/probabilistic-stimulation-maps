@@ -25,7 +25,7 @@ function compute(obj)
     obj.results.kFold = [];
     
     % Create the data partition for validation
-    hPartition = obj.pipeline.validationMethod{1}(obj.mode);
+    hPartition = obj.pipeline.validationMethod{1}();
     
     for k = 1:hPartition.NumTestSets
         

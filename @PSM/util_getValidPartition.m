@@ -1,26 +1,34 @@
 % Methods of class PSM
 function hPartition = util_getValidPartition(obj, method, varargin)
 
-    if strcmpi(method, 'LOO')
-        hPartition = cvpartition(obj.nData, 'Leaveout');
-        obj.validationMethod = 'LOOCV';
+if strcmpi(obj.mode, 'standard')
+    hPartition = cvpartition(obj.data.clinical.table.centerID, ...
+        'HoldOut', 0.05, ...
+        'Stratify', true);
+    obj.validationMethod = [100*num2str(0.05),'% Out-of-sample'];
 
-    elseif strcmpi(method, 'KFold')
-        KFold = varargin{1};
+end
 
-        hPartition = cvpartition(obj.data.clinical.n, ...
-            'KFold', KFold, ...
-            'Stratify', false);
-        obj.param.validationMethod = [num2str(KFold),'-Fold CV'];
-        
-    elseif strcmpi(method, 'Out-of-sample')
-        holdoutRatio = varargin{1};
+if strcmpi(method, 'LOO')
+    hPartition = cvpartition(obj.data.clinical.table.centerID, 'Leaveout');
+    obj.validationMethod = 'LOOCV';
 
-        hPartition = cvpartition(obj.nData, ...
-            'HoldOut', holdoutRatio, ...
-            'Stratify', false);
-        obj.validationMethod = [100*num2str(holdoutRatio),'% Out-of-sample'];
-        
-    end
+elseif strcmpi(method, 'KFold')
+    KFold = varargin{1};
+
+    hPartition = cvpartition(obj.data.clinical.table.centerID, ...
+        'KFold', KFold, ...
+        'Stratify', true);
+    obj.param.validationMethod = [num2str(KFold),'-Fold CV'];
+
+elseif strcmpi(method, 'Out-of-sample')
+    holdoutRatio = varargin{1};
+
+    hPartition = cvpartition(obj.data.clinical.table.centerID, ...
+        'HoldOut', holdoutRatio, ...
+        'Stratify', true);
+    obj.validationMethod = [100*num2str(holdoutRatio),'% Out-of-sample'];
+
+end
 end
 

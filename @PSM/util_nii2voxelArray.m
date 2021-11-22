@@ -1,52 +1,45 @@
-function voxelArray = util_nii2voxelArray(obj, image, type, outputSpace)
-            % Input:    - image:            NIFTI structure
-            % Output:   - ptCloud:          ptCloud object
+function voxelArray = util_nii2voxelArray(image, type, outputSpace)
+% Function to convert an NIFTI image to a (non-zero) voxel array/list
+% of voxels.
+%
+% Input:    - image:                    NIFTI structure
+%           - type (optional):          'coord', 'index'
+%           - outputSpace (optional):   'mni' 
+% Output:   - voxelArray:               structure with fields [n, intensity, coord/index]
 
-            % TODO : make it static
+if strcmpi(type, 'coord')
+    
+    % Get the non-zeros voxel index list
+    voxelsIndex = find(image.img);
 
-            if strcmpi(type, 'ptCloud')
-                nColor = 250;
-                cmap = parula(nColor);
+    % Get the value of those voxels
+    voxelArray.intensity = image.img(voxelsIndex);
+    
+    % Get the number of voxels
+    voxelArray.n = length(voxelArray.intensity);
+    
+    % Convert their index to coordinates
+    [voxelsCoord(:, 1), voxelsCoord(:, 2), voxelsCoord(:, 3)] = ind2sub(size(image.img), voxelsIndex);
+    
+    % Depending on the input argument, transform or not into MNI space
+    if strcmpi(outputSpace, 'mni')
+        voxelArray.coord = PSM.util_transform(voxelsCoord, image, 'VoxelToWorld');
 
-                voxelsIndex = find(image.img);
-                voxelsIntensity = image.img(voxelsIndex);
-                [voxelsCoord(:, 1), voxelsCoord(:, 2), voxelsCoord(:, 3)] = ind2sub(size(image.img), voxelsIndex);
+    else
+        voxelArray.coord = voxelsCoord;
 
-                if strcmpi(outputSpace, 'mni')
-                    coord = obj.transform(voxelsCoord, image, 'VoxelToWorld');
+    end
 
-                else
-                    coord = voxelsCoord;
+elseif strcmpi(type, 'index')
+    
+    % Get the non-zeros voxel index list
+    voxelArray.index = find(image.img);
 
-                end
+    % Get the value of those voxels
+    voxelArray.intensity = image.img(voxelArray.index);
+    
+    % Get the number of voxels
+    voxelArray.n = length(voxelArray.intensity);
 
-                voxelsIntensity = round((nColor - 1).*voxelsIntensity./max(voxelsIntensity)) + 1;
-                voxelsColor = cmap(voxelsIntensity, :);
-
-                voxelArray = pointCloud(coord, 'Color', voxelsColor);
-
-            elseif strcmpi(type, 'array')
-
-                voxelsIndex = find(image.img);
-                voxelsIntensity = image.img(voxelsIndex);
-                [voxelsCoord(:, 1), voxelsCoord(:, 2), voxelsCoord(:, 3)] = ind2sub(size(image.img), voxelsIndex);
-
-                if strcmpi(outputSpace, 'mni')
-                    voxelArray.coord = obj.transform(voxelsCoord, image, 'VoxelToWorld');
-
-                else
-                    voxelArray.coord = voxelsCoord;
-
-                end
-
-                voxelArray.intensity = voxelsIntensity;
-                voxelArray.n = length(voxelArray.intensity);
-
-            elseif strcmpi(type, 'index')
-
-                voxelArray.index = find(image.img);
-                voxelArray.intensity = image.img(voxelArray.index);
-                voxelArray.n = length(voxelArray.intensity);
-
-            end
-        end
+end
+end

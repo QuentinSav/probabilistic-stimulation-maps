@@ -12,8 +12,8 @@ function status = util_checkBatch(obj)
     status = 1;
     
     % Load the first VTA and take its voxel size as reference
-    VTA = obj.loadVTA(1);
-    expectedVoxelSize = obj.get_voxelSize(VTA.mat);
+    VTA = obj.util_loadVTA(1);
+    expectedVoxelSize = obj.util_getVoxelSize(VTA.mat);
     
     nDigit = 0;
     

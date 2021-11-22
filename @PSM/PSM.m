@@ -69,6 +69,10 @@ classdef PSM < handle
                 'standard', ...
                 'analysis'};
             defaultMode = 'standard';
+            expectedBypassCheck = {
+                false, ...
+                true};
+            defaultBypassCheck = false;
 
             % Create parser
             p = inputParser();
@@ -83,6 +87,8 @@ classdef PSM < handle
                 @(x) any(validatestring(x, expectedHemiphere)));
             addParameter(p, 'mode', defaultMode,...
                 @(x) any(validatestring(x, expectedMode)));
+            addParameter(p, 'bypassCheck', defaultBypassCheck,...
+                @(x) any(validatestring(x, expectedBypassCheck)));
             parse(p, varargin{:});
             
             % Assign input arguments to object properties
@@ -90,6 +96,7 @@ classdef PSM < handle
             obj.data.screen.hemisphere = p.Results.hemisphere; 
             obj.algorithm = p.Results.algorithm;
             obj.mode = p.Results.mode;
+            bypassCheck = p.Results.bypassCheck;
             
             % Keep the correct hemispheric data
             obj.util_dataScreening();
@@ -97,9 +104,11 @@ classdef PSM < handle
 
             % Create the pipeline (list of function that will be executed)
             obj.util_createPipeline();
-
-            % TODO obj.check_voxelSize()
             
+            if ~bypassCheck
+                obj.util_checkBatch();
+            
+            end
         end
         
 
@@ -145,14 +154,15 @@ classdef PSM < handle
 
         % GENERAL UTILITY -------------------------------------------------
         VTA = loadVTA(obj, varargin);
-        voxelArray = nii2voxelArray(obj, image, type, outputSpace);
+        
 
     end
     
-    methods (Static, Access = private)
+    methods (Static)
         
         voxsize = get_voxelSize(transform);
         newCoordinates = transform(oldCoordinates, image, direction);
-        
+        voxelArray = nii2voxelArray(obj, image, type, outputSpace);
+
     end
 end
