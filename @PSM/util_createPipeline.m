@@ -53,7 +53,7 @@ switch obj.algorithm
     case 'ReichHorn2019'
         
         obj.pipeline.training = {
-            @(method) obj.set_filter('rounded'), ...
+            @(method) obj.util_setFilter('rounded'), ...
             @(features) obj.get_features( ...
                 {'coord', ...
                 'indexVTAs', ...
@@ -68,6 +68,7 @@ switch obj.algorithm
             @(statTest, h0Type) obj.compute_pImage('t-test', 'h0_effExcludeVox')};
         
         obj.pipeline.testing = {
+            @
             };
         
         obj.pipeline.validationMethod = {@(method, ratio) obj.crossValidation('Out-of-sample', 0.2)};
