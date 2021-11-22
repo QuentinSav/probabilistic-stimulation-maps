@@ -5,11 +5,11 @@ disp('--------------------------------------------------');
 disp('Computing feature images');
 
 % Initialize map
-nImage = zeros(obj.features.coordSize);
-sumImage = zeros(obj.features.coordSize);
-h0Image = zeros(obj.features.coordSize);
-h0sumImage = zeros(obj.features.coordSize);
-eArrayImage = NaN([obj.features.coordSize, obj.nTrainingData]);
+nImage = zeros(obj.features.containerSize);
+sumImage = zeros(obj.features.containerSize);
+h0Image = zeros(obj.features.containerSize);
+h0sumImage = zeros(obj.features.containerSize);
+eArrayImage = NaN([obj.features.containerSize, obj.data.training.n]);
 
 nDigit = 0;
 
@@ -32,65 +32,66 @@ for k = 1:obj.features.n
 
     if any(strcmp(imageTypes, 'mean'))
         % Add the efficiency of the voxel to the sum-image
-        sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.efficiencies(k);
+        sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.scores(k);
     end
 
     if any(strcmp(imageTypes, 'h0_meanEffAmplitude'))
         % Add the "mean-efficiency"
-        h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanEfficiencies(k);
+        h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanScores(k);
     end
 
     if any(strcmp(imageTypes, 'eArray'))
-        eArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.efficiencies(k);
+        eArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
     end
 
 end
 
 if any(strcmp(imageTypes, 'n'))
     % Create NIFTI image with the mean-image
-    obj.nImage = ea_make_nii(nImage, obj.voxelSize, - obj.features.coordOffset);
-    obj.nImage.mat = diag([obj.voxelSize, 1]);
-    obj.nImage.mat(1:3, 4) = obj.features.coordOffset.*obj.voxelSize;
+    obj.map.n = ea_make_nii(nImage, obj.param.voxelSize, - obj.features.containerOffset);
+    obj.map.n.mat = diag([obj.param.voxelSize, 1]);
+    obj.map.n.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
 
 end
 
 if any(strcmp(imageTypes, 'mean'))
     % Compute the mean from the sum of clinical efficiencies
-    meanImage = sumImage./obj.nImage.img;
+    meanImage = sumImage./obj.map.n.img;
     meanImage(isinf(meanImage)) = 0;
 
     % Create NIFTI image with the mean-image
-    obj.meanImage = ea_make_nii(meanImage, obj.voxelSize, - obj.features.coordOffset);
-    obj.meanImage.mat = diag([obj.voxelSize, 1]);
-    obj.meanImage.mat(1:3, 4) = obj.features.coordOffset.*obj.voxelSize;
+    obj.map.mean = ea_make_nii(meanImage, obj.param.voxelSize, - obj.features.containerOffset);
+    obj.map.mean.mat = diag([obj.param.voxelSize, 1]);
+    obj.map.mean.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
 
 end
 
-if any(strcmp(imageTypes, 'h0_meanEffAmplitude'))
+if any(strcmp(imageTypes, 'h0_meanScoreAmplitude'))
     % Compute the mean from the sum of clinical efficiencies
-    h0sumImage = h0sumImage./obj.nImage.img;
+    h0sumImage = h0sumImage./obj.map.n.img;
     h0Image(isinf(h0sumImage)) = 0;
 
     % Create NIFTI image with the mean-image
-    obj.h0Image = ea_make_nii(h0Image, obj.voxelSize, - obj.features.coordOffset);
-    obj.h0Image.mat = diag([obj.voxelSize, 1]);
-    obj.h0Image.mat(1:3, 4) = obj.features.coordOffset.*obj.voxelSize;
+    obj.map.h0 = ea_make_nii(h0Image, obj.param.voxelSize, - obj.features.containerOffset);
+    obj.h0Image.mat = diag([obj.param.voxelSize, 1]);
+    obj.h0Image.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
 
 end
 
-if any(strcmp(imageTypes, 'h0_effExcludeVox'))
+if any(strcmp(imageTypes, 'h0_scoresExcludeVox'))
     
-    h0Image = repmat(obj.trainingData.efficiency, 1, obj.features.coordSize(1), obj.features.coordSize(2),obj.features.coordSize(3));
+    h0Image = repmat(obj.data.training.table.clinicalScore, 1, obj.features.containerSize(1), obj.features.containerSize(2),obj.features.containerSize(3));
     h0Image = permute(h0Image, [2 3 4 1]);
     
     h0Image(~isnan(eArrayImage)) = NaN;
     
     obj.h0Image = h0Image;
+    
 end
 
 if any(strcmp(imageTypes, 'eArray'))
     % Efficacies array image
-    obj.eArrayImage = eArrayImage;
+    obj.map.eArray = eArrayImage;
     
 end
 end

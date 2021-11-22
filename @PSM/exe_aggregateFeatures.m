@@ -30,7 +30,7 @@ end
 activatedVoxels = cat(1, activatedVoxels{:});
 indexVTAs = cat(2, indexVTAs{:});
 
-obj.map.features.n = length(indexVTAs);
+obj.features.n = length(indexVTAs);
 
 % The activatedVoxel array contains the MNI coordinates of each activated voxel
 coord = cat(1, activatedVoxels(:).coord);
@@ -41,13 +41,13 @@ coord = cat(1, activatedVoxels(:).coord);
 coord = coord./obj.param.voxelSize;
 
 % Find the min values of the coordinates in order to shift it to zero
-obj.map.features.coordOffset = min(coord) - ones(1,3);
+obj.features.containerOffset = min(coord) - ones(1,3);
 
 % Shift the voxel coordinates
-obj.map.features.coord = coord - obj.map.features.coordOffset;
+obj.features.coord = coord - obj.features.containerOffset;
 
 % Get the size of the array
-obj.features.coordSize = max(obj.features.coord);
+obj.features.containerSize = max(obj.features.coord);
 
 
 if any(strcmp(features, 'indexVTAs'))
@@ -61,12 +61,12 @@ if any(strcmp(features, 'weights'))
 end
 
 if any(strcmp(features, 'efficiencies'))
-    obj.features.efficiencies = obj.trainingData.efficiency(indexVTAs);
+    obj.features.scores = obj.data.training.table.clinicalScore(indexVTAs);
 
 end
 
 if any(strcmp(features, 'stimAmplitudes'))
-    obj.features.stimAmplitudes = obj.trainingData.amplitude(indexVTAs);
+    obj.features.stimAmplitudes = obj.data.training.table.amplitude(indexVTAs);
 
 end
 
@@ -75,12 +75,12 @@ if any(strcmp(features, 'meanEffAmplitudes'))
     amplitudeKeys = unique(obj.trainingData.amplitude);
 
     for k = 1:length(amplitudeKeys)
-        meanEfficienciesValues(k) = mean(obj.trainingData.efficiency(obj.trainingData.amplitude == amplitudeKeys(k)));
+        meanScoresValues(k) = mean(obj.trainingData.score(obj.trainingData.amplitude == amplitudeKeys(k)));
 
     end
 
-    meanEfficienciesMap = containers.Map(amplitudeKeys, meanEfficienciesValues);
-    obj.features.meanEfficiencies = NaN(obj.features.n, 1);
+    meanScoresMap = containers.Map(amplitudeKeys, meanScoreValues);
+    obj.features.meanScores = NaN(obj.features.n, 1);
 
     nDigit = 0;
 
@@ -88,10 +88,10 @@ if any(strcmp(features, 'meanEffAmplitudes'))
 
         if mod(k, 10000) == 0 || k == obj.features.n
             fprintf(repmat('\b', 1, nDigit))
-            nDigit = fprintf('Mean-Efficiency: Processing voxel # %d / %d\n', k, obj.features.n);
+            nDigit = fprintf('Mean-Score: Processing voxel # %d / %d\n', k, obj.features.n);
         end
 
-        obj.features.meanEfficiencies(k) = meanEfficienciesMap(obj.features.stimAmplitudes(k));
+        obj.features.meanScores(k) = meanScoresMap(obj.features.stimAmplitudes(k));
 
     end
 end

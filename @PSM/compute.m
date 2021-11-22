@@ -25,7 +25,7 @@ function compute_map(obj)
     obj.results.kFold = [];
     
     % Create the data partition for validation
-    hPartition = obj.pipeline.validationMethod{1}();
+    hPartition = obj.pipeline.validationMethod{1}(obj.mode);
     
     for k = 1:hPartition.NumTestSets
         

@@ -1,5 +1,5 @@
 % Methods of class PSM
-function hPartition = crossValidation(obj, method, varargin)
+function hPartition = get_validPartition(obj, method, varargin)
 
     if strcmpi(method, 'LOO')
         hPartition = cvpartition(obj.nData, 'Leaveout');
