@@ -9,7 +9,7 @@ nImage = zeros(obj.features.containerSize);
 sumImage = zeros(obj.features.containerSize);
 h0Image = zeros(obj.features.containerSize);
 h0sumImage = zeros(obj.features.containerSize);
-eArrayImage = NaN([obj.features.containerSize, obj.data.training.n]);
+scoresArrayImage = NaN([obj.features.containerSize, obj.data.training.n]);
 
 nDigit = 0;
 
@@ -35,7 +35,7 @@ for k = 1:obj.features.n
         sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.scores(k);
     end
 
-    if any(strcmp(imageTypes, 'h0_meanEffAmplitude'))
+    if any(strcmp(imageTypes, 'h0_meanScoresSameAmp'))
         % Add the "mean-efficiency"
         h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanScores(k);
     end
@@ -66,15 +66,15 @@ if any(strcmp(imageTypes, 'mean'))
 
 end
 
-if any(strcmp(imageTypes, 'h0_meanScoreAmplitude'))
+if any(strcmp(imageTypes, 'h0_meanScoreSameAmp'))
     % Compute the mean from the sum of clinical efficiencies
     h0sumImage = h0sumImage./obj.map.n.img;
     h0Image(isinf(h0sumImage)) = 0;
 
     % Create NIFTI image with the mean-image
     obj.map.h0 = ea_make_nii(h0Image, obj.features.voxelSize, - obj.features.containerOffset);
-    obj.h0Image.mat = diag([obj.features.voxelSize, 1]);
-    obj.h0Image.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
+    obj.map.h0.mat = diag([obj.features.voxelSize, 1]);
+    obj.map.h0.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
 
 end
 
@@ -83,9 +83,9 @@ if any(strcmp(imageTypes, 'h0_scoresExcludeVox'))
     h0Image = repmat(obj.data.training.table.clinicalScore, 1, obj.features.containerSize(1), obj.features.containerSize(2),obj.features.containerSize(3));
     h0Image = permute(h0Image, [2 3 4 1]);
     
-    h0Image(~isnan(eArrayImage)) = NaN;
+    h0Image(~isnan(scoresArrayImage)) = NaN;
     
-    obj.h0Image = h0Image;
+    obj.map.h0 = h0Image;
     
 end
 

@@ -38,37 +38,30 @@ end
 if ischar(imageToPlot) || isstring(imageToPlot)
     switch imageToPlot
         case 'nImage'
-            image = obj.nImage;
+            image = obj.map.n;
 
         case 'meanImage'
-            image = obj.meanImage;
+            image = obj.map.mean;
 
         case 'h0Image'
-            image = obj.h0Image;
+            image = obj.map.h0;
 
         case 'pImage'
-            image = obj.pImage;
+            image = obj.map.p;
 
-        case 'meanSignificantImage'
-            image = obj.significantMeanImage;
-
+        case 'significantBetterMean'
+            image = obj.map.significantBetterMean;
+        
+        case 'significantWorseMean'
+            image = obj.map.significantWorseMean;
+        
         case 'SweetSpot'
-            image = obj.sweetspot;
+            image = obj.map.sweetspot;
 
     end
 
-    ptCloud = obj.nii2voxelArray(image, 'ptCloud', 'mni');
+    ptCloud = obj.util_nii2voxelArray(image, 'coord', 'mni');
 
-    if size(unique(ptCloud.Color, 'rows'), 1) == 1
-
-        if ~isempty(colorName)
-            ptCloud.Color = uint8(repmat(color, length(ptCloud.Location), 1));
-
-        else
-            ptCloud.Color = uint8(repmat([0 0 round(255*rand(1,1))], length(ptCloud.Location), 1));
-
-        end
-    end
 else
 
     ptCloud = pointCloud(imageToPlot);
@@ -100,9 +93,13 @@ else
 end
 
 title(imageToPlot);
-pcshow(ptCloud, 'BackgroundColor', [1 1 1], 'MarkerSize', 10);
+
+xx = ptCloud.coord(:, 1);
+yy = ptCloud.coord(:, 2);
+zz = ptCloud.coord(:, 3);
+
+scatter3(xx, yy, zz, 1, ptCloud.intensity);
 colorbar;
-try % TODO Remove try by a better solution
-    caxis([0 max(image.img, [], 'all')]);
-end
+caxis([0 max(image.img, [], 'all')]);
+
 end

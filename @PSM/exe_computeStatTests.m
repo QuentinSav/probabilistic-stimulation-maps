@@ -1,38 +1,39 @@
 function pImage = exe_computeStatTests(obj, statTestType, h0Type)
 
 disp('--------------------------------------------------');
-disp('Computing p-image');
+disp('Computing statistical tests');
 
 obj.param.alpha = 0.05;
+
 % Initial
 pImage = NaN(obj.features.containerSize);
+betterMaskImage = NaN(obj.features.containerSize);
 
 % Define the null hypothesis
 if strcmpi(h0Type, 'zero')
     get_h0 = @(voxel) 0;
 
 elseif strcmpi(h0Type, 'h0_meanScoreAmplitude')
-    get_h0 = @(voxel) obj.h0Image.img(voxel(1), voxel(2), voxel(3));
+    get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3));
 
-elseif strcmpi(h0Type, 'h0_effExcludeVox')
-    get_h0 = @(voxel) obj.h0Image(voxel(1), voxel(2), voxel(3), :);
+elseif strcmpi(h0Type, 'h0_scoresExcludeVox')
+    get_h0 = @(voxel) obj.map.h0(voxel(1), voxel(2), voxel(3), :);
 
 end
 
 % Define the  voxel-wise statistical test
 if strcmpi(statTestType, 'exactWilcoxon')
-    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
-        h0, 'tail', 'right', 'method', 'exact');
+    statTest = @exactWilcoxon;
 
 elseif strcmpi(statTestType, 'approxWilcoxon')
-    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
-        h0, 'tail', 'right', 'method', 'approximate');
+    statTest = @approxWilcoxon;
 
 elseif strcmpi(statTestType, 't-test')
-    statTest = @(xx, yy, zz, h0) ttest2(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
-        h0);
+    statTest = @t_test;
 
 end
+
+
 
 % Get the voxel to be tested in the n-Image
 voxels = obj.util_nii2voxelArray(obj.map.n, 'coord', 'voxel');
@@ -58,22 +59,43 @@ for voxel = voxels.coord'
     h0 = get_h0(voxel);
     
     % Compute the p-value of the statistical test
-    pImage(xx, yy, zz) = statTest(xx, yy, zz, h0);
-    
+    [pImage(xx, yy, zz), betterMaskImage(xx, yy, zz)] = statTest(obj.map.scoresArray, xx, yy, zz, h0);
+
     k = k + 1;
 
 end
 
-if strcmpi(statTestType, 't-test')
-    
-
-    
-
-else
-    % Assign the property pImage
-    obj.map.p.mat = obj.map.n.mat;
-    obj.map.p.img = pImage;
+% Assign the property pImage
+obj.map.p.mat = obj.map.n.mat;
+obj.map.p.img = pImage;
+obj.map.betterMask = betterMaskImage;
 
 end
+
+% Statistical tests -------------------------------------------------------
+function [p, signBetter] = exactWilcoxon(scoresArray, xx, yy, zz, h0)
+
+    [~, p, stats] = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
+        h0, 'tail', 'right', 'method', 'exact');
+
+    signBetter = stats.tstat > 0;
+
+end
+
+function [p, signBetter] = approxWilcoxon(scoresArray, xx, yy, zz, h0)
+
+    [~, p, ~, stats] = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
+        h0, 'tail', 'right', 'method', 'approximate');
+
+    signBetter = stats.tstat > 0;
+
+end
+
+function [p, signBetter] = t_test(scoresArray, xx, yy, zz, h0)
+
+    [~, p, ~, stats] = ttest2(squeeze(scoresArray(xx, yy, zz, :)), ...
+        squeeze(h0));
+
+    signBetter = stats.tstat > 0;
 
 end

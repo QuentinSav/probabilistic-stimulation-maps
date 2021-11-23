@@ -4,6 +4,8 @@ function exe_computeFalsePosCorrection(obj, method)
 % null-hypothesis rejection threshold (alpha otherwise) depending on
 % the method
 
+
+
 if strcmpi(method, 'Benjamini-Hochberg')
 
     % Get features array from the p-image

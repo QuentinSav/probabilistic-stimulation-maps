@@ -9,12 +9,12 @@ function meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
 amplitudeKeys = unique(obj.data.training.table.amplitude);
 
 % Initialize the array for the mean s
-meanScoreValues = NaN(length(amplitudeKeys));
+meanScoreValues = NaN(length(amplitudeKeys), 1);
 meanScoresFeatures = NaN(obj.features.n, 1);
 
 for k = 1:length(amplitudeKeys)
     % Compute the mean score for a given stimulation amplitude
-    meanScoreValues(k) = mean(obj.trainingData.score(obj.data.training.table.amplitude == amplitudeKeys(k)));
+    meanScoreValues(k) = mean(obj.data.training.table.clinicalScore(obj.data.training.table.amplitude == amplitudeKeys(k)));
 
 end
 
