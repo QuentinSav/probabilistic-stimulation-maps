@@ -60,7 +60,7 @@ for voxel = voxels.coord'
     
     % Compute the p-value of the statistical test
     [pImage(xx, yy, zz), betterMaskImage(xx, yy, zz)] = statTest(obj.map.scoresArray, xx, yy, zz, h0);
-
+    
     k = k + 1;
 
 end
@@ -97,5 +97,9 @@ function [p, signBetter] = t_test(scoresArray, xx, yy, zz, h0)
         squeeze(h0));
 
     signBetter = stats.tstat > 0;
+
+    if p == 0
+        disp('.')
+    end
 
 end

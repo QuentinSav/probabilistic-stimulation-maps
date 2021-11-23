@@ -37,16 +37,16 @@ end
 % TODO: find if the lead DBS vizualizer is open
 if ischar(imageToPlot) || isstring(imageToPlot)
     switch imageToPlot
-        case 'nImage'
+        case 'n-image'
             image = obj.map.n;
 
-        case 'meanImage'
+        case 'mean-image'
             image = obj.map.mean;
 
-        case 'h0Image'
+        case 'h0-image'
             image = obj.map.h0;
 
-        case 'pImage'
+        case 'p-image'
             image = obj.map.p;
 
         case 'significantBetterMean'
@@ -64,14 +64,8 @@ if ischar(imageToPlot) || isstring(imageToPlot)
 
 else
 
-    ptCloud = pointCloud(imageToPlot);
-    if ~isempty(colorName)
-        ptCloud.Color = uint8(repmat(color, length(ptCloud.Location), 1));
+    ptCloud = obj.util_nii2voxelArray(imageToPlot, 'coord', 'mni');
 
-    else
-        ptCloud.Color = uint8(repmat([0 0 round(255*rand(1,1))], length(ptCloud.Location), 1));
-
-    end
 end
 
 h = findobj('type', 'figure', '-regexp', 'Name','Electrode-Scene');
@@ -92,7 +86,7 @@ else
 
 end
 
-title(imageToPlot);
+%title(imageToPlot);
 
 xx = ptCloud.coord(:, 1);
 yy = ptCloud.coord(:, 2);

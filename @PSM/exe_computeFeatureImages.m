@@ -37,13 +37,12 @@ for k = 1:obj.features.n
 
     if any(strcmp(imageTypes, 'h0_meanScoresSameAmp'))
         % Add the "mean-efficiency"
-        h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanScores(k);
+        h0sumImage(xx, yy, zz) = h0sumImage(xx, yy, zz) + obj.features.meanScores(k);
     end
 
     if any(strcmp(imageTypes, 'scoresArray'))
         scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
     end
-
 end
 
 if any(strcmp(imageTypes, 'n'))
@@ -57,7 +56,7 @@ end
 if any(strcmp(imageTypes, 'mean'))
     % Compute the mean from the sum of clinical efficiencies
     meanImage = sumImage./obj.map.n.img;
-    meanImage(isinf(meanImage)) = 0;
+    meanImage(isnan(meanImage)) = 0;
 
     % Create NIFTI image with the mean-image
     obj.map.mean = ea_make_nii(meanImage, obj.features.voxelSize, - obj.features.containerOffset);
