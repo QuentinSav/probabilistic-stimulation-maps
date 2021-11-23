@@ -1,4 +1,7 @@
-function voxsize = util_voxelSize(transform)
+function voxsize = util_getVoxelSize(transform)
+% Function that computes the voxel size of an image based on its
+% transformation matrix
+%
 % Input:    - Transformation matrix:    Array [4x4]
 % Output:   - voxel size array:         Array [3x1]
 

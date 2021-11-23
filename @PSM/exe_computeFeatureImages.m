@@ -14,7 +14,7 @@ eArrayImage = NaN([obj.features.containerSize, obj.data.training.n]);
 nDigit = 0;
 
 for k = 1:obj.features.n
-    % TODO avoid if within the loop by using function handles
+    % 
     if mod(k, 100000) == 0 || k == obj.features.n
         fprintf(repmat('\b', 1, nDigit));
         nDigit = fprintf('mean-image: Processing feature # %d / %d\n', k, obj.features.n);
@@ -40,17 +40,17 @@ for k = 1:obj.features.n
         h0sumImage(xx, yy, zz) = sumImage(xx, yy, zz) + obj.features.meanScores(k);
     end
 
-    if any(strcmp(imageTypes, 'eArray'))
-        eArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
+    if any(strcmp(imageTypes, 'scoresArray'))
+        scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
     end
 
 end
 
 if any(strcmp(imageTypes, 'n'))
     % Create NIFTI image with the mean-image
-    obj.map.n = ea_make_nii(nImage, obj.param.voxelSize, - obj.features.containerOffset);
-    obj.map.n.mat = diag([obj.param.voxelSize, 1]);
-    obj.map.n.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
+    obj.map.n = ea_make_nii(nImage, obj.features.voxelSize, - obj.features.containerOffset);
+    obj.map.n.mat = diag([obj.features.voxelSize, 1]);
+    obj.map.n.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
 
 end
 
@@ -60,9 +60,9 @@ if any(strcmp(imageTypes, 'mean'))
     meanImage(isinf(meanImage)) = 0;
 
     % Create NIFTI image with the mean-image
-    obj.map.mean = ea_make_nii(meanImage, obj.param.voxelSize, - obj.features.containerOffset);
-    obj.map.mean.mat = diag([obj.param.voxelSize, 1]);
-    obj.map.mean.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
+    obj.map.mean = ea_make_nii(meanImage, obj.features.voxelSize, - obj.features.containerOffset);
+    obj.map.mean.mat = diag([obj.features.voxelSize, 1]);
+    obj.map.mean.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
 
 end
 
@@ -72,9 +72,9 @@ if any(strcmp(imageTypes, 'h0_meanScoreAmplitude'))
     h0Image(isinf(h0sumImage)) = 0;
 
     % Create NIFTI image with the mean-image
-    obj.map.h0 = ea_make_nii(h0Image, obj.param.voxelSize, - obj.features.containerOffset);
-    obj.h0Image.mat = diag([obj.param.voxelSize, 1]);
-    obj.h0Image.mat(1:3, 4) = obj.features.containerOffset.*obj.param.voxelSize;
+    obj.map.h0 = ea_make_nii(h0Image, obj.features.voxelSize, - obj.features.containerOffset);
+    obj.h0Image.mat = diag([obj.features.voxelSize, 1]);
+    obj.h0Image.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
 
 end
 
@@ -89,9 +89,9 @@ if any(strcmp(imageTypes, 'h0_scoresExcludeVox'))
     
 end
 
-if any(strcmp(imageTypes, 'eArray'))
+if any(strcmp(imageTypes, 'scoresArray'))
     % Efficacies array image
-    obj.map.eArray = eArrayImage;
+    obj.map.scoresArray = scoresArrayImage;
     
 end
 end

@@ -1,4 +1,6 @@
 function util_createPipeline(obj)
+% Function used to create the pipeline for training, testing, validating
+% and post-processing the probabilistic stimulation map.
 
 switch obj.algorithm
     case 'Nguyen2019'
@@ -9,11 +11,11 @@ switch obj.algorithm
                 {'coord', ...
                 'indexVTAs', ...
                 'weights', ...
-                'efficiencies'}), ...
+                'scores'}), ...
             @(images) obj.exe_computeFeatureImages( ...
                 {'n', ...
                 'mean', ...
-                'eArray'}), ... 
+                'scoresArray'}), ... 
             @(statTest, h0) obj.exe_computeStatTests('exactWilcoxon', 'zero'), ...
             @(method) obj.exe_computeFalsePosCorrection('Benjamini-Hochberg'), ...
             @obj.exe_computeSignMeanImage};
@@ -22,13 +24,14 @@ switch obj.algorithm
             
             };
 
-        obj.pipeline.validationMethod = {@(method, KFold) obj.util_getValidPartition('KFold', 5)};
-
-
+        obj.pipeline.validation = {@(method, KFold) obj.util_getValidPartition('KFold', 5)};
+        
+        obj.pipeline.postprocessing = {};
+        
     case 'DembekRoediger2019'
-
+        
     case 'ReichHorn2019'
-
+        
     case 'Proposed'
 
 end

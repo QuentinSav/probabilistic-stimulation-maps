@@ -3,14 +3,15 @@ function pImage = exe_computeStatTests(obj, statTestType, h0Type)
 disp('--------------------------------------------------');
 disp('Computing p-image');
 
+obj.param.alpha = 0.05;
 % Initial
-pImage = NaN(obj.features.coordSize);
+pImage = NaN(obj.features.containerSize);
 
 % Define the null hypothesis
 if strcmpi(h0Type, 'zero')
     get_h0 = @(voxel) 0;
 
-elseif strcmpi(h0Type, 'h0_meanEffAmplitude')
+elseif strcmpi(h0Type, 'h0_meanScoreAmplitude')
     get_h0 = @(voxel) obj.h0Image.img(voxel(1), voxel(2), voxel(3));
 
 elseif strcmpi(h0Type, 'h0_effExcludeVox')
@@ -20,21 +21,21 @@ end
 
 % Define the  voxel-wise statistical test
 if strcmpi(statTestType, 'exactWilcoxon')
-    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.eArrayImage(xx, yy, zz, :)), ...
+    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
         h0, 'tail', 'right', 'method', 'exact');
 
 elseif strcmpi(statTestType, 'approxWilcoxon')
-    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.eArrayImage(xx, yy, zz, :)), ...
+    statTest = @(xx, yy, zz, h0) signrank(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
         h0, 'tail', 'right', 'method', 'approximate');
 
 elseif strcmpi(statTestType, 't-test')
-    statTest = @(xx, yy, zz, h0) ttest2(squeeze(obj.eArrayImage(xx, yy, zz, :)), ...
+    statTest = @(xx, yy, zz, h0) ttest2(squeeze(obj.map.scoresArray(xx, yy, zz, :)), ...
         h0);
 
 end
 
 % Get the voxel to be tested in the n-Image
-voxels = obj.nii2voxelArray(obj.nImage, 'array', 'voxel');
+voxels = obj.util_nii2voxelArray(obj.map.n, 'coord', 'voxel');
 
 k = 1;
 nDigit = 0;
@@ -70,8 +71,8 @@ if strcmpi(statTestType, 't-test')
 
 else
     % Assign the property pImage
-    obj.pImage.mat = obj.nImage.mat;
-    obj.pImage.img = pImage;
+    obj.map.p.mat = obj.map.n.mat;
+    obj.map.p.img = pImage;
 
 end
 

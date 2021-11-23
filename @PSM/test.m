@@ -6,8 +6,8 @@ obj.state = 'testing';
 
 nDigit = 0;
 
-for k = 1:obj.nValidationData
-    if mod(k, 10) == 0 || k == obj.nValidationData
+for k = 1:obj.data.testing.n
+    if mod(k, 10) == 0 || k == obj.data.testing.n
         fprintf(repmat('\b', 1, nDigit))
         nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.nValidationData);
     end

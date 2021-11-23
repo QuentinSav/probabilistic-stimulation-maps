@@ -8,6 +8,9 @@ function status = util_checkBatch(obj)
     % Define object state before loading the data
     obj.state = 'idle';
     
+    % Initialize no filter
+    obj.param.filterImg = @(image) image;
+    
     % Initialize the status
     status = 1;
     
@@ -17,16 +20,16 @@ function status = util_checkBatch(obj)
     
     nDigit = 0;
     
-    for k = 1:obj.nData
+    for k = 1:obj.data.clinical.n
         % Feedback to user (print only for multiples of 10)
-        if mod(k, 10) == 0 || k == obj.nData
+        if mod(k, 10) == 0 || k == obj.data.clinical.n
             fprintf(repmat('\b', 1, nDigit))
-            nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.nData);
+            nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.data.clinical.n);
         end
         
         % Load VTA and get the voxel size
-        VTA = obj.loadVTA(k);
-        voxelSize = obj.get_voxelSize(VTA.mat);
+        VTA = obj.util_loadVTA(k);
+        voxelSize = obj.util_getVoxelSize(VTA.mat);
         
         % Compare the voxel size of the current VTA to the reference and 
         if voxelSize ~= expectedVoxelSize

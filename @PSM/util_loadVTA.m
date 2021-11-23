@@ -1,5 +1,7 @@
 function VTA = util_loadVTA(obj, varargin)
-% Input:    - index or filename
+% Function used to load the VTA files.
+%
+% Input:    - index/filename
 % Output:   - VTA NIFTI image structure
 
 if isnumeric(varargin{1})

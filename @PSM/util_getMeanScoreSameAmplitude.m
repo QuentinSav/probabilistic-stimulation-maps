@@ -1,7 +1,9 @@
 function meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
 % Function that computes the mean score of all the VTA with the same
-% amplitude. Returns an array of the same length than the number of 
-% activated voxels.
+% amplitude. 
+%
+% Output: - meanScoresFeatures:     array of the same length than the 
+%                                   number of activated voxels.
 
 % Get the list of amplitude used in the training data
 amplitudeKeys = unique(obj.data.training.table.amplitude);

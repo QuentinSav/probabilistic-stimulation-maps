@@ -70,8 +70,8 @@ classdef PSM < handle
                 'analysis'};
             defaultMode = 'standard';
             expectedBypassCheck = {
-                false, ...
-                true};
+                'false', ...
+                'true'};
             defaultBypassCheck = false;
 
             % Create parser
@@ -110,9 +110,6 @@ classdef PSM < handle
             
             end
         end
-        
-
-
     end
 
     methods (Access = private)
@@ -154,15 +151,14 @@ classdef PSM < handle
 
         % GENERAL UTILITY -------------------------------------------------
         VTA = loadVTA(obj, varargin);
-        
 
     end
     
     methods (Static)
         
-        voxsize = get_voxelSize(transform);
-        newCoordinates = transform(oldCoordinates, image, direction);
-        voxelArray = nii2voxelArray(obj, image, type, outputSpace);
+        voxsize = util_getVoxelSize(transform);
+        newCoordinates = util_transform(oldCoordinates, image, direction);
+        voxelArray = util_nii2voxelArray(image, type, outputSpace);
 
     end
 end

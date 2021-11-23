@@ -1,8 +1,8 @@
-function exe_compileFeatures(obj, features)
-% Function that 
+function exe_compileFeatures(obj, featuresType)
+% Function that compile all the features needed for the images
+% computations.
 % 
-% Input: - obj
-%        - features:    List of string containing the features type 
+% Input: - features:    List of string containing the features type 
 %                       to compile. Possible string {'coord', 'indexVTAs',
 %                       'scores', 'stimAmplitudes', ''}
 
@@ -11,38 +11,56 @@ disp('Compiling features');
 
 % Load the first VTA NIFTI file to define the voxel size
 VTA = obj.util_loadVTA(1);
-obj.features.voxelSize = obj.get_voxelSize(VTA.mat);
+obj.features.voxelSize = obj.util_getVoxelSize(VTA.mat);
 
-
-
-if any(strcmp(features, 'coord')) && any(strcmp(features, 'indexVTAs'))
-    [obj.features.coord, obj.features.indexVTAs] = obj.util_getActivatedVoxels;
-
-elseif any(strcmp(features, 'coord')) && ~any(strcmp(features, 'indexVTAs'))
-    [obj.features.coord, ~] = obj.util_getActivatedVoxels;
-
-elseif ~any(strcmp(features, 'coord')) && any(strcmp(features, 'indexVTAs'))
-    [~, obj.features.indexVTAs] = obj.util_getActivatedVoxels;
+if any(strcmp(featuresType, 'coord')) || ...
+        any(strcmp(featuresType, 'indexVTAs')) || ...
+        any(strcmp(featuresType, 'weights'))
+    
+    activatedVoxels = obj.util_getActivatedVoxels();
 
 end
 
-if any(strcmp(features, 'weights'))
-    obj.features.weights = cat(1, activatedVoxels(:).intensity);
+if any(strcmp(featuresType, 'coord'))
+    coord = activatedVoxels.coord;
+    coord = coord./obj.features.voxelSize;
+
+    % Find the min values of the coordinates in order to shift it to zero
+    obj.features.containerOffset = min(coord) - ones(1,3);
+
+    % Shift the voxel coordinates
+    obj.features.coord = coord - obj.features.containerOffset;
+
+    % Get the size of the array
+    obj.features.containerSize = max(obj.features.coord);
+    
+    % Get the total number of features
+    obj.features.n = size(obj.features.coord, 1);
+    
+end
+
+if any(strcmp(featuresType, 'indexVTAs'))
+    obj.features.indexVTAs = activatedVoxels.indexVTAs;
+end
+
+
+if any(strcmp(featuresType, 'weights'))
+    obj.features.weights = activatedVoxels.weights;
 
 end
 
-if any(strcmp(features, 'scores'))
-    obj.features.scores = obj.data.training.table.clinicalScore(indexVTAs);
+if any(strcmp(featuresType, 'scores'))
+    obj.features.scores = obj.data.training.table.clinicalScore(obj.features.indexVTAs);
 
 end
 
-if any(strcmp(features, 'stimAmplitudes'))
+if any(strcmp(featuresType, 'stimAmplitudes'))
     obj.features.stimAmplitudes = obj.data.training.table.amplitude(indexVTAs);
 
 end
 
-if any(strcmp(features, 'meanScoreSameAmp'))
-    obj.features.meanScores = meanScoresMap(obj.features.stimAmplitudes(k));
+if any(strcmp(featuresType, 'meanScoreSameAmp'))
+    obj.features.meanScores = obj.util_getMeanScoreSameAmplitude();
 
 end
 
