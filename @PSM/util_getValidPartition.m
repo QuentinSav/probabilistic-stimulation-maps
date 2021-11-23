@@ -38,7 +38,7 @@ elseif strcmpi(method, 'Out-of-sample')
     hPartition = cvpartition(obj.data.clinical.table.centerID, ...
         'HoldOut', holdoutRatio, ...
         'Stratify', true);
-    obj.validationMethod = [100*num2str(holdoutRatio),'% Out-of-sample'];
+    obj.param.validationMethod = [100*num2str(holdoutRatio),'% Out-of-sample'];
 
 end
 end

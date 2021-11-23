@@ -55,7 +55,7 @@ if any(strcmp(featuresType, 'scores'))
 end
 
 if any(strcmp(featuresType, 'stimAmplitudes'))
-    obj.features.stimAmplitudes = obj.data.training.table.amplitude(indexVTAs);
+    obj.features.stimAmplitudes = obj.data.training.table.amplitude(obj.features.indexVTAs);
 
 end
 

@@ -9,28 +9,17 @@ nDigit = 0;
 for k = 1:obj.data.testing.n
     if mod(k, 10) == 0 || k == obj.data.testing.n
         fprintf(repmat('\b', 1, nDigit))
-        nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.nValidationData);
+        nDigit = fprintf('Processing VTA # %d / %d\n', k, obj.data.testing.n);
     end
     
     % Load the VTA
-    VTA = obj.loadVTA(k);
-    voxelSize = obj.get_voxelSize(VTA.mat);
+    VTA = obj.util_loadVTA(k);
+    voxelSize = obj.util_getVoxelSize(VTA.mat);
     
     % Convert images to coordinates arrays
-    signMeanImageVoxels = obj.nii2voxelArray(obj.sweetspot, 'array', 'mni');
-    sweetspotVoxels = obj.nii2voxelArray(obj.sweetspot, 'array', 'mni');
-    vtaVoxels = obj.nii2voxelArray(VTA, 'array', 'mni');
-    
-    % Weighted sum
-    [~, ia, ib] = intersect(signMeanImageVoxels.coord, vtaVoxels.coord, 'rows');
-    obj.results.weightedSum.nVoxels(end+1) = size(ia, 1);
-    obj.results.weightedSum.value(end+1) = 0;
-
-    for l = 1:obj.results.weightedSum.nVoxels(end)
-        obj.results.weightedSum.value(end) = obj.results.weightedSum.value(end) + ...
-            signMeanImageVoxels.intensity(ia(l))*vtaVoxels.intensity(ib(l));
-    
-    end
+    signMeanImageVoxels = obj.util_nii2voxelArray(obj.map.sweetspot, 'coord', 'mni');
+    sweetspotVoxels = obj.util_nii2voxelArray(obj.map.sweetspot, 'coord', 'mni');
+    vtaVoxels = obj.util_nii2voxelArray(VTA, 'coord', 'mni');
 
     % Overlap
     obj.results.overlap.voxels{end+1} = intersect(sweetspotVoxels.coord, vtaVoxels.coord, 'rows');
@@ -39,17 +28,13 @@ for k = 1:obj.data.testing.n
     obj.results.overlap.ratio(end+1) = obj.results.overlap.nVoxels(end)/nnz(VTA.img);
     
     % Efficiency
-    obj.results.efficiency(end+1) = obj.validationData.efficiency(k);
+    obj.results.efficiency(end+1) = obj.data.testing.table.clinicalScore(k);
     
     % K-fold
-    obj.results.kFold(end+1) = obj.kFold;
+    obj.results.kFold(end+1) = obj.param.kFold;
     
     % Lead
-    obj.results.leadID(end+1) = obj.validationData.leadID(k);
-
-    % Dice
-    % TODO the sweetspot and the VTA should be the same size
-    % obj.results.dice.similarity(end+1) = dice(VTA.img, obj.sweetspot.img);
+    obj.results.leadID(end+1) = obj.data.testing.table.leadID(k);
 
 end
 end

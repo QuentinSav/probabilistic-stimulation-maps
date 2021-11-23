@@ -30,7 +30,7 @@ tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore')
 
 psm = PSM(tableMulticentric, ...
     'mode', 'analysis', ...
-    'algorithm', 'Nguyen2019', ...
+    'algorithm', 'Dembek2019', ...
     'hemisphere', 'left', ...
     'bypassCheck', 'true');
 
@@ -45,8 +45,8 @@ toc;
 
 % We can now vizualize the images. If the lead dbs 3D-renderer is open, it 
 % will plot the image inside. Otherwise it will open a new figure.
-psm.showImage('significantMean')
-psm.showImage('p-image')
+psm.show_Image('significantMean')
+psm.show_Image('p-image')
 
 % It is also possible to vizualize the prediction on new samples made by
 % the map.
