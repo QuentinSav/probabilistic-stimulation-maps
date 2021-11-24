@@ -7,9 +7,9 @@ disp('Computing feature images');
 % Initialize map
 nImage = zeros(obj.features.containerSize);
 sumImage = zeros(obj.features.containerSize);
-h0Image = zeros(obj.features.containerSize);
+h0Image = nan(obj.features.containerSize);
 h0sumImage = zeros(obj.features.containerSize);
-scoresArrayImage = NaN([obj.features.containerSize, obj.data.training.n]);
+scoresArrayImage = nan([obj.features.containerSize, obj.data.training.n]);
 
 nDigit = 0;
 
@@ -47,6 +47,7 @@ end
 
 if any(strcmp(imageTypes, 'n'))
     % Create NIFTI image with the mean-image
+    nImage(nImage == 0) = NaN;
     obj.map.n = ea_make_nii(nImage, obj.features.voxelSize, - obj.features.containerOffset);
     obj.map.n.mat = diag([obj.features.voxelSize, 1]);
     obj.map.n.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
@@ -56,7 +57,7 @@ end
 if any(strcmp(imageTypes, 'mean'))
     % Compute the mean from the sum of clinical efficiencies
     meanImage = sumImage./obj.map.n.img;
-    meanImage(isnan(meanImage)) = 0;
+    meanImage(isinf(meanImage)) = NaN;
 
     % Create NIFTI image with the mean-image
     obj.map.mean = ea_make_nii(meanImage, obj.features.voxelSize, - obj.features.containerOffset);

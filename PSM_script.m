@@ -10,7 +10,7 @@ load('multicentricTableAllImprovedOnlyRev04.mat');
 % In this example case, the table does not include a score fields. Thus the
 % table needs to be formated.
 tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore');
-
+    
 % Then the PSM can be instantiated by specifying the table and additional
 % optional parameters. Several examples below (not exhaustive, refer to the
 % class documentation for more informations).
@@ -28,7 +28,7 @@ tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore')
 %     'algorithm', 'Nguyen2019', ...
 %     'hemisphere', 'left');
 
-psm = PSM(tableMulticentric, ...
+psm = PSM(tableMulticentric(1:100, :), ...
     'mode', 'analysis', ...
     'algorithm', 'Reich2019', ...
     'hemisphere', 'left', ...
@@ -46,10 +46,11 @@ toc;
 %%
 % We can now vizualize the images. If the lead dbs 3D-renderer is open, it 
 % will plot the image inside. Otherwise it will open a new figure.
-psm.show_results('overlapRatio')
+% psm.show_results('overlapRatio')
 psm.show_image('SweetSpot')
-psm.show_image('significantBetterMean')
+psm.show_image('n-image')
 psm.show_image('p-image')
+
 
 
 

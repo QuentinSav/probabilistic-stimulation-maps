@@ -33,8 +33,6 @@ elseif strcmpi(statTestType, 't-test')
 
 end
 
-
-
 % Get the voxel to be tested in the n-Image
 voxels = obj.util_nii2voxelArray(obj.map.n, 'coord', 'voxel');
 
@@ -75,19 +73,19 @@ end
 % Statistical tests -------------------------------------------------------
 function [p, signBetter] = exactWilcoxon(scoresArray, xx, yy, zz, h0)
 
-    [~, p, stats] = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
-        h0, 'tail', 'right', 'method', 'exact');
+    p = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
+        squeeze(h0), 'tail', 'right', 'method', 'exact');
 
-    signBetter = stats.tstat > 0;
+    signBetter = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
 
 end
 
 function [p, signBetter] = approxWilcoxon(scoresArray, xx, yy, zz, h0)
 
-    [~, p, ~, stats] = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
-        h0, 'tail', 'right', 'method', 'approximate');
+    p = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
+        squeeze(h0), 'tail', 'right', 'method', 'approximate');
 
-    signBetter = stats.tstat > 0;
+    signBetter = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
 
 end
 
@@ -97,9 +95,5 @@ function [p, signBetter] = t_test(scoresArray, xx, yy, zz, h0)
         squeeze(h0));
 
     signBetter = stats.tstat > 0;
-
-    if p == 0
-        disp('.')
-    end
-
+   
 end
