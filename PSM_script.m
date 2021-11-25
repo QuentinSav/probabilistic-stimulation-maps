@@ -28,11 +28,12 @@ tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore')
 %     'algorithm', 'Nguyen2019', ...
 %     'hemisphere', 'left');
 
-psm = PSM(tableMulticentric(1:100, :), ...
+psm = PSM(tableMulticentric, ...
     'mode', 'analysis', ...
     'algorithm', 'Reich2019', ...
-    'hemisphere', 'left', ...
-    'bypassCheck', 'true');
+    'hemisphere', 'both', ...
+    'bypassCheck', 'true', ...
+    'centerID', 1);
 
 % It is possible to have a preview of all the information about the map
 % with the following function
@@ -48,11 +49,8 @@ toc;
 % will plot the image inside. Otherwise it will open a new figure.
 % psm.show_results('overlapRatio')
 psm.show_image('SweetSpot')
-psm.show_image('n-image')
+psm.show_image('mean-image')
 psm.show_image('p-image')
-
-
-
 
 % It is also possible to vizualize the prediction on new samples made by
 % the map.

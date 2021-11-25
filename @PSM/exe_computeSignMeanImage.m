@@ -1,33 +1,34 @@
 function exe_computeSignMeanImage(obj)
 
-% Compute the significant mean image
-% Set the insignificant voxels from mean-image to zero
-obj.map.significantMean = obj.map.mean;
-% obj.map.significantMean.img(obj.map.p.img > obj.param.pThreshold) = NaN;
+% Initializer the significant mean images
+obj.map.significantMean = obj.map.containerTemplate;
+obj.map.significantBetterMean = obj.map.containerTemplate;
+obj.map.significantWorseMean = obj.map.containerTemplate;
 
-betterNaNMask = obj.map.betterMask;
-betterNaNMask(isnan(betterNaNMask)) = 1;
-worseMask = ~betterNaNMask;
-betterMask = obj.map.betterMask;
-betterMask(isnan(obj.map.betterMask)) = 0;
-betterMask = logical(betterMask);
+% Get the significant mean 
+obj.map.significantMean.img = obj.map.mean.img;
+obj.map.significantMean.img(obj.map.p.img < obj.param.pThreshold) = NaN;
 
-obj.map.significantBetterMean.img = zeros(obj.features.containerSize);
-obj.map.significantBetterMean.mat = obj.map.mean.mat;
-obj.map.significantBetterMean.img(betterMask & obj.map.p.img < obj.param.pThreshold) = ...
-    obj.map.significantMean.img(betterMask & obj.map.p.img < obj.param.pThreshold);
-obj.map.significantWorseMean.img(worseMask & obj.map.p.img < obj.param.pThreshold) = ...
-    obj.map.significantMean.img(worseMask & obj.map.p.img < obj.param.pThreshold);
+% Getter the significant better-worse mean
+obj.map.significantBetterMean.img(obj.map.betterMask.img) = ...
+    obj.map.significantMean.img(obj.map.betterMask.img);
+
+obj.map.significantWorseMean.img(obj.map.worseMask.img) = ...
+    obj.map.significantMean.img(obj.map.worseMask.img);
 
 % Compute the sweet spot
 obj.map.sweetspot.ratio = 0.1;
 
-nSignBetterVoxels = nnz(obj.map.significantBetterMean.img);
+nSignBetterVoxels = sum(~isnan(obj.map.significantBetterMean.img), "all");
 nMax = round(nSignBetterVoxels*obj.map.sweetspot.ratio);
-[~, index] = sort(obj.map.significantBetterMean.img(:), 1, 'descend');
+[~, indexBestMeanVoxels] = sort(obj.map.significantBetterMean.img(:), 1, 'descend');
 
-obj.map.sweetspot = obj.map.significantBetterMean;
-obj.map.sweetspot.img = zeros(size(obj.map.significantBetterMean.img));
-    obj.map.sweetspot.img(index(1:nMax)) = 1;
+% Remove index of NaN values
+indexBestMeanVoxels(isnan(obj.map.significantBetterMean.img(:))) = [];
+
+% Create sweetspot
+obj.map.sweetspot = obj.map.containerTemplate;
+obj.map.sweetspot.img(indexBestMeanVoxels(1:nMax)) = 1;
+obj.map.sweetspot.img(isnan(obj.map.sweetspot.img)) = 0;
 
 end

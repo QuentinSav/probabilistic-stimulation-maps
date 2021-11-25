@@ -4,7 +4,7 @@ function exe_compileFeatures(obj, featuresType)
 % 
 % Input: - features:    List of string containing the features type 
 %                       to compile. Possible string {'coord', 'indexVTAs',
-%                       'scores', 'stimAmplitudes', ''}
+%                       'scores', 'stimAmplitudes', 'meanScoreSameAmp'}
 
 disp('--------------------------------------------------');
 disp('Compiling features');
@@ -36,6 +36,9 @@ if any(strcmp(featuresType, 'coord'))
     
     % Get the total number of features
     obj.features.n = size(obj.features.coord, 1);
+    
+    % Create an image template for the images
+    obj.util_createContainerTemplate();
     
 end
 

@@ -16,31 +16,18 @@ classdef PSM < handle
 
     properties (Access = public)
         
+        algorithm
+        pipeline  
         map
         results
+        features
+        data
+        param
 
     end
 
-    properties (Access = public) % TODO make it private
+    properties (Access = private) 
     
-        % Input properties
-        algorithm
-        pipeline 
-        
-        % 
-        features
-
-        % Data
-        data
-        % data.screen
-        % data.clinical
-        % data.training
-        % data.testing
-        
-        % General parameters
-        param
-        % param.
-
         % Object state
         state
         mode
@@ -85,6 +72,8 @@ classdef PSM < handle
                 @(x) any(validatestring(x, expectedAlgorithm)));
             addParameter(p, 'hemisphere', defaultHemisphere,...
                 @(x) any(validatestring(x, expectedHemiphere)));
+            addParameter(p, 'centerID', 0,...
+                @(x) mod(x,1) == 0);
             addParameter(p, 'mode', defaultMode,...
                 @(x) any(validatestring(x, expectedMode)));
             addParameter(p, 'bypassCheck', defaultBypassCheck,...
@@ -94,6 +83,7 @@ classdef PSM < handle
             % Assign input arguments to object properties
             obj.data.clinical.table = p.Results.data;
             obj.data.screen.hemisphere = p.Results.hemisphere; 
+            obj.data.screen.centerID = p.Results.centerID;
             obj.algorithm = p.Results.algorithm;
             obj.mode = p.Results.mode;
             bypassCheck = p.Results.bypassCheck;
@@ -113,49 +103,49 @@ classdef PSM < handle
     end
 
     methods (Access = private)
-
-        screen_data(obj);
-
-        compute_featureImages(obj, imageTypes);
-        compute_map(obj);
-        pImage = compute_pImage(obj, statTestType, h0Type);
-        compute_significantMeanImage(obj);
-        
         
         % SETUP -----------------------------------------------------------
-        create_pipeline(obj);        
-        hPartition = crossValidation(obj, method, varargin);
-        
-        status = check_voxSize(obj);
+        util_createPipeline(obj);      
+        util_screenData(obj);
+        hPartition = util_getValidPartition(obj, method, varargin);
+        status = util_checkVoxelSize(obj);
+        compute(obj);
         
         % TRAINING (map generation) ---------------------------------------
         train(obj); % High-level function
         
         % Low-level function
-        set_filter(obj, method);
-        get_features(obj, features);
-        threshold(obj, thresholdValue);
-        type1ErrorCorrection(obj, method);
-        
-        get_matVectVTA(obj); % for proposed pipeline
-        
+        util_setFilter(obj, method);
+        exe_compileFeatures(obj, features);
+        exe_computeFeatureImages(obj, imageTypes);
+        exe_thresholdImages(obj, thresholdValue);
+        exe_computeStatTests(obj, statTestType, h0Type);
+        exe_computeFalsePosCorrection(obj, method);
+        exe_computeSignMeanImage(obj);
+
+        meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
+        activatedVoxels = util_getActivatedVoxels(obj);
+        util_matVectVTA(obj); % for proposed pipeline
+
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
         
         % Low level function
-        
+        exe_computeOverlap(obj)
+
         % DISPLAY ---------------------------------------------------------
-        information(obj);
+        info(obj); % Not implemented
         showImage(obj, imageToPlot, holdFlag, colorName);
         showResults(obj, resultType);
 
         % GENERAL UTILITY -------------------------------------------------
-        VTA = loadVTA(obj, varargin);
+        VTA = util_loadVTA(obj, varargin);
 
     end
     
     methods (Static)
         
+        % GENERAL UTILITY -------------------------------------------------
         voxsize = util_getVoxelSize(transform);
         newCoordinates = util_transform(oldCoordinates, image, direction);
         voxelArray = util_nii2voxelArray(image, type, outputSpace);

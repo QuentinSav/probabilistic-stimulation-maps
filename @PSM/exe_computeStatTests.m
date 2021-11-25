@@ -5,9 +5,10 @@ disp('Computing statistical tests');
 
 obj.param.alpha = 0.05;
 
-% Initial
-pImage = NaN(obj.features.containerSize);
-betterMaskImage = NaN(obj.features.containerSize);
+% Initialize p and better-worse mask images
+obj.map.p = obj.map.containerTemplate;
+obj.map.betterMask = obj.map.containerTemplate;
+obj.map.worseMask = obj.map.containerTemplate;
 
 % Define the null hypothesis
 if strcmpi(h0Type, 'zero')
@@ -17,7 +18,7 @@ elseif strcmpi(h0Type, 'h0_meanScoreAmplitude')
     get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3));
 
 elseif strcmpi(h0Type, 'h0_scoresExcludeVox')
-    get_h0 = @(voxel) obj.map.h0(voxel(1), voxel(2), voxel(3), :);
+    get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
 
 end
 
@@ -57,43 +58,54 @@ for voxel = voxels.coord'
     h0 = get_h0(voxel);
     
     % Compute the p-value of the statistical test
-    [pImage(xx, yy, zz), betterMaskImage(xx, yy, zz)] = statTest(obj.map.scoresArray, xx, yy, zz, h0);
+    [obj.map.p.img(xx, yy, zz), obj.map.betterMask.img(xx, yy, zz)] = ...
+        statTest(obj.map.scoresArray.img, xx, yy, zz, h0);
     
     k = k + 1;
 
 end
 
-% Assign the property pImage
-obj.map.p.mat = obj.map.n.mat;
-obj.map.p.img = pImage;
-obj.map.betterMask = betterMaskImage;
+% Filter NaN values from better-worse masks
+obj.map.worseMask.img = obj.map.betterMask.img;
+obj.map.worseMask.img(isnan(obj.map.worseMask.img)) = 1;
+obj.map.worseMask.img = ~obj.map.worseMask.img;
+
+obj.map.betterMask.img(isnan(obj.map.betterMask.img)) = 0;
+
+% Convert better-worse maask to logical images
+obj.map.betterMask.img = logical(obj.map.betterMask.img);
+obj.map.worseMask.img = logical(obj.map.worseMask.img);
 
 end
 
 % Statistical tests -------------------------------------------------------
-function [p, signBetter] = exactWilcoxon(scoresArray, xx, yy, zz, h0)
+function [p, better] = exactWilcoxon(scoresArray, xx, yy, zz, h0)
 
     p = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
-        squeeze(h0), 'tail', 'right', 'method', 'exact');
+        squeeze(h0), 'tail', 'both', 'method', 'exact');
+    
+    p = p/2;
 
-    signBetter = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
+    better = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
 
 end
 
-function [p, signBetter] = approxWilcoxon(scoresArray, xx, yy, zz, h0)
+function [p, better] = approxWilcoxon(scoresArray, xx, yy, zz, h0)
 
     p = signrank(squeeze(scoresArray(xx, yy, zz, :)), ...
-        squeeze(h0), 'tail', 'right', 'method', 'approximate');
+        squeeze(h0), 'tail', 'both', 'method', 'approximate');
+    
+    p = p/2;
 
-    signBetter = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
+    better = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
 
 end
 
-function [p, signBetter] = t_test(scoresArray, xx, yy, zz, h0)
+function [p, better] = t_test(scoresArray, xx, yy, zz, h0)
 
     [~, p, ~, stats] = ttest2(squeeze(scoresArray(xx, yy, zz, :)), ...
         squeeze(h0));
 
-    signBetter = stats.tstat > 0;
+    better = stats.tstat > 0;
    
 end
