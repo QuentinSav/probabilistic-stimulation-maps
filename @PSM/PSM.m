@@ -100,6 +100,16 @@ classdef PSM < handle
             
             end
         end
+        
+        % GENERAL ---------------------------------------------------------
+        compute(obj);
+        evaluate(obj);
+
+        % DISPLAY ---------------------------------------------------------
+        info(obj); % Not implemented
+        showImage(obj, imageToPlot, holdFlag, colorName);
+        showResults(obj, resultType);
+
     end
 
     methods (Access = private)
@@ -109,7 +119,6 @@ classdef PSM < handle
         util_screenData(obj);
         hPartition = util_getValidPartition(obj, method, varargin);
         status = util_checkVoxelSize(obj);
-        compute(obj);
         
         % TRAINING (map generation) ---------------------------------------
         train(obj); % High-level function
@@ -132,11 +141,6 @@ classdef PSM < handle
         
         % Low level function
         exe_computeOverlap(obj)
-
-        % DISPLAY ---------------------------------------------------------
-        info(obj); % Not implemented
-        showImage(obj, imageToPlot, holdFlag, colorName);
-        showResults(obj, resultType);
 
         % GENERAL UTILITY -------------------------------------------------
         VTA = util_loadVTA(obj, varargin);

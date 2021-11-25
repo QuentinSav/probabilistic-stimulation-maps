@@ -28,30 +28,36 @@ tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore')
 %     'algorithm', 'Nguyen2019', ...
 %     'hemisphere', 'left');
 
-psm = PSM(tableMulticentric, ...
-    'mode', 'analysis', ...
-    'algorithm', 'Reich2019', ...
+psm = PSM(tableMulticentric(1:100, :), ...
+    'mode', 'standard', ...
+    'algorithm', 'Nguyen2019', ...
     'hemisphere', 'both', ...
     'bypassCheck', 'true', ...
     'centerID', 1);
 
 % It is possible to have a preview of all the information about the map
 % with the following function
-psm.info();
+psm.information();
 
 % Call the function compute_map will lauch the computation of the PSM
 tic;
 psm.compute();
 toc;
 
-%%
 % We can now vizualize the images. If the lead dbs 3D-renderer is open, it 
 % will plot the image inside. Otherwise it will open a new figure.
-% psm.show_results('overlapRatio')
-psm.show_image('SweetSpot')
-psm.show_image('mean-image')
-psm.show_image('p-image')
+psm.show_results('overlapRatio');
+psm.show_image('SweetSpot');
+psm.show_image('mean');
+psm.show_image('p');
+psm.show_image('significantMean');
+psm.show_image('significantBetterMean');
+psm.show_image('significantWorseMean');
 
 % It is also possible to vizualize the prediction on new samples made by
 % the map.
+psm.show_results();
+
+% Evaluate the quality of the map
+psm.evaluate();
 

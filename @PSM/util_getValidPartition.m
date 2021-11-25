@@ -13,14 +13,14 @@ if strcmpi(obj.mode, 'standard')
     hPartition = cvpartition(obj.data.clinical.table.centerID, ...
         'HoldOut', 0.05, ...
         'Stratify', true);
-    obj.validationMethod = [100*num2str(0.05),'% Out-of-sample'];
-    % TODO set the number of fold to 1
+    obj.param.validationMethod = [100*num2str(0.05),'% Out-of-sample'];
+    return
 end
 
 if strcmpi(method, 'LOO')
     % Leave-one out cross-validation
     hPartition = cvpartition(obj.data.clinical.table.centerID, 'Leaveout');
-    obj.validationMethod = 'LOOCV';
+    obj.param.validationMethod = 'LOOCV';
 
 elseif strcmpi(method, 'KFold')
     % K-fold cross-validation

@@ -86,7 +86,7 @@ function [p, better] = exactWilcoxon(scoresArray, xx, yy, zz, h0)
     
     p = p/2;
 
-    better = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
+    better = median(squeeze(scoresArray(xx, yy, zz, :)), 'omitnan') > median(squeeze(h0), 'omitnan');
 
 end
 
@@ -97,7 +97,7 @@ function [p, better] = approxWilcoxon(scoresArray, xx, yy, zz, h0)
     
     p = p/2;
 
-    better = median(squeeze(scoresArray(xx, yy, zz, :))) > median(squeeze(h0));
+    better = median(squeeze(scoresArray(xx, yy, zz, :)), 'omitnan') > median(squeeze(h0), 'omitnan');
 
 end
 
@@ -107,5 +107,6 @@ function [p, better] = t_test(scoresArray, xx, yy, zz, h0)
         squeeze(h0));
 
     better = stats.tstat > 0;
+    % TODO check when NaN
    
 end

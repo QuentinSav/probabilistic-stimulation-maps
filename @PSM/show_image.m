@@ -4,13 +4,13 @@ disp('--------------------------------------------------');
 disp("Showing image");
 
 % Initialize hold flag to 0
-if ~exist('holdFlag', 'var') == 1
+if ~exist('holdFlag', 'var')
     holdFlag = 0;
 
 end
 
 % Initialize color to blue
-if ~exist('colorName', 'var') == 1
+if ~exist('colorName', 'var')
     colorName = 'blue';
 
 end
@@ -94,7 +94,7 @@ end
 
 
 % Look for the lead dbs 3D-Renderer
-h = findobj('type', 'figure', '-regexp', 'Name','Electrode-Scene');
+h = findobj('type', 'figure', '-regexp', 'Name', 'Electrode-Scene');
 
 if holdFlag && isempty(h)
     gcf;
@@ -122,6 +122,10 @@ if monochrom
 else
     scatter3(xx, yy, zz, 1, ptCloud.intensity);
     colorbar;
-    caxis([0 max(image.img, [], 'all')]);
+    
+    try
+        caxis([0 max(image.img, [], 'all')]);
+
+    end
 end
 end
