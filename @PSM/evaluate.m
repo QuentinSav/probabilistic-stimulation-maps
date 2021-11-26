@@ -23,9 +23,10 @@ disp("Pearson correlation:    rho = " + rho);
 disp("                        p = " + p);
 disp(' ');
 
-figure('Name',  'Evaluation');
+figure('Name', 'Evaluation');
 hold on;
-scatter(100.*obj.results.overlap.ratio, 100.*obj.results.efficiency, 120, color, '.');
+plot(mdl)
+%scatter(obj.results.overlap.ratio, obj.results.efficiency, '.');
 xlabel('Overlap ratio (%)');
 ylabel('Clinical efficiency (%)');
 

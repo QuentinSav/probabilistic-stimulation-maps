@@ -15,8 +15,9 @@ function util_dataScreening(obj)
 
     end
     
-    % Filter centerID
-    obj.data.clinical.table(obj.data.clinical.table.centerID ~= obj.data.screen.centerID, :) = [];
-    
+    if obj.data.screen.centerID
+        % Filter centerID
+        obj.data.clinical.table(obj.data.clinical.table.centerID ~= obj.data.screen.centerID, :) = [];
+    end
 
 end
