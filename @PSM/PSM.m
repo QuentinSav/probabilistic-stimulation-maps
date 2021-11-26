@@ -56,9 +56,6 @@ classdef PSM < handle
                 'standard', ...
                 'analysis'};
             defaultMode = 'standard';
-            expectedBypassCheck = {
-                'false', ...
-                'true'};
             defaultBypassCheck = false;
 
             % Create parser
@@ -73,11 +70,11 @@ classdef PSM < handle
             addParameter(p, 'hemisphere', defaultHemisphere,...
                 @(x) any(validatestring(x, expectedHemiphere)));
             addParameter(p, 'centerID', 0,...
-                @(x) mod(x,1) == 0);
+                @(x) ~mod(x, 1));
             addParameter(p, 'mode', defaultMode,...
                 @(x) any(validatestring(x, expectedMode)));
             addParameter(p, 'bypassCheck', defaultBypassCheck,...
-                @(x) any(validatestring(x, expectedBypassCheck)));
+                @(x) islogical(x));
             parse(p, varargin{:});
             
             % Assign input arguments to object properties

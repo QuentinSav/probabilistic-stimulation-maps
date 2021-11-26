@@ -4,8 +4,6 @@ function exe_computeFalsePosCorrection(obj, method)
 % null-hypothesis rejection threshold (alpha otherwise) depending on
 % the method
 
-
-
 if strcmpi(method, 'Benjamini-Hochberg')
 
     % Get features array from the p-image
@@ -36,6 +34,8 @@ if strcmpi(method, 'Benjamini-Hochberg')
     obj.param.pThreshold = obj.param.alpha;
 
 elseif strcmpi(method, 'Benjamini-Hochberg, Genovese')
+    
+
 
 elseif strcmpi(method, 'Bonferroni correction')
 
@@ -46,7 +46,9 @@ elseif strcmpi(method, 'Bonferroni correction')
     % The threshold for rejecting null-hypothesis is updated
     obj.pThreshold = obj.alpha/voxelsArray.n;
 
-elseif strcmpi(method, 'Permuation tests')
+elseif strcmpi(method, 'Permutation tests')
+
+
 
 elseif strcmpi(method, 'No correction')
 

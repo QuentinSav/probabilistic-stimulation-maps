@@ -25,10 +25,8 @@ disp(' ');
 
 figure('Name', 'Evaluation');
 hold on;
-plot(mdl)
-%scatter(obj.results.overlap.ratio, obj.results.efficiency, '.');
+plot(mdl);
 xlabel('Overlap ratio (%)');
 ylabel('Clinical efficiency (%)');
-
 
 end
