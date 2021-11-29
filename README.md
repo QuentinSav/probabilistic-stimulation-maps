@@ -26,11 +26,10 @@ MATLAB Class to handle Probabilistic Stimulation Map (PSM). It currently include
     - 
 
 TODO:
+- [x] Finish the implementation of the Dembek, 2019 pipeline (without permutation tests)
+- [x] Finish the implementation of Reich, 2019
+- [x] Gitignore the asv files
+- [x] Integrate the psm constructor additional filters
+- [ ] Implement permutation tests from Dembek, 2019
 - [ ] Implement the Genovese formulation for the Benjamini-Hochberg type 1 error correction of Nguyen, 2019
-- [ ] Finish the implementation of the get_matVectVTA function
-- [ ] Finish the implementation of the Dembek, 2019 pipeline (without permutation tests)
-- [ ] Finish the implementation of Reich, 2019
-- [ ] Gitignore the asv files
-- [ ] Integrate the psm constructor additional filters
-- [ ] Finish the implementation of Reich, 2019
     
