@@ -47,18 +47,20 @@ elseif strcmpi(method, 'Bonferroni correction')
 
 elseif strcmpi(method, 'Permutation tests')
     
+    obj.param.pThreshold = obj.param.alpha;
+    
     % Compute permutation images
     obj.util_computePermutationImages();
     
     % Compute p-permutation-images
-    obj.util_computePermutationStatTests()
+    obj.util_computePermutationStatTests();
 
     % Compute Q p-image
-    
+    Q = obj.util_get;
 
     % Compute Q of the permutation images
-
-    obj.param.pThreshold = obj.param.alpha;
+    
+    
     
 
 

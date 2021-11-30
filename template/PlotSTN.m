@@ -17,9 +17,9 @@ IdxRight = ptCloud.Location(:,1) >= 0;
     double(ptCloud.Location((Idx & IdxRight),2)), ...
     double(ptCloud.Location((Idx & IdxRight),3)),0.25);
 
-fhMeanEfficiency = figure( 'color','w' );
-fhSignificantMeanEfficiencyBetter = figure( 'color','w' );
-fhSignificantMeanEfficiencyWorse = figure( 'color','w' );
+% fhMeanEfficiency = figure( 'color','w' );
+% fhSignificantMeanEfficiencyBetter = figure( 'color','w' );
+% fhSignificantMeanEfficiencyWorse = figure( 'color','w' );
 
 % refresh figures
 figure( fhMeanEfficiency )

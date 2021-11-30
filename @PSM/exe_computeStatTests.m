@@ -1,12 +1,24 @@
-function pImage = exe_computeStatTests(obj, statTestType, h0Type)
+function pImage = exe_computeStatTests(obj, statTestType, h0Type, targetImage)
 
 disp('--------------------------------------------------');
 disp('Computing statistical tests');
 
+if ~exist("targetImage", "var")
+    targetImage.type = 'real';
+
+end
+
+if strcmp(targetImage.type, 'permutation')
+    scoresArray = obj.map.permutation(targetImage.k).scoresArray.img;
+
+else
+    scoresArray = obj.map.scoresArray.img;
+
+end
+
 % Initialize p and better-worse mask images
-obj.map.p = obj.map.containerTemplate;
-obj.map.betterMask = obj.map.containerTemplate;
-obj.map.worseMask = obj.map.containerTemplate;
+pImage = obj.map.containerTemplate;
+betterMask = obj.map.containerTemplate;
 
 % Define the null hypothesis
 if strcmpi(h0Type, 'zero')
@@ -56,24 +68,40 @@ for voxel = voxels.coord'
     h0 = get_h0(voxel);
     
     % Compute the p-value of the statistical test
-    [obj.map.p.img(xx, yy, zz), obj.map.betterMask.img(xx, yy, zz)] = ...
-        statTest(obj.map.scoresArray.img, xx, yy, zz, h0);
+    [pImage.img(xx, yy, zz), betterMask.img(xx, yy, zz)] = ...
+        statTest(scoresArray, xx, yy, zz, h0);
     
     k = k + 1;
 
 end
 
-% Filter NaN values from better-worse masks
-obj.map.worseMask.img = obj.map.betterMask.img;
-obj.map.worseMask.img(isnan(obj.map.worseMask.img)) = 1;
-obj.map.worseMask.img = ~obj.map.worseMask.img;
+if strcmpi(targetImage.type, 'real')
 
-obj.map.betterMask.img(isnan(obj.map.betterMask.img)) = 0;
+    obj.map.p = obj.map.containerTemplate;
+    obj.map.p.img = pImage;
+    
+    obj.map.betterMask = obj.map.containerTemplate;
+    obj.map.worseMask = obj.map.containerTemplate;
+    
+    obj.map.betterMask.img = betterMask.img;
 
-% Convert better-worse maask to logical images
-obj.map.betterMask.img = logical(obj.map.betterMask.img);
-obj.map.worseMask.img = logical(obj.map.worseMask.img);
+    % Filter NaN values from better-worse masks
+    obj.map.worseMask.img = obj.map.betterMask.img;
+    obj.map.worseMask.img(isnan(obj.map.worseMask.img)) = 1;
+    obj.map.worseMask.img = ~obj.map.worseMask.img;
 
+    obj.map.betterMask.img(isnan(obj.map.betterMask.img)) = 0;
+
+    % Convert better-worse maask to logical images
+    obj.map.betterMask.img = logical(obj.map.betterMask.img);
+    obj.map.worseMask.img = logical(obj.map.worseMask.img);
+
+else
+    
+    obj.map.permutation(targetImage.k).p = obj.map.containerTemplate;
+    obj.map.permutation(targetImage.k).p.img = pImage;
+
+end
 end
 
 % Statistical tests -------------------------------------------------------

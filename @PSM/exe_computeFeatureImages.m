@@ -5,7 +5,7 @@ disp('--------------------------------------------------');
 disp('Computing feature images');
 
 if ~exist("targetImage", "var")
-    targetImage.type = 'main';
+    targetImage.type = 'real';
 
 end
 
