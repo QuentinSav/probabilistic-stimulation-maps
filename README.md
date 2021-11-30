@@ -19,4 +19,4 @@ TODO:
 - [x] Integrate the psm constructor additional filters
 - [ ] Implement permutation tests from Dembek, 2019
 - [ ] Implement the Genovese formulation for the Benjamini-Hochberg type 1 error correction of Nguyen, 2019
-    
+- [ ] Add the STN shape in map plotting
