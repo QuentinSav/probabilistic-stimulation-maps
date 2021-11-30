@@ -1,4 +1,4 @@
-function exe_compileFeatures(obj, featuresType, nPermutationImages)
+function exe_compileFeatures(obj, featuresType)
 % Function that compile all the features needed for the images
 % computations.
 % 
@@ -69,7 +69,7 @@ if any(strcmp(featuresType, 'meanScoreSameAmp'))
 end
 
 if any(strcmp(featuresType, 'permutedScores'))
-    obj.features.permutedScores = obj.util_computePermutedScores(nPermutationImages);
+    obj.features.permutedScores = obj.util_computePermutedScores(obj.param.nPermutationImages);
 
 end
 

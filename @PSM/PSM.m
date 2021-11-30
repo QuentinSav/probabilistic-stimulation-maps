@@ -132,6 +132,8 @@ classdef PSM < handle
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);
         util_matVectVTA(obj); % for proposed pipeline
+        permutedScores = util_computePermutedScores(obj, nPermutationImages)
+        exe_computePermutationImages(obj)
 
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
