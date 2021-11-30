@@ -33,9 +33,8 @@ if strcmpi(method, 'Benjamini-Hochberg')
     % alpha
     obj.param.pThreshold = obj.param.alpha;
 
-elseif strcmpi(method, 'Benjamini-Hochberg, Genovese')
+elseif strcmpi(method, 'Benjamini-Hochberg (Genovese, 2002)')
     
-
 
 elseif strcmpi(method, 'Bonferroni correction')
 
@@ -44,12 +43,12 @@ elseif strcmpi(method, 'Bonferroni correction')
     voxelsArray = obj.nii2voxelArray(obj.map.p, 'array', 'voxels');
 
     % The threshold for rejecting null-hypothesis is updated
-    obj.pThreshold = obj.alpha/voxelsArray.n;
+    obj.pThreshold = obj.param.alpha/voxelsArray.n;
 
 elseif strcmpi(method, 'Permutation tests')
-
-
-
+    
+    
+    
 elseif strcmpi(method, 'No correction')
 
     obj.param.pThreshold = obj.param.alpha;

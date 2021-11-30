@@ -85,12 +85,12 @@ classdef PSM < handle
             obj.mode = p.Results.mode;
             bypassCheck = p.Results.bypassCheck;
             
+            % Create the pipeline (list of function that will be executed)
+            obj.util_createPipeline();
+
             % Keep the correct hemispheric data
             obj.util_dataScreening();
             obj.data.clinical.n = height(obj.data.clinical.table);
-
-            % Create the pipeline (list of function that will be executed)
-            obj.util_createPipeline();
             
             if ~bypassCheck
                 obj.util_checkBatch();
@@ -122,7 +122,7 @@ classdef PSM < handle
         
         % Low-level function
         util_setFilter(obj, method);
-        exe_compileFeatures(obj, features);
+        exe_compileFeatures(obj, features, nPermutationImages);
         exe_computeFeatureImages(obj, imageTypes);
         exe_thresholdImages(obj, thresholdValue);
         exe_computeStatTests(obj, statTestType, h0Type);

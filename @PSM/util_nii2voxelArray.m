@@ -4,7 +4,7 @@ function voxelArray = util_nii2voxelArray(image, type, outputSpace)
 %
 % Input:    - image:                    NIFTI structure
 %           - type (optional):          'coord', 'index'
-%           - outputSpace (optional):   'mni' 
+%           - outputSpace (optional):   'mni', 'voxel'
 % Output:   - voxelArray:               structure with fields [n, intensity, coord/index]
 
 if strcmpi(type, 'coord')

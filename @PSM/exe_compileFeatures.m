@@ -1,10 +1,11 @@
-function exe_compileFeatures(obj, featuresType)
+function exe_compileFeatures(obj, featuresType, nPermutationImages)
 % Function that compile all the features needed for the images
 % computations.
 % 
 % Input: - features:    List of string containing the features type 
 %                       to compile. Possible string {'coord', 'indexVTAs',
 %                       'scores', 'stimAmplitudes', 'meanScoreSameAmp'}
+%        - nPermutedImages (optional): Number of permutation images 
 
 disp('--------------------------------------------------');
 disp('Compiling features');
@@ -64,6 +65,11 @@ end
 
 if any(strcmp(featuresType, 'meanScoreSameAmp'))
     obj.features.meanScores = obj.util_getMeanScoreSameAmplitude();
+
+end
+
+if any(strcmp(featuresType, 'permutedScores'))
+    obj.features.permutedScores = obj.util_computePermutedScores(nPermutationImages);
 
 end
 

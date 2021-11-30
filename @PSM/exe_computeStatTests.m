@@ -3,8 +3,6 @@ function pImage = exe_computeStatTests(obj, statTestType, h0Type)
 disp('--------------------------------------------------');
 disp('Computing statistical tests');
 
-obj.param.alpha = 0.05;
-
 % Initialize p and better-worse mask images
 obj.map.p = obj.map.containerTemplate;
 obj.map.betterMask = obj.map.containerTemplate;
@@ -14,10 +12,10 @@ obj.map.worseMask = obj.map.containerTemplate;
 if strcmpi(h0Type, 'zero')
     get_h0 = @(voxel) 0;
 
-elseif strcmpi(h0Type, 'h0_meanScoreAmplitude')
+elseif strcmpi(h0Type, 'h0MeanScoreAmplitude')
     get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3));
 
-elseif strcmpi(h0Type, 'h0_scoresExcludeVox')
+elseif strcmpi(h0Type, 'h0ScoresExcludeVox')
     get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
 
 end
