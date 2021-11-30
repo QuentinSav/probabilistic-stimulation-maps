@@ -1,6 +1,5 @@
 function exe_computePermutationImages(obj)
 
-
 disp('--------------------------------------------------');
 disp('Computing permutation images');
 
@@ -11,7 +10,7 @@ for k = 1:obj.param.nPermutationImages
     targetImage.type = 'permutation';
     targetImage.k = k;
 
-    exe_computeFeatureImages({'n, mean'}, targetImage);
+    obj.exe_computeFeatureImages({'n, mean'}, targetImage);
 
 end
 

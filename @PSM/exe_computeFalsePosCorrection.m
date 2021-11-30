@@ -47,7 +47,9 @@ elseif strcmpi(method, 'Bonferroni correction')
 
 elseif strcmpi(method, 'Permutation tests')
     
+    obj.param.pThreshold = obj.param.alpha;
     
+
     
 elseif strcmpi(method, 'No correction')
 

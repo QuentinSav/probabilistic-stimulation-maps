@@ -4,7 +4,7 @@ function exe_computeFeatureImages(obj, imageTypes, targetImage)
 disp('--------------------------------------------------');
 disp('Computing feature images');
 
-if ~exist("obj.mapImage", "var")
+if ~exist("targetImage", "var")
     targetImage.type = 'main';
 
 end

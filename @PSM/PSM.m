@@ -123,17 +123,18 @@ classdef PSM < handle
         % Low-level function
         util_setFilter(obj, method);
         exe_compileFeatures(obj, features, nPermutationImages);
-        exe_computeFeatureImages(obj, imageTypes);
+        exe_computeFeatureImages(obj, imageTypes, targetImage);
         exe_thresholdImages(obj, thresholdValue);
         exe_computeStatTests(obj, statTestType, h0Type);
         exe_computeFalsePosCorrection(obj, method);
         exe_computeSignMeanImage(obj);
-
+        exe_computePermutationImages(obj);
+        
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);
         util_matVectVTA(obj); % for proposed pipeline
         permutedScores = util_computePermutedScores(obj, nPermutationImages)
-        exe_computePermutationImages(obj)
+
 
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
