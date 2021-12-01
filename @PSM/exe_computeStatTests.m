@@ -77,13 +77,12 @@ end
 
 if strcmpi(targetImage.type, 'real')
 
-    obj.map.p = obj.map.containerTemplate;
-    obj.map.p.img = pImage;
+    obj.map.p = pImage;
     
     obj.map.betterMask = obj.map.containerTemplate;
     obj.map.worseMask = obj.map.containerTemplate;
     
-    obj.map.betterMask.img = betterMask.img;
+    obj.map.betterMask = betterMask;
 
     % Filter NaN values from better-worse masks
     obj.map.worseMask.img = obj.map.betterMask.img;
@@ -97,9 +96,8 @@ if strcmpi(targetImage.type, 'real')
     obj.map.worseMask.img = logical(obj.map.worseMask.img);
 
 else
-    
-    obj.map.permutation(targetImage.k).p = obj.map.containerTemplate;
-    obj.map.permutation(targetImage.k).p.img = pImage;
+
+    obj.map.permutation(targetImage.k).p = pImage;
 
 end
 end

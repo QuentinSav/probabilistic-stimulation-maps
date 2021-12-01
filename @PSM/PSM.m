@@ -125,7 +125,7 @@ classdef PSM < handle
         exe_compileFeatures(obj, features, nPermutationImages);
         exe_computeFeatureImages(obj, imageTypes, targetImage);
         exe_thresholdImages(obj, thresholdValue);
-        exe_computeStatTests(obj, statTestType, h0Type);
+        exe_computeStatTests(obj, statTestType, h0Type, targetImage);
         exe_computeFalsePosCorrection(obj, method);
         exe_computeSignMeanImage(obj);
         exe_computePermutationImages(obj);

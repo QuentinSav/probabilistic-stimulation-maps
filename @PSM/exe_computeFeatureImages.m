@@ -10,7 +10,7 @@ if ~exist("targetImage", "var")
 end
 
 if strcmp(targetImage.type, 'permutation')
-    targetFields = {'map', 'permutation', targetImage.k};
+    targetFields = {'map', 'permutation', {targetImage.k}};
 
 else
     targetFields = {'map'};
@@ -38,6 +38,10 @@ for k = 1:obj.features.n
     if any(strcmp(imageTypes, 'scoresArray'))
         scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
     end
+    
+    if any(strcmp(imageTypes, 'permScoresArray'))
+        scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.permutedScores(k, targetImage.k);
+    end
 
     if any(strcmp(imageTypes, 'h0MeanScoresSameAmp'))
         % Add the "mean-efficiency"
@@ -47,11 +51,11 @@ for k = 1:obj.features.n
 end
 
 if any(strcmp(imageTypes, 'n'))
-    
+
     % Get the container template for the n-image
     fields = [targetFields, {'n'}];
     obj = setfield(obj, fields{:}, obj.map.containerTemplate);
-    
+
     % Get the n image
     nImage = sum(~isnan(scoresArrayImage), 4);
 
@@ -66,22 +70,22 @@ if any(strcmp(imageTypes, 'mean'))
     % Get the container template for the mean-image
     fields = [targetFields, {'mean'}];
     obj = setfield(obj, fields{:}, obj.map.containerTemplate);
-    
+
     % Get the mean image
     meanImage = mean(scoresArrayImage, 4, 'omitnan');
-    
+
     % Create NIFTI image with the mean-image
     fields = [targetFields, {'mean', 'img'}];
     obj = setfield(obj, fields{:}, meanImage);
 
 end
 
-if any(strcmp(imageTypes, 'scoresArray'))
+if any(strcmp(imageTypes, 'scoresArray')) || any(strcmp(imageTypes, 'permScoresArray'))
 
     % Get the container template for the mean-image
     fields = [targetFields, {'scoresArray'}];
     obj = setfield(obj, fields{:}, obj.map.containerTemplate);
-    
+
     % Create NIFTI image with the scoresArray-image
     fields = [targetFields, {'scoresArray', 'img'}];
     obj = setfield(obj, fields{:}, scoresArrayImage);
@@ -97,7 +101,7 @@ if any(strcmp(imageTypes, 'h0MeanScoreSameAmp'))
     % Compute the mean from the sum of clinical efficiencies
     h0Image = h0sumImage./obj.map.n.img;
     h0Image(isinf(h0Image)) = NaN;
-    
+
     % Create NIFTI image with the scoresArray-image
     fields = [targetFields, {'h0', 'img'}];
     obj = setfield(obj, fields{:}, h0Image);
@@ -117,7 +121,7 @@ if any(strcmp(imageTypes, 'h0ScoresExcludeVox'))
         obj.features.containerSize(3));
     h0Image = permute(h0Image.img, [2 3 4 1]);
     h0Image(~isnan(scoresArrayImage)) = NaN;
-    
+
     % Create NIFTI image with the scoresArray-image
     fields = [targetFields, {'h0', 'img'}];
     obj = setfield(obj, fields{:}, h0Image);

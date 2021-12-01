@@ -56,13 +56,17 @@ elseif strcmpi(method, 'Permutation tests')
     obj.util_computePermutationStatTests();
 
     % Compute Q p-image
-    Q = obj.util_get;
+    Q = obj.util_getSummaryStat(obj.map.p);
 
-    % Compute Q of the permutation images
+    % Compute Q of the permutation images    
+    permQ = obj.util_getSummaryStat([obj.map.permutation.p]);
     
+    % Get the percentile
+    if prctile(permQ, 100*obj.param.pThreshold) < Q
+        obj.map.betterMask(obj.map.betterMask) = 0;
+        obj.map.worseMask(obj.map.worseMask) = 0;
     
-    
-
+    end
 
 elseif strcmpi(method, 'No correction')
 
