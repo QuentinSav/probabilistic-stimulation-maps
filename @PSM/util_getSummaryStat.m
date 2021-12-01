@@ -7,5 +7,6 @@ function Q = util_getSummaryStat(obj, pImage)
 
 for k = 1:length(pImage)
     Q(k) = sum(-log(pImage(k).img(pImage(k).img < obj.param.pThreshold)), 'all');
+    
 end
 end

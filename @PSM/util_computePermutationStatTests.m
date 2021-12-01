@@ -10,7 +10,7 @@ for k = 1:obj.param.nPermutationImages
     targetImage.type = 'permutation';
     targetImage.k = k;
 
-    obj.exe_computeStatTests('approxWilcoxon', 'h0MeanScoreAmplitude', targetImage);
+    obj.exe_computeStatTests('approxWilcoxon', 'h0MeanScoreAmplitude', 0.05, targetImage);
 
 end
 end

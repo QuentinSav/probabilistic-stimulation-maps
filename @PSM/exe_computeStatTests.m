@@ -14,7 +14,7 @@ if ~exist("targetImage", "var")
 
 elseif strcmp(targetImage.type, 'permutation')
     scoresArray = obj.map.permutation(targetImage.k).scoresArray.img;
- 
+
 end
 
 % Initialize p and better-worse mask images

@@ -67,12 +67,6 @@ if any(strcmp(featuresType, 'meanScoreSameAmp'))
     obj.features.meanScores = obj.util_getMeanScoreSameAmplitude();
 
 end
-
-if any(strcmp(featuresType, 'permutedScores'))
-    obj.features.permutedScores = obj.util_computePermutedScores(obj.param.nPermutationImages);
-
-end
-
 end
 
 

@@ -6,6 +6,8 @@ function newCoordinates = util_transform(oldCoordinates, image, direction)
 %           - image:            NIFTI structure
 %           - direction:        'VoxelToWorld' or 'WorldToVoxel'
 % Output:   - newCoordinates:   Array [mx3]
+%
+% Khoa Nguyen
 
 if strcmpi(direction, 'VoxelToWorld')
     oldCoordinates = [oldCoordinates'; ones(1, size(oldCoordinates, 1))];

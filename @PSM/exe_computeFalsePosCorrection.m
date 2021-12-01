@@ -1,4 +1,4 @@
-function exe_computeFalsePosCorrection(obj, method)
+function exe_computeFalsePosCorrection(obj, method, varargin)
 % Function to apply type 1 error (false positive) either by adjusting
 % the p-values of the statistical tests or modifying the
 % null-hypothesis rejection threshold (alpha otherwise) depending on
@@ -37,7 +37,7 @@ elseif strcmpi(method, 'Benjamini-Hochberg (Genovese, 2002)')
     
 
 elseif strcmpi(method, 'Bonferroni correction')
-
+    
     % Get features array from the p-image (only to know the number of
     % statistical tests)
     voxelsArray = obj.nii2voxelArray(obj.map.p, 'array', 'voxels');
@@ -47,6 +47,7 @@ elseif strcmpi(method, 'Bonferroni correction')
 
 elseif strcmpi(method, 'Permutation tests')
     
+    obj.param.nPermutationImages = varargin{1};
     obj.param.pThreshold = obj.param.alpha;
     
     % Compute permutation images
@@ -63,8 +64,8 @@ elseif strcmpi(method, 'Permutation tests')
     
     % Get the percentile
     if prctile(permQ, 100*obj.param.pThreshold) < Q
-        obj.map.betterMask(obj.map.betterMask) = 0;
-        obj.map.worseMask(obj.map.worseMask) = 0;
+        obj.map.betterMask.img(obj.map.betterMask.img) = 0;
+        obj.map.worseMask.img(obj.map.worseMask.img) = 0;
     
     end
 
