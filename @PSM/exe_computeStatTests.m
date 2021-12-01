@@ -1,19 +1,20 @@
-function pImage = exe_computeStatTests(obj, statTestType, h0Type, targetImage)
+function pImage = exe_computeStatTests(obj, statTestType, h0Type, alpha, targetImage)
 
 disp('--------------------------------------------------');
 disp('Computing statistical tests');
 
+% Define the risk alha
+obj.param.alpha = alpha;
+
+% Determine if the statistical test will be performed on real image or 
+% permutation images  
 if ~exist("targetImage", "var")
     targetImage.type = 'real';
-
-end
-
-if strcmp(targetImage.type, 'permutation')
-    scoresArray = obj.map.permutation(targetImage.k).scoresArray.img;
-
-else
     scoresArray = obj.map.scoresArray.img;
 
+elseif strcmp(targetImage.type, 'permutation')
+    scoresArray = obj.map.permutation(targetImage.k).scoresArray.img;
+ 
 end
 
 % Initialize p and better-worse mask images

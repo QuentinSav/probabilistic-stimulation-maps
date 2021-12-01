@@ -1,4 +1,4 @@
-function exe_computeSweetSpot(obj)
+function exe_computeSweetSpot(obj, method)
 
 % Compute the sweet spot
 obj.map.sweetspot.ratio = 0.1;
