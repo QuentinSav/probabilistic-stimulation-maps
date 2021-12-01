@@ -128,4 +128,7 @@ else
 
     end
 end
+
+obj.util_showTemplateSTN();
+
 end

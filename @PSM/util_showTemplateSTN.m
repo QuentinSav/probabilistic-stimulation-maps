@@ -2,7 +2,7 @@ function util_showTemplateSTN()
 % Khoa Nguyen
 
 fileAtlas = ...
-    'anatomyDISTALminimal.ply';
+    'templates/anatomyDISTALminimal.ply';
 colorIdx = 4; % color code for STN in DISTAL atlas
 ptCloud = pcread( fileAtlas );
 pcColors = unique( ptCloud.Color,'rows' );
@@ -20,7 +20,7 @@ IdxRight = ptCloud.Location(:,1) >= 0;
     double(ptCloud.Location((Idx & IdxRight),3)),0.25);
 
 % refresh figures
-figure( fhMeanEfficiency )
+gcf;
 hold off
 trisurf( boundarySTNRight, ptCloud.Location( ( Idx & IdxRight ), 1 ), ...
     ptCloud.Location( ( Idx & IdxRight ) , 2 ), ...

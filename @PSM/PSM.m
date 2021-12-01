@@ -1,23 +1,23 @@
 classdef PSM < handle
-    % PSM Class 
-    % (Probabilistic Stimulation Map) 
-    % 
+    % PSM Class
+    % (Probabilistic Stimulation Map)
+    %
     % This class allows to handle a probilistic stimulation map instance.
     % Input arguments (required):
-    %   - Data table with minimum required fields: 
-    %           clinical score, 
-    % 
+    %   - Data table with minimum required fields:
+    %           clinical score,
+    %
     % The map computation can be performed in 2 different modes:
     %   - Standard: computes the map on 95% of the dataset
-    %   - Analysis: perform multiple maps and perform cross-validation. 
+    %   - Analysis: perform multiple maps and perform cross-validation.
     %
     % The user can also specify the hemisphere, the leadID, the center, the
     % threshold for sweetspot computation
 
     properties (Access = public)
-        
+
         algorithm
-        pipeline  
+        pipeline
         map
         results
         features
@@ -26,8 +26,8 @@ classdef PSM < handle
 
     end
 
-    properties (Access = private) 
-    
+    properties (Access = private)
+
         % Object state
         state
         mode
@@ -36,9 +36,9 @@ classdef PSM < handle
 
     methods
         function obj = PSM(varargin)
-            
+
             obj.state = 'idle';
-            
+
             % Define expected and default input arguments
             expectedAlgorithm = {
                 'Nguyen2019', ...
@@ -63,7 +63,7 @@ classdef PSM < handle
 
             % Add required argument
             addRequired(p,'data', @istable);
-            
+
             % Add optional parameters
             addParameter(p, 'algorithm', defaultAlgorithm, ...
                 @(x) any(validatestring(x, expectedAlgorithm)));
@@ -76,28 +76,28 @@ classdef PSM < handle
             addParameter(p, 'bypassCheck', defaultBypassCheck,...
                 @(x) islogical(x));
             parse(p, varargin{:});
-            
+
             % Assign input arguments to object properties
             obj.data.clinical.table = p.Results.data;
-            obj.data.screen.hemisphere = p.Results.hemisphere; 
+            obj.data.screen.hemisphere = p.Results.hemisphere;
             obj.data.screen.centerID = p.Results.centerID;
             obj.algorithm = p.Results.algorithm;
             obj.mode = p.Results.mode;
             bypassCheck = p.Results.bypassCheck;
-            
+
             % Create the pipeline (list of function that will be executed)
             obj.util_createPipeline();
 
             % Keep the correct hemispheric data
             obj.util_dataScreening();
             obj.data.clinical.n = height(obj.data.clinical.table);
-            
+
             if ~bypassCheck
                 obj.util_checkBatch();
-            
+
             end
         end
-        
+
         % GENERAL ---------------------------------------------------------
         compute(obj);
         evaluate(obj);
@@ -110,16 +110,16 @@ classdef PSM < handle
     end
 
     methods (Access = private)
-        
+
         % SETUP -----------------------------------------------------------
-        util_createPipeline(obj);      
+        util_createPipeline(obj);
         util_screenData(obj);
         hPartition = util_getValidPartition(obj, method, varargin);
         status = util_checkVoxelSize(obj);
-        
+
         % TRAINING (map generation) ---------------------------------------
         train(obj); % High-level function
-        
+
         % Low-level function
         util_setFilter(obj, method);
         exe_compileFeatures(obj, features, nPermutationImages);
@@ -130,7 +130,7 @@ classdef PSM < handle
         exe_computeSignMeanImage(obj);
         exe_computePermutationImages(obj);
         exe_computeSweetSpot(obj, method);
-        
+
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);
         util_matVectVTA(obj); % for proposed pipeline
@@ -139,7 +139,7 @@ classdef PSM < handle
 
         % TESTING ---------------------------------------------------------
         test(obj); % High-level function
-        
+
         % Low level function
         exe_computeOverlap(obj)
 
@@ -147,13 +147,14 @@ classdef PSM < handle
         VTA = util_loadVTA(obj, varargin);
 
     end
-    
+
     methods (Static)
-        
+
         % GENERAL UTILITY -------------------------------------------------
         voxsize = util_getVoxelSize(transform);
         newCoordinates = util_transform(oldCoordinates, image, direction);
         voxelArray = util_nii2voxelArray(image, type, outputSpace);
 
+        util_showTemplateSTN();
     end
 end
