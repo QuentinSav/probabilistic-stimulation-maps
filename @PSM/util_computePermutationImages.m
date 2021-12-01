@@ -3,7 +3,6 @@ function util_computePermutationImages(obj)
 disp('--------------------------------------------------');
 disp('Computing permutation images');
 
-
 obj.features.permutedScores = obj.util_computePermutedScores(obj.param.nPermutationImages);
 
 % Creates target fields in obj

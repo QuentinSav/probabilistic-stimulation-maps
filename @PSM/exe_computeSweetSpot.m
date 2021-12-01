@@ -19,16 +19,14 @@ if strcmpi(method, 'percentile')
 
 elseif strcmpi(method, 'largestCluster')
     
-    S=regionprops(obj.map.significantBetterMean, 'Area', 'PixelIdxList');
-    S=S([S.Area]>=30); %edited
-    result=zeros(size(yourImage));
-    for i=1:numel(S)
-        idx=S(i).PixelIdxList;
-        result(idx)=yourImage(idx);
+    %create a binary image of the significant better
+    binarySignBetterMean = obj.map.significantBetterMean.img;
+    binarySignBetterMean(isnan(binarySignBetterMean)) = 0;
+    binarySignBetterMean(binarySignBetterMean > 0) = 1;
 
-    end
-
-
+    % Get the connected voxels
+    clusters = bwconncomp(binarySignBetterMean);
+    
 end
 
 end
