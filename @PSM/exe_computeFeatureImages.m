@@ -119,7 +119,7 @@ if any(strcmp(imageTypes, 'h0ScoresExcludeVox'))
         obj.features.containerSize(1), ...
         obj.features.containerSize(2), ...
         obj.features.containerSize(3));
-    h0Image = permute(h0Image.img, [2 3 4 1]);
+    h0Image = permute(h0Image, [2 3 4 1]);
     h0Image(~isnan(scoresArrayImage)) = NaN;
 
     % Create NIFTI image with the scoresArray-image

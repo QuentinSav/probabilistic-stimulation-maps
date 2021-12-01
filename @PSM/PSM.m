@@ -129,7 +129,7 @@ classdef PSM < handle
         exe_computeFalsePosCorrection(obj, method, nPermutations);
         exe_computeSignMeanImage(obj);
         exe_computePermutationImages(obj);
-        exe_computeSweetSpot(obj, method);
+        exe_computeSweetSpot(obj, method, varargin);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);

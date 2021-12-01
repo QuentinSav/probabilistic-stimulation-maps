@@ -27,6 +27,10 @@ elseif strcmpi(method, 'largestCluster')
     % Get the connected voxels
     clusters = bwconncomp(binarySignBetterMean);
     
+    % Create sweetspot
+    obj.map.sweetspot = obj.map.containerTemplate;
+    obj.map.sweetspot.img(clusters.PixelIdxList{1}) = 1;
+
 end
 
 end
