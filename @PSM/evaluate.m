@@ -5,20 +5,20 @@ disp('--------------------------------------------------');
 disp('Evaluation');
 
 % Linear regression model
-mdl = fitlm(obj.results.overlap.ratio, obj.results.efficiency);
+mdl = fitlm(obj.results.overlap.ratio, obj.results.score);
 
 disp("Linear regression:      R² (ordinary) = " + mdl.Rsquared.Ordinary);
 disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);
 disp(' ');
 
 % Compute Spearman correlation
-[rho, p] = corr(obj.results.overlap.ratio', obj.results.efficiency', 'Type', 'Spearman');
+[rho, p] = corr(obj.results.overlap.ratio', obj.results.score', 'Type', 'Spearman');
 disp("Spearman correlation:   rho = " + rho);
 disp("                        p = " + p);
 disp(' ');
 
 % Compute Pearson correlation
-[rho, p] = corr(obj.results.overlap.ratio', obj.results.efficiency', 'Type', 'Pearson');
+[rho, p] = corr(obj.results.overlap.ratio', obj.results.score', 'Type', 'Pearson');
 disp("Pearson correlation:    rho = " + rho);
 disp("                        p = " + p);
 disp(' ');
@@ -27,6 +27,6 @@ figure('Name', 'Evaluation');
 hold on;
 plot(mdl);
 xlabel('Overlap ratio (%)');
-ylabel('Clinical efficiency (%)');
+ylabel('Clinical score (%)');
 
 end

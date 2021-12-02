@@ -26,7 +26,7 @@ if strcmpi(h0Type, 'zero')
     get_h0 = @(voxel) 0;
 
 elseif strcmpi(h0Type, 'h0MeanScoreAmplitude')
-    get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3));
+    get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
 
 elseif strcmpi(h0Type, 'h0ScoresExcludeVox')
     get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
@@ -132,6 +132,5 @@ function [p, better] = t_test(scoresArray, xx, yy, zz, h0)
         squeeze(h0));
 
     better = stats.tstat > 0;
-    % TODO check when NaN
    
 end

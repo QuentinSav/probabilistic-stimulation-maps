@@ -11,20 +11,20 @@ end
 if strcmpi(resultType, 'overlapRatio')
     color = mod(2*obj.results.leadID, 2);
     figure('Name',  resultType);
-    scatter(100.*obj.results.overlap.ratio, 100.*obj.results.efficiency, 120, color, '.');
+    scatter(100.*obj.results.overlap.ratio, 100.*obj.results.score, 120, color, '.');
     xlabel('Overlap ratio (%)');
-    ylabel('Clinical efficiency (%)');
+    ylabel('Clinical score (%)');
 
 elseif strcmpi(resultType, 'overlapSize')
     figure('Name',  resultType);
-    scatter(obj.results.overlap.size, 100.*obj.results.efficiency, 120, '.');
+    scatter(obj.results.overlap.size, 100.*obj.results.score, 120, '.');
     xlabel('Overlap size (mm^3)');
-    ylabel('Clinical efficiency (%)');
+    ylabel('Clinical score (%)');
 
 elseif strcmpi(resultType, 'dice')
     figure('Name', resultType);
-    scatter(obj.results.dice.similarity, 100.*obj.results.efficiency, 120, '.')
+    scatter(obj.results.dice.similarity, 100.*obj.results.score, 120, '.')
     xlabel('Dice similarity (-)');
-    ylabel('Clinical efficiency (%)');
+    ylabel('Clinical score (%)');
 
 end

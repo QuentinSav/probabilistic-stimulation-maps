@@ -22,8 +22,8 @@ for k = 1:obj.data.testing.n
     obj.results.overlap.size(end+1) = obj.results.overlap.nVoxels(end)*voxelSize(1)*voxelSize(2)*voxelSize(3);
     obj.results.overlap.ratio(end+1) = obj.results.overlap.nVoxels(end)/nnz(VTA.img);
     
-    % Efficiency
-    obj.results.efficiency(end+1) = obj.data.testing.table.clinicalScore(k);
+    % Score
+    obj.results.score(end+1) = obj.data.testing.table.clinicalScore(k);
     
     % K-fold
     obj.results.kFold(end+1) = obj.param.kFold;

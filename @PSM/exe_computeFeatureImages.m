@@ -18,7 +18,7 @@ else
 end
 
 % Initialize map
-h0sumImage = zeros(obj.features.containerSize);
+h0ArrayImage = zeros([obj.features.containerSize, obj.data.training.n]);
 scoresArrayImage = nan([obj.features.containerSize, obj.data.training.n]);
 
 nDigit = 0;
@@ -43,9 +43,9 @@ for k = 1:obj.features.n
         scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.permutedScores(k, targetImage.k);
     end
 
-    if any(strcmp(imageTypes, 'h0MeanScoresSameAmp'))
-        % Add the "mean-efficiency"
-        h0sumImage(xx, yy, zz) = h0sumImage(xx, yy, zz) + obj.features.meanScores(k);
+    if any(strcmp(imageTypes, 'h0MeanScoreSameAmp'))
+        % Add the "mean-score"
+        h0ArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) =  obj.features.meanScores(k);
     end
 
 end
@@ -98,13 +98,9 @@ if any(strcmp(imageTypes, 'h0MeanScoreSameAmp'))
     fields = [targetFields, {'h0'}];
     obj = setfield(obj, fields{:}, obj.map.containerTemplate);
 
-    % Compute the mean from the sum of clinical efficiencies
-    h0Image = h0sumImage./obj.map.n.img;
-    h0Image(isinf(h0Image)) = NaN;
-
     % Create NIFTI image with the scoresArray-image
     fields = [targetFields, {'h0', 'img'}];
-    obj = setfield(obj, fields{:}, h0Image);
+    obj = setfield(obj, fields{:}, h0ArrayImage);
 
 end
 

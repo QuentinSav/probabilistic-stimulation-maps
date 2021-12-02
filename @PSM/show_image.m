@@ -84,7 +84,7 @@ else
     % When passing a image argument 
     ptCloud = obj.util_nii2voxelArray(imageToPlot, 'coord', 'mni');
     
-    if unique(ptCloud.intensity) < 2
+    if length(unique(ptCloud.intensity)) < 2
         monochrom = 1;
 
     else 
@@ -124,7 +124,7 @@ else
     colorbar;
     
     try
-        caxis([0 max(image.img, [], 'all')]);
+        caxis([0 max(ptCloud.intensity, [], 'all')]);
 
     end
 end

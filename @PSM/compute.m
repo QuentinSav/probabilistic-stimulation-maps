@@ -17,7 +17,7 @@ function compute(obj)
     obj.results.overlap.nVoxels = [];
     obj.results.overlap.size = [];
     obj.results.overlap.ratio = [];
-    obj.results.efficiency = [];
+    obj.results.score = [];
     obj.results.leadID = [];
     obj.results.kFold = [];
     
