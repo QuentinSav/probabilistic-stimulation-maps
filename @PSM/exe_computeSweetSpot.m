@@ -1,22 +1,18 @@
 function exe_computeSweetSpot(obj, method, varargin)
 
 if strcmpi(method, 'percentile')
-    % Compute the sweet spot
-    obj.map.sweetspot.ratio = varargin{1};
-
-    nSignBetterVoxels = sum(~isnan(obj.map.significantBetterMean.img), "all");
-    nMax = round(nSignBetterVoxels*obj.map.sweetspot.ratio);
-    [sortedArray, indexBestMeanVoxels] = sort(obj.map.significantBetterMean.img(:), 1, 'descend');
-
-    % Remove index of NaN values
-    indexBestMeanVoxels(isnan(sortedArray)) = [];
-    sortedArray(isnan(sortedArray)) = [];
-
+    
+    % Assign the sweetspot ratio of the significant better mean image
+    obj.param.sweetspotRatio = varargin{1};
+    
+    % Get the threshold value for the mean 
+    meanThreshold = prctile(obj.map.significantBetterMean.img(~isnan(obj.map.significantBetterMean.img)), obj.param.sweetspotRatio);
+    
     % Create sweetspot
     obj.map.sweetspot = obj.map.containerTemplate;
-    obj.map.sweetspot.img(indexBestMeanVoxels(1:nMax)) = 1;
-    obj.map.sweetspot.img(isnan(obj.map.sweetspot.img)) = 0;
-
+    obj.map.sweetspot.img(obj.map.significantBetterMean.img > meanThreshold) = ...
+        obj.map.significantBetterMean.img(obj.map.significantBetterMean.img > meanThreshold);
+   
 elseif strcmpi(method, 'largestCluster')
     
     %create a binary image of the significant better

@@ -9,6 +9,8 @@ function voxelArray = util_nii2voxelArray(image, type, outputSpace)
 
 if strcmpi(type, 'coord')
     
+    image.img(isnan(image.img)) = 0;
+    
     % Get the non-zeros voxel index list
     voxelsIndex = find(image.img);
 
