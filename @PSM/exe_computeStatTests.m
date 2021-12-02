@@ -25,10 +25,10 @@ betterMask = obj.map.containerTemplate;
 if strcmpi(h0Type, 'zero')
     get_h0 = @(voxel) 0;
 
-elseif strcmpi(h0Type, 'h0MeanScoreAmplitude')
-    get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
+elseif strcmpi(h0Type, 'threshold')
+    get_h0 = @(voxel) prctile(obj.data.training.table.clinicalScore, 33);
 
-elseif strcmpi(h0Type, 'h0ScoresExcludeVox')
+elseif strcmpi(h0Type, 'h0ScoresExcludeVox') || strcmpi(h0Type, 'h0MeanScoreAmplitude')
     get_h0 = @(voxel) obj.map.h0.img(voxel(1), voxel(2), voxel(3), :);
 
 end

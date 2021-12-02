@@ -130,6 +130,9 @@ classdef PSM < handle
         exe_computeSignMeanImage(obj);
         exe_computePermutationImages(obj);
         exe_computeSweetSpot(obj, method, varargin);
+        exe_vectorizeImage(obj);
+        exe_logisticGradientDescent(obj);
+        exe_computePredictions(obj);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);
