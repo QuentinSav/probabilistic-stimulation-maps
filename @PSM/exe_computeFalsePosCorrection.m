@@ -7,7 +7,7 @@ function exe_computeFalsePosCorrection(obj, method, varargin)
 if strcmpi(method, 'Benjamini-Hochberg')
 
     % Get features array from the p-image
-    voxelsArray = obj.util_nii2voxelArray(obj.map.p, 'coord', 'voxels');
+    voxelsArray = PSM.util_nii2voxelArray(obj.map.p, 'coord', 'voxels');
 
     % Sort the arrays of p-values and the coordinates
     [pValuesOrdered, index] = sort(voxelsArray.intensity, 1, "descend");

@@ -131,7 +131,7 @@ classdef PSM < handle
         exe_computePermutationImages(obj);
         exe_computeSweetSpot(obj, method, varargin);
         exe_vectorizeImage(obj);
-        exe_logisticGradientDescent(obj);
+        exe_computeLogisticGradientDescent(obj);
         exe_computePredictions(obj);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
@@ -157,6 +157,7 @@ classdef PSM < handle
         voxsize = util_getVoxelSize(transform);
         newCoordinates = util_transform(oldCoordinates, image, direction);
         voxelArray = util_nii2voxelArray(image, type, outputSpace);
+        g = util_sigmoid(z);
 
         util_showTemplateSTN();
     end

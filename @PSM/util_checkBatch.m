@@ -19,7 +19,7 @@ function status = util_checkBatch(obj)
     
     % Load the first VTA and take its voxel size as reference
     VTA = obj.util_loadVTA(1);
-    expectedVoxelSize = obj.util_getVoxelSize(VTA.mat);
+    expectedVoxelSize = PSM.util_getVoxelSize(VTA.mat);
     
     nDigit = 0;
     
@@ -32,7 +32,7 @@ function status = util_checkBatch(obj)
         
         % Load VTA and get the voxel size
         VTA = obj.util_loadVTA(k);
-        voxelSize = obj.util_getVoxelSize(VTA.mat);
+        voxelSize = PSM.util_getVoxelSize(VTA.mat);
         
         % Compare the voxel size of the current VTA to the reference and 
         if voxelSize ~= expectedVoxelSize

@@ -1,11 +1,18 @@
-function evaluate(obj)
+function evaluate(obj, metricType)
 % Function that performs a linear regression of the predictions
 
 disp('--------------------------------------------------');
 disp('Evaluation');
 
+if strcmpi(metricType, 'overlapRatio')
+    metric = obj.results.overlap.ratio;
+
+elseif strcmpi(metricType, 'weightedSum')
+    metric = obj.results.logRegression;
+end
+
 % Linear regression model
-mdl = fitlm(obj.results.overlap.ratio, obj.results.score);
+mdl = fitlm(metric, obj.results.score);
 
 disp("Linear regression:      R² (ordinary) = " + mdl.Rsquared.Ordinary);
 disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);

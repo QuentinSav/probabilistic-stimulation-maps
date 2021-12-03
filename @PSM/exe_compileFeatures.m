@@ -12,7 +12,7 @@ disp('Compiling features');
 
 % Load the first VTA NIFTI file to define the voxel size
 VTA = obj.util_loadVTA(1);
-obj.features.voxelSize = obj.util_getVoxelSize(VTA.mat);
+obj.features.voxelSize = PSM.util_getVoxelSize(VTA.mat);
 
 if any(strcmp(featuresType, 'coord')) || ...
         any(strcmp(featuresType, 'indexVTAs')) || ...

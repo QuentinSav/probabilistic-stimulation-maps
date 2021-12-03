@@ -10,11 +10,11 @@ for k = 1:obj.data.testing.n
     
     % Load the VTA
     VTA = obj.util_loadVTA(k);
-    voxelSize = obj.util_getVoxelSize(VTA.mat);
+    voxelSize = PSM.util_getVoxelSize(VTA.mat);
     
     % Convert images to coordinates arrays
-    sweetspotVoxels = obj.util_nii2voxelArray(obj.map.sweetspot, 'coord', 'mni');
-    vtaVoxels = obj.util_nii2voxelArray(VTA, 'coord', 'mni');
+    sweetspotVoxels = PSM.util_nii2voxelArray(obj.map.sweetspot, 'coord', 'mni');
+    vtaVoxels = PSM.util_nii2voxelArray(VTA, 'coord', 'mni');
 
     % Overlap
     obj.results.overlap.voxels{end+1} = intersect(sweetspotVoxels.coord, vtaVoxels.coord, 'rows');

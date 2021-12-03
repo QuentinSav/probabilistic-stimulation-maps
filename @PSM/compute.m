@@ -20,6 +20,7 @@ function compute(obj)
     obj.results.score = [];
     obj.results.leadID = [];
     obj.results.kFold = [];
+    obj.results.logRegression = [];
     
     % Create the data partition for validation
     hPartition = obj.pipeline.validation{1}();

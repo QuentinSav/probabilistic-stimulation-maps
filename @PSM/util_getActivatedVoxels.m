@@ -16,7 +16,7 @@ for k = 1:obj.data.training.n
     VTA = obj.util_loadVTA(k);
 
     % Find the voxels coordinates of the VTA
-    activatedVoxelsCells{k} = obj.util_nii2voxelArray(VTA, 'coord', 'mni');
+    activatedVoxelsCells{k} = PSM.util_nii2voxelArray(VTA, 'coord', 'mni');
     indexVTAsCells{k} = k.*ones(activatedVoxelsCells{k}.n, 1);
 
 end

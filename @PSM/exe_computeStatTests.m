@@ -46,7 +46,7 @@ elseif strcmpi(statTestType, 't-test')
 end
 
 % Get the voxel to be tested in the n-Image
-voxels = obj.util_nii2voxelArray(obj.map.n, 'coord', 'voxel');
+voxels = PSM.util_nii2voxelArray(obj.map.n, 'coord', 'voxel');
 
 k = 1;
 nDigit = 0;

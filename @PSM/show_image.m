@@ -77,12 +77,12 @@ if ischar(imageToPlot) || isstring(imageToPlot)
 
     end
 
-    ptCloud = obj.util_nii2voxelArray(image, 'coord', 'mni');
+    ptCloud = PSM.util_nii2voxelArray(image, 'coord', 'mni');
 
 else
     
     % When passing a image argument 
-    ptCloud = obj.util_nii2voxelArray(imageToPlot, 'coord', 'mni');
+    ptCloud = PSM.util_nii2voxelArray(imageToPlot, 'coord', 'mni');
     
     if length(unique(ptCloud.intensity)) < 2
         monochrom = 1;
@@ -129,6 +129,6 @@ else
     end
 end
 
-obj.util_showTemplateSTN();
+PSM.util_showTemplateSTN();
 
 end
