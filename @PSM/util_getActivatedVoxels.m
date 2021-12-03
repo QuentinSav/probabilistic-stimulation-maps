@@ -1,15 +1,22 @@
-function activatedVoxels = util_getActivatedVoxels(obj)
+function activatedVoxels = util_getActivatedVoxels(obj, varargin)
 % Get the 
 
 nDigit = 0;
 
+if strcmpi(obj.state, 'training')
+    batch = obj.data.training;
+
+elseif strcmpi(obj.state, 'testing')
+    batch = obj.data.testing;
+
+end
 % Loop over the current training data
-for k = 1:obj.data.training.n
+for k = 1:batch.n
 
     % Progress feedback to the user
-    if mod(k, 10) == 0 || k == obj.data.training.n
+    if mod(k, 10) == 0 || k == batch.n
         fprintf(repmat('\b', 1, nDigit))
-        nDigit = fprintf('VTA # %d / %d\n', k, obj.data.training.n);
+        nDigit = fprintf('VTA # %d / %d\n', k, batch.n);
     end
 
     % Load the VTA NIFTI file (already filtered in the load function)

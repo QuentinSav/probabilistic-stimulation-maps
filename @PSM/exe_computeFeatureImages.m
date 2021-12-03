@@ -34,7 +34,7 @@ for k = 1:obj.features.n
     xx = obj.features.coord(k, 1);
     yy = obj.features.coord(k, 2);
     zz = obj.features.coord(k, 3);
-
+    
     if any(strcmp(imageTypes, 'scoresArray'))
         scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
     end

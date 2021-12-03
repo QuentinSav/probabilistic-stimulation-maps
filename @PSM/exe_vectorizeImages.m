@@ -2,10 +2,23 @@ function exe_vectorizeImages(obj)
 
 nVoxel = obj.features.containerSize(1)*obj.features.containerSize(2)*obj.features.containerSize(3);
 
-% TODO check the orientation
-obj.features.vectorizedVTAs = reshape(obj.map.scoresArray.img, nVoxel, obj.data.training.n)';
-obj.features.vectorizedVTAs(isnan(obj.features.vectorizedVTAs)) = 0;
-obj.features.vectorizedScores = obj.data.training.table.clinicalScore;
+if strcmpi(obj.state, 'training')
+    vectorizedVTAs = reshape(obj.map.scoresArray.img, nVoxel, obj.data.training.n)';
+    vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
+    vectorizedScores = obj.data.training.table.clinicalScore;
+
+    obj.features.vectorizedVTAs.training = vectorizedVTAs;
+    obj.features.vectorizedScores.training = vectorizedScores;
+
+elseif strcmpi(obj.state, 'testing')
+    vectorizedVTAs = reshape(obj.map.scoresArray.img, nVoxel, obj.data.testing.n)';
+    vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
+    vectorizedScores = obj.data.testing.table.clinicalScore;
+    
+    obj.features.vectorizedVTAs.testing = vectorizedVTAs;
+    obj.features.vectorizedScores.testing = vectorizedScores;
+
+end    
 
 % Try to reconstruct a VTA
 % reconstructedVTA = obj.map.containerTemplate;

@@ -20,14 +20,13 @@ function compute(obj)
     obj.results.score = [];
     obj.results.leadID = [];
     obj.results.kFold = [];
-    obj.results.logRegression = [];
+    obj.results.logRegression.trainingError = [];
+    obj.results.logRegression.testingError = [];
     
     % Create the data partition for validation
     hPartition = obj.pipeline.validation{1}();
-    
+
     for k = 1:hPartition.NumTestSets
-        
-        obj.param.kFold = k;
 
         disp('==================================================');
         disp("Cross-validation fold # " + k + "/" + hPartition.NumTestSets);
@@ -42,6 +41,12 @@ function compute(obj)
         obj.data.testing.table = obj.data.clinical.table(indexTest, :);
         obj.data.testing.n = height(obj.data.testing.table);
         
+        % Perform preprocessing
+        obj.preprocess('training');
+        obj.preprocess('testing');
+
+        obj.param.kFold = k;
+
         obj.train();
         obj.test();
     

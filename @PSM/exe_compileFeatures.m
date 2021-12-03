@@ -5,7 +5,6 @@ function exe_compileFeatures(obj, featuresType)
 % Input: - features:    List of string containing the features type 
 %                       to compile. Possible string {'coord', 'indexVTAs',
 %                       'scores', 'stimAmplitudes', 'meanScoreSameAmp'}
-%        - nPermutedImages (optional): Number of permutation images 
 
 disp('--------------------------------------------------');
 disp('Compiling features');
@@ -25,22 +24,31 @@ end
 if any(strcmp(featuresType, 'coord'))
     coord = activatedVoxels.coord;
     coord = coord./obj.features.voxelSize;
-
-    % Find the min values of the coordinates in order to shift it to zero
-    obj.features.containerOffset = min(coord) - ones(1,3);
-
-    % Shift the voxel coordinates
-    obj.features.coord = coord - obj.features.containerOffset;
-
-    % Get the size of the array
-    obj.features.containerSize = max(obj.features.coord);
     
-    % Get the total number of features
-    obj.features.n = size(obj.features.coord, 1);
+    if ~isfield(obj.map, 'containerTemplate')
+        % Find the min values of the coordinates in order to shift it to zero
+        obj.features.containerOffset = min(coord) - ones(1,3);
+
+        % Shift the voxel coordinates
+        obj.features.coord = coord - obj.features.containerOffset;
+
+        % Get the size of the array
+        obj.features.containerSize = max(obj.features.coord);
+
+        % Get the total number of features
+        obj.features.n = size(obj.features.coord, 1);
+
+        % Create an image template for the images
+        obj.util_createContainerTemplate();
     
-    % Create an image template for the images
-    obj.util_createContainerTemplate();
-    
+    else
+        % Shift the voxel coordinates
+        obj.features.coord = coord - obj.features.containerOffset;
+        
+        % Get the total number of features
+        obj.features.n = size(obj.features.coord, 1);
+
+    end
 end
 
 if any(strcmp(featuresType, 'indexVTAs'))

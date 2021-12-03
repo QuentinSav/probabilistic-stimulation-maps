@@ -101,6 +101,7 @@ classdef PSM < handle
         % GENERAL ---------------------------------------------------------
         compute(obj);
         evaluate(obj);
+        preprocess(obj, state);
 
         % DISPLAY ---------------------------------------------------------
         info(obj); % Not implemented
