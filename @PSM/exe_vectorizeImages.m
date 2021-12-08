@@ -10,10 +10,10 @@ if strcmpi(obj.state, 'training')
     
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
-    obj.features.logRegression.X.training = vectorizedVTAs;
+    obj.features.regression.X.training = vectorizedVTAs;
 
     vectorizedScores = obj.data.training.table.clinicalScore;
-    obj.features.logRegression.y.training = vectorizedScores;
+    obj.features.regression.y.training = vectorizedScores;
 
 elseif strcmpi(obj.state, 'testing')
     
@@ -23,10 +23,10 @@ elseif strcmpi(obj.state, 'testing')
 
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.testing.n, 1) vectorizedVTAs];
-    obj.features.logRegression.X.testing = vectorizedVTAs;
+    obj.features.regression.X.testing = vectorizedVTAs;
 
     vectorizedScores = obj.data.testing.table.clinicalScore;
-    obj.features.logRegression.y.testing = vectorizedScores;
+    obj.features.regression.y.testing = vectorizedScores;
 
 end    
 

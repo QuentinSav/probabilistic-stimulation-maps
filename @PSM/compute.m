@@ -20,10 +20,10 @@ function compute(obj)
     obj.results.score = [];
     obj.results.leadID = [];
     obj.results.kFold = [];
-    obj.results.logRegression.trainingError = [];
-    obj.results.logRegression.testingError = [];
-    obj.results.logRegression.predictionsTraining = [];
-    obj.results.logRegression.predictionsTesting = [];
+    obj.results.regression.trainingError = [];
+    obj.results.regression.testingError = [];
+    obj.results.regression.predictionsTraining = [];
+    obj.results.regression.predictionsTesting = [];
     
     % Create the data partition for validation
     hPartition = obj.pipeline.validation{1}();

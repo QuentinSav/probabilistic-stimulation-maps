@@ -1,9 +1,17 @@
 function exe_computeGradientDescent(obj, type)
 
-obj.param.nIteration = 2000;
-obj.param.hyperParam.learningRate = 1e-3;
+if strcmpi(type, 'linear')
+    computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
 
-obj.map.theta = zeros(1, size(obj.features.logRegression.X.training, 2));
+elseif strcmpi(type, 'logistic')
+    computeGradient = @(type) obj.util_computeGradientLogisiticRegression('batch');
+
+end
+
+obj.param.nIteration = 2000;
+obj.param.hyperParam.learningRate = 1e-4;
+
+obj.map.theta = zeros(1, size(obj.features.regression.X.training, 2));
 
 nDigit = 0;
 
@@ -14,17 +22,17 @@ for k = 1:obj.param.nIteration
         fprintf(repmat('\b', 1, nDigit));
         nDigit = fprintf('Feature # %d / %d\n', k, obj.param.nIteration);
 
-        overfitFlag = obj.exe_computePredictions('linear');
+        overfitFlag = obj.exe_computePredictions(type);
         
         if overfitFlag && overfitFlagPrevious 
-            break;
+            %break;
         end
         
         overfitFlagPrevious = overfitFlag;
 
     end
 
-    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* obj.util_computeGradientLogisticRegression('batch');
+    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient();
     
 end
 end

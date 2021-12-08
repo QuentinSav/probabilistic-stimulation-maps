@@ -8,7 +8,7 @@ if strcmpi(metricType, 'overlapRatio')
     metric = obj.results.overlap.ratio;
 
 elseif strcmpi(metricType, 'predictor')
-    metric = obj.results.logRegression.predictionsTesting;
+    metric = obj.results.regression.predictionsTesting;
 end
 
 % Linear regression model
@@ -36,5 +36,6 @@ plot(mdl);
 axis([0 1 0 1]);
 xlabel('Overlap ratio (%)');
 ylabel('Clinical score (%)');
+plot(linspace(0,1,2), linspace(0,1,2),'k--')
 
 end

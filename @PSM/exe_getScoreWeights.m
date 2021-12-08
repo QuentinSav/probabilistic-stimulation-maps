@@ -16,6 +16,6 @@ for k = 1:nBin
 
 end
 
-    obj.features.logRegression.w = weights;
+    obj.features.regression.w = weights;
 
 end

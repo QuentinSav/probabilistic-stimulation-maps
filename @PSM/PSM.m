@@ -136,7 +136,7 @@ classdef PSM < handle
         exe_computeGradientDescent(obj, type);
         exe_getScoreWeights(obj);
         exe_computeGLM(obj);
-        overfitFlag = exe_computePredictions(obj);
+        overfitFlag = exe_computePredictions(obj, type);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);
