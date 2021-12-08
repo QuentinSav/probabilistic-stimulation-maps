@@ -1,4 +1,4 @@
-function exe_computePredictions(obj)
+function overfitFlag = exe_computePredictions(obj)
 
 fError = findobj( 'Type', 'Figure', 'Name', 'Error');
 fPredictions = findobj( 'Type', 'Figure', 'Name', 'Predictions');
@@ -17,12 +17,19 @@ if isempty(fTheta)
 
 end
 
-predictionsTraining = PSM.util_sigmoid(obj.features.vectorizedVTAs.training * obj.map.theta');
-predictionsTesting = PSM.util_sigmoid(obj.features.vectorizedVTAs.testing * obj.map.theta');
-groundTruthTraining = obj.features.vectorizedScores.training;
-groundTruthTesting = obj.features.vectorizedScores.testing;
-obj.results.logRegression.trainingError(end+1) = sum((groundTruthTraining - predictionsTraining).^2);
-obj.results.logRegression.testingError(end+1) = sum((groundTruthTesting - predictionsTesting).^2);
+obj.results.logRegression.predictionsTraining = PSM.util_sigmoid(obj.features.logRegression.X.training * obj.map.theta');
+obj.results.logRegression.predictionsTesting = PSM.util_sigmoid(obj.features.logRegression.X.testing * obj.map.theta');
+groundTruthTraining = obj.features.logRegression.y.training;
+groundTruthTesting = obj.features.logRegression.y.testing;
+obj.results.logRegression.trainingError(end+1) = sum((groundTruthTraining - obj.results.logRegression.predictionsTraining).^2);
+obj.results.logRegression.testingError(end+1) = sum((groundTruthTesting - obj.results.logRegression.predictionsTesting).^2);
+obj.results.score = groundTruthTesting;
+if length(obj.results.logRegression.testingError) > 1
+    overfitFlag = obj.results.logRegression.testingError(end) > obj.results.logRegression.testingError(end-1);
+else
+    overfitFlag = 0;
+
+end
 theta = obj.map.containerTemplate;
 theta.img = reshape(obj.map.theta(2:end), ...
     obj.features.containerSize(1), ...
@@ -42,16 +49,16 @@ xlabel('predictions')
 legend({'training', 'testing'})
 set(0, 'CurrentFigure', fPredictions)
 subplot(1,2,1)
-scatter(predictionsTraining, groundTruthTraining)
+scatter(obj.results.logRegression.predictionsTraining, groundTruthTraining)
 ylabel('training squared error')
 xlabel('iterations')
 subplot(1,2,2)
-scatter(predictionsTesting, groundTruthTesting)
+scatter(obj.results.logRegression.predictionsTesting, groundTruthTesting)
 ylabel('training squared error')
 xlabel('iterations')
 
 set(0, 'CurrentFigure', fTheta)
-imshow(squeeze(theta.img(:,:,30)))
+imshow(squeeze(theta.img(:,:,30)), 'InitialMagnification','fit')
 
 
 drawnow;

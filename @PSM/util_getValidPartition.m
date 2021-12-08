@@ -11,9 +11,9 @@ function hPartition = util_getValidPartition(obj, method, varargin)
 % validity of the map
 if strcmpi(obj.mode, 'standard')
     hPartition = cvpartition(obj.data.clinical.table.centerID, ...
-        'HoldOut', 0.05, ...
+        'HoldOut', 0.2, ...
         'Stratify', true);
-    obj.param.validationMethod = [100*num2str(0.05),'% Out-of-sample'];
+    obj.param.validationMethod = [100*num2str(0.2),'% Out-of-sample'];
     return
 end
 

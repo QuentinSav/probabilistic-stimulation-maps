@@ -7,8 +7,8 @@ disp('Evaluation');
 if strcmpi(metricType, 'overlapRatio')
     metric = obj.results.overlap.ratio;
 
-elseif strcmpi(metricType, 'weightedSum')
-    metric = obj.results.logRegression;
+elseif strcmpi(metricType, 'predictor')
+    metric = obj.results.logRegression.predictionsTesting;
 end
 
 % Linear regression model
@@ -19,13 +19,13 @@ disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);
 disp(' ');
 
 % Compute Spearman correlation
-[rho, p] = corr(obj.results.overlap.ratio', obj.results.score', 'Type', 'Spearman');
+[rho, p] = corr(metric, obj.results.score, 'Type', 'Spearman');
 disp("Spearman correlation:   rho = " + rho);
 disp("                        p = " + p);
 disp(' ');
 
 % Compute Pearson correlation
-[rho, p] = corr(obj.results.overlap.ratio', obj.results.score', 'Type', 'Pearson');
+[rho, p] = corr(metric, obj.results.score, 'Type', 'Pearson');
 disp("Pearson correlation:    rho = " + rho);
 disp("                        p = " + p);
 disp(' ');
@@ -33,6 +33,7 @@ disp(' ');
 figure('Name', 'Evaluation');
 hold on;
 plot(mdl);
+axis([0 1 0 1]);
 xlabel('Overlap ratio (%)');
 ylabel('Clinical score (%)');
 

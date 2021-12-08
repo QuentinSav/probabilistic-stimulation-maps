@@ -44,7 +44,8 @@ classdef PSM < handle
                 'Nguyen2019', ...
                 'Dembek2019', ...
                 'Reich2019', ...
-                'Proposed'};
+                'Proposed1', ...
+                'Proposed2'};
             defaultAlgorithm = 'Nguyen2019';
             expectedHemiphere = {
                 '', ...
@@ -100,7 +101,7 @@ classdef PSM < handle
 
         % GENERAL ---------------------------------------------------------
         compute(obj);
-        evaluate(obj);
+        evaluate(obj, metricType);
         preprocess(obj, state);
 
         % DISPLAY ---------------------------------------------------------
@@ -132,8 +133,10 @@ classdef PSM < handle
         exe_computePermutationImages(obj);
         exe_computeSweetSpot(obj, method, varargin);
         exe_vectorizeImage(obj);
-        exe_computeLogisticGradientDescent(obj);
-        exe_computePredictions(obj);
+        exe_computeGradientDescent(obj, type);
+        exe_getScoreWeights(obj);
+        exe_computeGLM(obj);
+        overfitFlag = exe_computePredictions(obj);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);

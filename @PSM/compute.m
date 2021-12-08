@@ -22,6 +22,8 @@ function compute(obj)
     obj.results.kFold = [];
     obj.results.logRegression.trainingError = [];
     obj.results.logRegression.testingError = [];
+    obj.results.logRegression.predictionsTraining = [];
+    obj.results.logRegression.predictionsTesting = [];
     
     % Create the data partition for validation
     hPartition = obj.pipeline.validation{1}();
