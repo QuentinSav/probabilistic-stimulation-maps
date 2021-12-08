@@ -17,9 +17,23 @@ else
 
 end
 
+if ~isfield(obj.features, "containerSize")
+    obj.features.containerSize(1) = inf;
+    obj.features.containerSize(2) = inf;
+    obj.features.containerSize(3) = inf;
+
+end
+
 % Initialize map
 h0ArrayImage = zeros([obj.features.containerSize, obj.data.training.n]);
-scoresArrayImage = nan([obj.features.containerSize, obj.data.training.n]);
+
+if strcmpi(obj.state, 'training')
+    scoresArrayImage = nan([obj.features.containerSize, obj.data.training.n]);
+
+elseif strcmpi(obj.state, 'testing')
+    scoresArrayImage = nan([obj.features.containerSize, obj.data.testing.n]);
+
+end
 
 nDigit = 0;
 
@@ -36,7 +50,14 @@ for k = 1:obj.features.n
     zz = obj.features.coord(k, 3);
     
     if any(strcmp(imageTypes, 'scoresArray'))
-        scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
+        condition = 0 < xx && xx <= obj.features.containerSize(1) && ...
+                    0 < yy && yy <= obj.features.containerSize(2) && ...
+                    0 < zz && zz <= obj.features.containerSize(3);
+
+        if condition
+            scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
+
+        end
     end
     
     if any(strcmp(imageTypes, 'permScoresArray'))
