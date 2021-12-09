@@ -46,8 +46,8 @@ theta.img = reshape(obj.map.theta(2:end), ...
     obj.features.containerSize(2), ...
     obj.features.containerSize(3));
 
-theta.img = theta.img - min(theta.img, [], 'all');
-theta.img = theta.img./max(theta.img, [], 'all');
+% theta.img = theta.img - min(theta.img, [], 'all');
+% theta.img = theta.img./max(theta.img, [], 'all');
 
 set(0, 'CurrentFigure', fError)
 hold off
@@ -68,8 +68,15 @@ ylabel('training squared error')
 xlabel('iterations')
 
 set(0, 'CurrentFigure', fTheta)
-imshow(squeeze(theta.img(:,:,30)), 'InitialMagnification','fit')
 
+absMax = max(abs(theta.img(:,:,30)), [], 'all');
+boundColMap = [-absMax absMax];
+imagesc(squeeze(theta.img(:,:,30)), boundColMap); 
+colMap = colMapGen([0 1 1],[0 0 1],100,'midCol',[0 0 0]);
+colormap(colMap)
+axis off
+colorbar
+%imshow(squeeze(theta.img(:,:,30)), 'InitialMagnification','fit')
 
 drawnow;
 

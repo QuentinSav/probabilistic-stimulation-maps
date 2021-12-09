@@ -19,16 +19,16 @@ disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);
 disp(' ');
 
 % Compute Spearman correlation
-[rho, p] = corr(metric, obj.results.score, 'Type', 'Spearman');
-disp("Spearman correlation:   rho = " + rho);
-disp("                        p = " + p);
-disp(' ');
-
-% Compute Pearson correlation
-[rho, p] = corr(metric, obj.results.score, 'Type', 'Pearson');
-disp("Pearson correlation:    rho = " + rho);
-disp("                        p = " + p);
-disp(' ');
+% [rho, p] = corr(metric, obj.results.score, 'Type', 'Spearman');
+% disp("Spearman correlation:   rho = " + rho);
+% disp("                        p = " + p);
+% disp(' ');
+% 
+% % Compute Pearson correlation
+% [rho, p] = corr(metric, obj.results.score, 'Type', 'Pearson');
+% disp("Pearson correlation:    rho = " + rho);
+% disp("                        p = " + p);
+% disp(' ');
 
 figure('Name', 'Evaluation');
 hold on;
