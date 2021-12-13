@@ -10,8 +10,7 @@ if strcmpi(method, 'percentile')
 
     % Create sweetspot
     obj.map.sweetspot = obj.map.containerTemplate;
-    obj.map.sweetspot.img(obj.map.significantBetterMean.img > meanThreshold) = ...
-        obj.map.significantBetterMean.img(obj.map.significantBetterMean.img > meanThreshold);
+    obj.map.sweetspot.img(obj.map.significantBetterMean.img > meanThreshold) = 1;
 
 elseif strcmpi(method, 'largestCluster')
 
