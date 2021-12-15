@@ -8,8 +8,11 @@ if strcmpi(obj.state, 'training')
     vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
+    % Add stimulation amplitude as feature
+    vectorizedVTAs = [1./obj.data.training.table.amplitude vectorizedVTAs];
+
     % Add intercept term
-    vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
+    %vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
     obj.features.regression.X.training = vectorizedVTAs;
 
     vectorizedScores = obj.data.training.table.clinicalScore;
@@ -20,6 +23,9 @@ elseif strcmpi(obj.state, 'testing')
     vectorizedVTAs = reshape(obj.map.scoresArray.img, nVoxel, obj.data.testing.n)';
     vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
+    
+    % Add stimulation amplitude as feature
+    %vectorizedVTAs = [1./obj.data.testing.table.amplitude vectorizedVTAs];
 
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.testing.n, 1) vectorizedVTAs];

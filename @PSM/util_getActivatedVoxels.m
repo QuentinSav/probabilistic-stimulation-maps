@@ -5,7 +5,7 @@ nDigit = 0;
 
 if strcmpi(obj.state, 'training')
     batch = obj.data.training;
-
+    
 elseif strcmpi(obj.state, 'testing')
     batch = obj.data.testing;
 
@@ -25,11 +25,12 @@ for k = 1:batch.n
     % Find the voxels coordinates of the VTA
     activatedVoxelsCells{k} = PSM.util_nii2voxelArray(VTA, 'coord', 'mni');
     indexVTAsCells{k} = k.*ones(activatedVoxelsCells{k}.n, 1);
+    obj.data.(obj.state).table.nVoxel(k) = activatedVoxelsCells{k}.n;
 
 end
 
 % Concatenate all the cell containing the voxel list
-activatedVoxelsCells= cat(1, activatedVoxelsCells{:});
+activatedVoxelsCells = cat(1, activatedVoxelsCells{:});
 
 % Initialize field
 activatedVoxels.indexVTAs = [];

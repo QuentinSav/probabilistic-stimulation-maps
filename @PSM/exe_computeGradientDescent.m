@@ -8,12 +8,15 @@ elseif strcmpi(type, 'logistic')
 
 end
 
-obj.param.nIteration = 2000;
-obj.param.hyperParam.learningRate = 1e-4;
+obj.param.nIteration = 100000;
+obj.param.hyperParam.learningRate = 1e-2;
 
 obj.map.theta = zeros(1, size(obj.features.regression.X.training, 2));
 
 nDigit = 0;
+
+obj.frame(1).cdata = [];
+obj.frame(1).colormap = [];
 
 for k = 1:obj.param.nIteration
     
@@ -22,7 +25,7 @@ for k = 1:obj.param.nIteration
         fprintf(repmat('\b', 1, nDigit));
         nDigit = fprintf('Feature # %d / %d\n', k, obj.param.nIteration);
 
-        overfitFlag = obj.exe_computePredictions(type);
+        overfitFlag = obj.exe_computePredictions(type, k);
         
         if overfitFlag && overfitFlagPrevious 
             %break;

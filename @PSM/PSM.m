@@ -23,6 +23,7 @@ classdef PSM < handle
         features
         data
         param
+        frame
 
     end
 
@@ -44,6 +45,7 @@ classdef PSM < handle
                 'Nguyen2019', ...
                 'Dembek2019', ...
                 'Reich2019', ...
+                'Nguyen2021', ...
                 'Proposed1', ...
                 'Proposed2'};
             defaultAlgorithm = 'Nguyen2019';
@@ -80,6 +82,7 @@ classdef PSM < handle
 
             % Assign input arguments to object properties
             obj.data.clinical.table = p.Results.data;
+            obj.data.clinical.table.nVoxel = nan(height(obj.data.clinical.table),1);
             obj.data.screen.hemisphere = p.Results.hemisphere;
             obj.data.screen.centerID = p.Results.centerID;
             obj.algorithm = p.Results.algorithm;
@@ -136,7 +139,8 @@ classdef PSM < handle
         exe_computeGradientDescent(obj, type);
         exe_getScoreWeights(obj);
         exe_computeGLM(obj);
-        overfitFlag = exe_computePredictions(obj, type);
+        exe_normalizeScores(obj);
+        overfitFlag = exe_computePredictions(obj, type, k);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);

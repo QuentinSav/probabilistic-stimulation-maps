@@ -1,4 +1,4 @@
-function overfitFlag = exe_computePredictions(obj, type)
+function overfitFlag = exe_computePredictions(obj, type, it)
 
 fError = findobj( 'Type', 'Figure', 'Name', 'Error');
 fPredictions = findobj( 'Type', 'Figure', 'Name', 'Predictions');
@@ -13,7 +13,7 @@ if isempty(fPredictions)
 
 end
 if isempty(fTheta)
-    fTheta = figure('Name', 'Theta');
+    fTheta = figure('Name', 'Theta', 'Position', [675,660,908,302]);
 
 end
 
@@ -30,8 +30,8 @@ end
 groundTruthTraining = obj.features.regression.y.training;
 groundTruthTesting = obj.features.regression.y.testing;
 
-obj.results.regression.trainingError(end+1) = sum((groundTruthTraining - obj.results.regression.predictionsTraining).^2);
-obj.results.regression.testingError(end+1) = sum((groundTruthTesting - obj.results.regression.predictionsTesting).^2);
+obj.results.regression.trainingError(end+1) = mean((groundTruthTraining - obj.results.regression.predictionsTraining).^2);
+obj.results.regression.testingError(end+1) = mean((groundTruthTesting - obj.results.regression.predictionsTesting).^2);
 obj.results.score = groundTruthTesting;
 
 if length(obj.results.regression.testingError) > 1
@@ -71,11 +71,28 @@ set(0, 'CurrentFigure', fTheta)
 
 absMax = max(abs(theta.img(:,:,30)), [], 'all');
 boundColMap = [-absMax absMax];
+if absMax == 0
+    boundColMap = [-1 1];
+end
+subplot(1, 2, 1);
 imagesc(squeeze(theta.img(:,:,30)), boundColMap); 
-colMap = colMapGen([0 1 1],[0 0 1],100,'midCol',[0 0 0]);
+colMap = colMapGen([1 0.1 0.1], [0.1 0.1 1], 100, 'midCol',[1 1 1]);
 colormap(colMap)
 axis off
+axis square
 colorbar
+% title(['iteration #', num2str(it)])
+subplot(1, 2, 2);
+scatter(obj.results.regression.predictionsTraining, groundTruthTraining, 8, 'filled')
+hold on
+plot(linspace(0,1,2), linspace(0,1,2),'k--')
+hold off
+
+axis square
+axis([0 1 0 1])
+ylabel('Efficiency (Ground Truth)')
+xlabel('Prediction')
+obj.frame(end + 1) = getframe(fTheta);
 %imshow(squeeze(theta.img(:,:,30)), 'InitialMagnification','fit')
 
 drawnow;
