@@ -4,8 +4,9 @@ close all;
 
 % load table
 load('multicentricTableAllImprovedOnlyRev04.mat');
-tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore');
+tableMulticentric = renamevars(tableMulticentric, 'relativeImprovement', 'clinicalScore');
 % tableMulticentric(1:600, :) = [];
+
 
 psm = PSM(tableMulticentric, ...
     'mode', 'standard', ...
@@ -17,6 +18,4 @@ psm = PSM(tableMulticentric, ...
 psm.compute();
 psm.evaluate('predictor');
 
-%%
-load './templates/learned_theta.mat'
 

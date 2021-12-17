@@ -8,11 +8,16 @@ if strcmpi(obj.state, 'training')
     vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
+    % Add interaction term
+    for k = 1:length(obj.data.training.table.amplitude)
+        vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.training.table.amplitude(k);
+    end
+    
     % Add stimulation amplitude as feature
-    vectorizedVTAs = [1./obj.data.training.table.amplitude vectorizedVTAs];
+    vectorizedVTAs = [(obj.data.training.table.amplitude) vectorizedVTAs];
 
     % Add intercept term
-    %vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
+    vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
     obj.features.regression.X.training = vectorizedVTAs;
 
     vectorizedScores = obj.data.training.table.clinicalScore;
@@ -24,9 +29,14 @@ elseif strcmpi(obj.state, 'testing')
     vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
+    % Add interaction term
+    for k = 1:length(obj.data.testing.table.amplitude)
+        vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.testing.table.amplitude(k);
+    end
+    
     % Add stimulation amplitude as feature
-    %vectorizedVTAs = [1./obj.data.testing.table.amplitude vectorizedVTAs];
-
+    vectorizedVTAs = [(obj.data.testing.table.amplitude) vectorizedVTAs];
+    
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.testing.n, 1) vectorizedVTAs];
     obj.features.regression.X.testing = vectorizedVTAs;

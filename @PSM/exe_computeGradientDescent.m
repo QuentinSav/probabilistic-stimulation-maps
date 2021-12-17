@@ -9,7 +9,7 @@ elseif strcmpi(type, 'logistic')
 end
 
 obj.param.nIteration = 100000;
-obj.param.hyperParam.learningRate = 1e-2;
+obj.param.hyperParam.learningRate = 5e-3;
 
 obj.map.theta = zeros(1, size(obj.features.regression.X.training, 2));
 
@@ -28,7 +28,7 @@ for k = 1:obj.param.nIteration
         overfitFlag = obj.exe_computePredictions(type, k);
         
         if overfitFlag && overfitFlagPrevious 
-            %break;
+            break;
         end
         
         overfitFlagPrevious = overfitFlag;

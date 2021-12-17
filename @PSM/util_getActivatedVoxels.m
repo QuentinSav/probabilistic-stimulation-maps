@@ -10,6 +10,7 @@ elseif strcmpi(obj.state, 'testing')
     batch = obj.data.testing;
 
 end
+
 % Loop over the current training data
 for k = 1:batch.n
 
