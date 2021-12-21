@@ -12,7 +12,8 @@ elseif strcmpi(metricType, 'predictor')
 end
 
 % Linear regression model
-mdl = fitlm(metric./obj.data.testing.table.amplitude, obj.features.regression.y.testing./obj.data.testing.table.amplitude);
+%mdl = fitlm(metric./obj.data.testing.table.amplitude, obj.features.regression.y.testing./obj.data.testing.table.amplitude);
+mdl = fitlm(metric, obj.features.regression.y.testing);
 
 disp("Linear regression:      R² (ordinary) = " + mdl.Rsquared.Ordinary);
 disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);

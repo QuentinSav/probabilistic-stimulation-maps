@@ -47,7 +47,8 @@ classdef PSM < handle
                 'Reich2019', ...
                 'Nguyen2021', ...
                 'Proposed1', ...
-                'Proposed2'};
+                'Proposed2', ...
+                'Proposed3',};
             defaultAlgorithm = 'Nguyen2019';
             expectedHemiphere = {
                 '', ...
@@ -136,7 +137,7 @@ classdef PSM < handle
         exe_computePermutationImages(obj);
         exe_computeSweetSpot(obj, method, varargin);
         exe_vectorizeImage(obj);
-        exe_computeGradientDescent(obj, type);
+        exe_computeGradientDescent(obj, type, regularization);
         exe_getScoreWeights(obj);
         exe_computeGLM(obj);
         exe_normalizeScores(obj);

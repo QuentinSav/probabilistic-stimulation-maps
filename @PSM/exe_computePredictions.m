@@ -41,7 +41,7 @@ else
 
 end
 theta = obj.map.containerTemplate;
-theta.img = reshape(obj.map.theta(3:end), ...
+theta.img = reshape(obj.map.theta(4:end), ...
     obj.features.containerSize(1), ...
     obj.features.containerSize(2), ...
     obj.features.containerSize(3));
@@ -92,7 +92,7 @@ axis square
 axis([0 1 0 1])
 ylabel('Efficiency (Ground Truth)')
 xlabel('Prediction')
-obj.frame(end + 1) = getframe(fTheta);
+%obj.frame(end + 1) = getframe(fTheta);
 %imshow(squeeze(theta.img(:,:,30)), 'InitialMagnification','fit')
 
 drawnow;

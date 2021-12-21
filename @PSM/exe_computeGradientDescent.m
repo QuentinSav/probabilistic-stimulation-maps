@@ -1,10 +1,42 @@
-function exe_computeGradientDescent(obj, type)
+function exe_computeGradientDescent(obj, type, regularization)
 
-if strcmpi(type, 'linear')
-    computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
+if strcmpi(regularization, 'none')
+    
+    obj.param.nIteration = 100000;
+    obj.param.hyperParam.learningRate = 5e-3;
 
-elseif strcmpi(type, 'logistic')
-    computeGradient = @(type) obj.util_computeGradientLogisiticRegression('batch');
+    if strcmpi(type, 'linear')
+        computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
+
+    elseif strcmpi(type, 'logistic')
+        computeGradient = @(type) obj.util_computeGradientLogisiticRegression('batch');
+    
+    end
+
+elseif strcmpi(regularization, 'l1')
+    
+    obj.param.nIteration = 1;
+    
+    if strcmpi(type, 'linear')
+        computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
+
+    elseif strcmpi(type, 'logistic')
+        
+        obj.map.theta = zeros(1, size(obj.features.regression.X.training, 2));
+        [obj.map.theta, FitInfo] = lassoglm(obj.features.regression.X.training, ...
+            obj.features.regression.y.training, ...
+            'binomial', ...
+            'NumLambda', 2, ...
+            'CV', 5, ...
+            'MaxIter', 1e3, ...
+            'Options',statset('UseParallel',true));
+        
+        obj.map.theta = obj.map.theta';
+
+        return
+    end
+
+elseif strcmpi(regularization, 'l2')
 
 end
 

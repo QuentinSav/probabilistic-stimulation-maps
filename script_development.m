@@ -5,17 +5,13 @@ close all;
 % load table
 load('multicentricTableAllImprovedOnlyRev04.mat');
 tableMulticentric = renamevars(tableMulticentric, 'relativeImprovement', 'clinicalScore');
-% tableMulticentric(1:600, :) = [];
-
 
 psm = PSM(tableMulticentric, ...
     'mode', 'standard', ...
-    'algorithm', 'Proposed1', ...
+    'algorithm', 'Proposed3', ...
     'hemisphere', 'Both', ...
     'bypassCheck', true, ...
-    'centerID', 1);
+    'centerID', 0);
 
 psm.compute();
 psm.evaluate('predictor');
-
-
