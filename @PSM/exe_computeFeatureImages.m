@@ -25,13 +25,17 @@ if ~isfield(obj.features, "containerSize")
 end
 
 % Initialize map
-h0ArrayImage = zeros([obj.features.containerSize, obj.data.training.n]);
 
 if strcmpi(obj.state, 'training')
     scoresArrayImage = nan([obj.features.containerSize, obj.data.training.n]);
+    h0ArrayImage = zeros([obj.features.containerSize, obj.data.training.n]);
 
 elseif strcmpi(obj.state, 'testing')
     scoresArrayImage = nan([obj.features.containerSize, obj.data.testing.n]);
+    h0ArrayImage = zeros([obj.features.containerSize, obj.data.testing.n]);
+else 
+    scoresArrayImage = nan([obj.features.containerSize, obj.data.clinical.n]);
+    h0ArrayImage = zeros([obj.features.containerSize, obj.data.clinical.n]);
 
 end
 

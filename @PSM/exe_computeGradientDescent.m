@@ -4,7 +4,7 @@ if strcmpi(regularization, 'none')
     
     obj.param.nIteration = 100000;
     obj.param.hyperParam.learningRate = 5e-3;
-
+    obj.param.hyperParam.lambda = 0;
     if strcmpi(type, 'linear')
         computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
 
@@ -66,8 +66,12 @@ for k = 1:obj.param.nIteration
         overfitFlagPrevious = overfitFlag;
 
     end
-
-    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient();
+    
+    % Not regularized
+    %obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient();
+    
+    % l2-regularization
+    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient() - 2*obj.param.hyperParam.lambda.*obj.map.theta;
     
 end
 end

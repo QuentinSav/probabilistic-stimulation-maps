@@ -9,6 +9,9 @@ if strcmpi(obj.state, 'training')
 elseif strcmpi(obj.state, 'testing')
     batch = obj.data.testing;
 
+else
+    batch = obj.data.clinical;
+
 end
 
 % Loop over the current training data
