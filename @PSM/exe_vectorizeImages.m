@@ -9,12 +9,12 @@ if strcmpi(obj.state, 'training')
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
     % Add interaction term
-%     for k = 1:length(obj.data.training.table.amplitude)
-%         vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.training.table.amplitude(k);
-%     end
+    % for k = 1:length(obj.data.training.table.amplitude)
+    % vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.training.table.amplitude(k);
+    % end
     
     % Add stimulation amplitude as feature
-    vectorizedVTAs = [obj.data.training.table.amplitude double(obj.data.training.table.centerID) vectorizedVTAs];
+    % vectorizedVTAs = [obj.data.training.table.amplitude double(obj.data.training.table.centerID) vectorizedVTAs];
 
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.training.n, 1) vectorizedVTAs];
@@ -30,12 +30,12 @@ elseif strcmpi(obj.state, 'testing')
     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
     % Add interaction term
-%     for k = 1:length(obj.data.testing.table.amplitude)
-%         vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.testing.table.amplitude(k);
-%     end
+    % for k = 1:length(obj.data.testing.table.amplitude)
+    %   vectorizedVTAs(k, :) = vectorizedVTAs(k, :) .* 1./obj.data.testing.table.amplitude(k);
+    % end
     
     % Add stimulation amplitude as feature
-    vectorizedVTAs = [obj.data.testing.table.amplitude double(obj.data.testing.table.centerID) vectorizedVTAs];
+    %vectorizedVTAs = [obj.data.testing.table.amplitude double(obj.data.testing.table.centerID) vectorizedVTAs];
     
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.testing.n, 1) vectorizedVTAs];
@@ -57,7 +57,7 @@ else
 %     end
     
     % Add stimulation amplitude as feature
-    vectorizedVTAs = [obj.data.clinical.table.amplitude double(obj.data.clinical.table.centerID) vectorizedVTAs];
+    % vectorizedVTAs = [obj.data.clinical.table.amplitude double(obj.data.clinical.table.centerID) vectorizedVTAs];
 
     % Add intercept term
     vectorizedVTAs = [ones(obj.data.clinical.n, 1) vectorizedVTAs];

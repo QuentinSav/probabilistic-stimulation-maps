@@ -5,10 +5,13 @@ obj.exe_compileFeatures({'coord', 'indexVTAs', 'weights', 'scores'});
 obj.exe_computeFeatureImages({'n', 'mean', 'scoresArray'});
 obj.exe_vectorizeImages;    
 
-X = obj.features.regression.X.clinical;
+X = logical(obj.features.regression.X.clinical);
 y = obj.features.regression.y.clinical;
-table = obj.data.clinical.table;
+shape = obj.features.containerSize;
+save('data.mat', 'X', 'y', 'shape');
 
-save('data.mat', 'X', 'y', 'table');
+table = obj.data.clinical.table;
+writetable(table, 'table.csv')
+
 
 end
