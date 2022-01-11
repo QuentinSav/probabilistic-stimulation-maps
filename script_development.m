@@ -15,5 +15,5 @@ psm = PSM(tableMulticentric, ...
 
 psm.createPreprocessedCSV();
 
-psm.compute();
-psm.evaluate('predictor');
+% psm.compute();
+% psm.evaluate('predictor');

@@ -7,11 +7,11 @@ obj.exe_vectorizeImages;
 
 X = logical(obj.features.regression.X.clinical);
 y = obj.features.regression.y.clinical;
-shape = obj.features.containerSize;
-save('data.mat', 'X', 'y', 'shape');
+container = obj.map.containerTemplate;
+
+ea_save_nii(container, 'container.nii');
 
 table = obj.data.clinical.table;
-writetable(table, 'table.csv')
-
+%writetable(table, 'table.csv')
 
 end
