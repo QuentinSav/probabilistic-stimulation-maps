@@ -23,6 +23,6 @@ elseif ischar(varargin{1})
 end
 
 % Apply filter to the loaded image
-VTA.img = obj.param.filterImg(VTA.img);
+VTA = obj.param.filterImg(VTA);
 
 end

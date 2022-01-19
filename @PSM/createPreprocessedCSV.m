@@ -1,6 +1,6 @@
 function createPreprocessedCSV(obj)
 
-obj.util_setFilter('rounded');
+obj.util_setFilter('reduced');
 obj.exe_compileFeatures({'coord', 'indexVTAs', 'weights', 'scores'});
 obj.exe_computeFeatureImages({'n', 'mean', 'scoresArray'});
 obj.exe_vectorizeImages;    
@@ -11,7 +11,5 @@ container = obj.map.containerTemplate;
 
 ea_save_nii(container, 'container.nii');
 
-table = obj.data.clinical.table;
-%writetable(table, 'table.csv')
-
+save('data.mat', "X", "y")
 end
