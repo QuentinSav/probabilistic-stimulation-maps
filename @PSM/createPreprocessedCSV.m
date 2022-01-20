@@ -1,6 +1,6 @@
 function createPreprocessedCSV(obj)
 
-obj.util_setFilter('reduced');
+obj.util_setFilter('rounded');
 obj.exe_compileFeatures({'coord', 'indexVTAs', 'weights', 'scores'});
 obj.exe_computeFeatureImages({'n', 'mean', 'scoresArray'});
 obj.exe_vectorizeImages;    
