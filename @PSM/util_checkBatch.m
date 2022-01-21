@@ -32,6 +32,8 @@ function status = util_checkBatch(obj)
         
         % Load VTA and get the voxel size
         VTA = obj.util_loadVTA(k);
+
+        disp("hemisphere: " + obj.data.clinical.table.leadID(k) + " / T(1,1) = " + VTA.mat(1,1)) 
         voxelSize = PSM.util_getVoxelSize(VTA.mat);
         
         % Compare the voxel size of the current VTA to the reference and 

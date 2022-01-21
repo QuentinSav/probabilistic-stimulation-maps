@@ -47,9 +47,9 @@ elseif strcmpi(obj.state, 'testing')
 
 else 
     
-    vectorizedVTAs = reshape(obj.map.scoresArray.img, nVoxel, obj.data.clinical.n)';
-    vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
-    vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
+    vectorizedVTAs = reshape(obj.map.weightsArray.img, nVoxel, obj.data.clinical.n)';
+%     vectorizedVTAs(isnan(vectorizedVTAs)) = 0;
+%     vectorizedVTAs(vectorizedVTAs ~= 0) = 1;
     
     % Add interaction term
 %     for k = 1:length(obj.data.training.table.amplitude)

@@ -35,6 +35,7 @@ elseif strcmpi(obj.state, 'testing')
     h0ArrayImage = zeros([obj.features.containerSize, obj.data.testing.n]);
 else 
     scoresArrayImage = nan([obj.features.containerSize, obj.data.clinical.n]);
+    weightsArrayImage = zeros([obj.features.containerSize, obj.data.clinical.n]);
     h0ArrayImage = zeros([obj.features.containerSize, obj.data.clinical.n]);
 
 end
@@ -61,6 +62,17 @@ for k = 1:obj.features.n
         if condition
             scoresArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.scores(k);
 
+        end
+    end
+
+    if any(strcmp(imageTypes, 'weightsArray'))
+        condition = 0 < xx && xx <= obj.features.containerSize(1) && ...
+                    0 < yy && yy <= obj.features.containerSize(2) && ...
+                    0 < zz && zz <= obj.features.containerSize(3);
+    
+        if condition
+            weightsArrayImage(xx, yy, zz, obj.features.indexVTAs(k)) = obj.features.weights(k);
+            
         end
     end
     
@@ -115,6 +127,17 @@ if any(strcmp(imageTypes, 'scoresArray')) || any(strcmp(imageTypes, 'permScoresA
     fields = [targetFields, {'scoresArray', 'img'}];
     obj = setfield(obj, fields{:}, scoresArrayImage);
 
+end
+
+if any(strcmp(imageTypes, 'weightsArray'))
+
+    % Get the container template for the mean-image
+    fields = [targetFields, {'weigthsArray'}];
+    obj = setfield(obj, fields{:}, obj.map.containerTemplate);
+
+    % Create NIFTI image with the scoresArray-image
+    fields = [targetFields, {'weightsArray', 'img'}];
+    obj = setfield(obj, fields{:}, weightsArrayImage);
 end
 
 if any(strcmp(imageTypes, 'h0MeanScoreSameAmp'))

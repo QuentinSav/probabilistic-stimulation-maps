@@ -11,8 +11,8 @@ if isnumeric(varargin{1})
 
     elseif strcmpi(obj.state, 'testing')
         VTA = ea_load_nii(obj.data.testing.table.filename{varargin{1}});
-
-    else
+    
+    else 
         VTA = ea_load_nii(obj.data.clinical.table.filename{varargin{1}});
         
     end
@@ -23,6 +23,6 @@ elseif ischar(varargin{1})
 end
 
 % Apply filter to the loaded image
-VTA.img = obj.param.filterImg(VTA.img);
+VTA = obj.param.filterImg(VTA);
 
 end

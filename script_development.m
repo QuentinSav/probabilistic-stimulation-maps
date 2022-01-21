@@ -1,6 +1,6 @@
-clc;
-clear;
-close all;
+% clc;
+% clear;
+% close all;
 
 % load table
 load('multicentricTableAllImprovedOnlyRev04.mat');
