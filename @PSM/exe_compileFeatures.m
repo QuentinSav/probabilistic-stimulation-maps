@@ -34,7 +34,7 @@ end
 
 if any(strcmp(featuresType, 'coord'))
     coord = activatedVoxels.coord;
-    coord = coord./obj.features.voxelSize;
+    coord = round(coord./obj.features.voxelSize);
     
     if ~isfield(obj.map, 'containerTemplate')
         % Find the min values of the coordinates in order to shift it to zero
