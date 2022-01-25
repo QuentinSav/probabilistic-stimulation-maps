@@ -15,7 +15,7 @@ end
 for k = 1:obj.data.clinical.n
     
     new_filename = [new_folder, num2str(k), '.nii'];
-    ea_reslice_nii(obj.data.clinical.table.filename{k}, new_filename, voxelSize, false, 0, 3);
+    ea_reslice_nii(obj.data.clinical.table.filename{k}, new_filename, voxelSize, false, 0, 1);
     obj.data.clinical.table.filename{k} = new_filename;
 
 end

@@ -113,6 +113,9 @@ classdef PSM < handle
         showImage(obj, imageToPlot, holdFlag, colorName);
         showResults(obj, resultType);
 
+        % GENERAL UTILITY -------------------------------------------------
+        VTA = util_loadVTA(obj, varargin);
+
     end
 
     methods (Access = private)
@@ -153,10 +156,7 @@ classdef PSM < handle
         test(obj); % High-level function
 
         % Low level function
-        exe_computeOverlap(obj)
-
-        % GENERAL UTILITY -------------------------------------------------
-        VTA = util_loadVTA(obj, varargin);
+        exe_computeOverlap(obj);
 
     end
 

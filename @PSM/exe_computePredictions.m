@@ -41,7 +41,7 @@ else
 
 end
 theta = obj.map.containerTemplate;
-theta.img = reshape(obj.map.theta(4:end), ...
+theta.img = reshape(obj.map.theta(2:end), ...
     obj.features.containerSize(1), ...
     obj.features.containerSize(2), ...
     obj.features.containerSize(3));
@@ -69,13 +69,13 @@ xlabel('iterations')
 
 set(0, 'CurrentFigure', fTheta)
 
-absMax = max(abs(theta.img(:,:,30)), [], 'all');
+absMax = max(abs(theta.img(:,:,8)), [], 'all');
 boundColMap = [-absMax absMax];
 if absMax == 0
     boundColMap = [-1 1];
 end
 subplot(1, 2, 1);
-imagesc(squeeze(theta.img(:,:,30)), boundColMap); 
+imagesc(squeeze(theta.img(:,:,8)), boundColMap); 
 colMap = colMapGen([1 0.1 0.1], [0.1 0.1 1], 100, 'midCol',[1 1 1]);
 colormap(colMap)
 axis off

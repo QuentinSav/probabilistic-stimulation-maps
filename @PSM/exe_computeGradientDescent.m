@@ -3,7 +3,7 @@ function exe_computeGradientDescent(obj, type, regularization)
 if strcmpi(regularization, 'none')
     
     obj.param.nIteration = 100000;
-    obj.param.hyperParam.learningRate = 5e-3;
+    obj.param.hyperParam.learningRate = 5e0;
     obj.param.hyperParam.lambda = 0;
     if strcmpi(type, 'linear')
         computeGradient = @(type) obj.util_computeGradientLinearRegression('batch');
@@ -41,7 +41,7 @@ elseif strcmpi(regularization, 'l2')
 end
 
 obj.param.nIteration = 100000;
-obj.param.hyperParam.learningRate = 5e-3;
+obj.param.hyperParam.learningRate = 5e-2;
 
 obj.map.theta = zeros(1, size(obj.features.regression.X.training, 2));
 
@@ -68,10 +68,10 @@ for k = 1:obj.param.nIteration
     end
     
     % Not regularized
-    %obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient();
+    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient();
     
     % l2-regularization
-    obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient() - 2*obj.param.hyperParam.lambda.*obj.map.theta;
+    %obj.map.theta = obj.map.theta + obj.param.hyperParam.learningRate .* computeGradient() - 2*obj.param.hyperParam.lambda.*obj.map.theta;
     
 end
 end
