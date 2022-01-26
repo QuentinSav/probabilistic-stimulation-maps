@@ -24,13 +24,14 @@ classdef PSM < handle
         data
         param
         frame
+                state
 
     end
 
-    properties (Access = private)
+    properties (Access = public)
 
         % Object state
-        state
+
         mode
 
     end
@@ -118,7 +119,7 @@ classdef PSM < handle
 
     end
 
-    methods (Access = private)
+    methods (Access = public)
 
         % SETUP -----------------------------------------------------------
         util_createPipeline(obj);
