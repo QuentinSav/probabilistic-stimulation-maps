@@ -37,7 +37,7 @@ elseif strcmpi(regularization, 'l1')
     end
 
 elseif strcmpi(regularization, 'l2')
-
+    
 end
 
 obj.param.nIteration = 100000;
