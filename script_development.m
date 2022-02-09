@@ -23,24 +23,24 @@ psm = PSM(tableMulticentric, ...
 % psm.compute();
 % psm.evaluate('predictor');
 
-% for k = 1:length(voxelSizes)
-%     
-%     psm = PSM(tableMulticentric, ...
-%     'mode', 'standard', ...
-%     'algorithm', 'Proposed1', ...
-%     'hemisphere', 'Both', ...
-%     'bypassCheck', true, ...
-%     'centerID', 0);
-% 
-%     psm.createPreprocessedCSV(voxelSizes(k));
-%     
-%     % Plot une VTA 
-%     VTA_saved = psm.util_loadVTA(1);
-%     
-%     %psm.show_image(VTA)
-% 
-%     drawnow
-% end
+for k = 1:length(voxelSizes)
+    
+    psm = PSM(tableMulticentric, ...
+    'mode', 'standard', ...
+    'algorithm', 'Proposed1', ...
+    'hemisphere', 'Both', ...
+    'bypassCheck', true, ...
+    'centerID', 0);
+
+    psm.createPreprocessedCSV(voxelSizes(k));
+    
+    % Plot une VTA 
+    VTA_saved = psm.util_loadVTA(1);
+    
+    %psm.show_image(VTA)
+
+    drawnow
+end
 
 % psm.compute();
 % psm.evaluate('predictor');
@@ -57,7 +57,7 @@ VTA_dataset.img = reshape(X(1, 2:end), ...
 
 % Plot une VTA 
 psm.util_setFilter('raw');
-psm.state = 'idle'
+psm.state = 'idle';
 VTA_saved = psm.util_loadVTA(1);
     
 psm.show_image(VTA_saved);
