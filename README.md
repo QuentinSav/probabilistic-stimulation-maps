@@ -1,5 +1,26 @@
 # 2008_BetterMaps
 
+TODO:
+- [ ] VIZUALIZATION
+  - [ ] Add the coordinate frame in the figure
+  - [ ] Center the white color to zero coefficient values
+  - [ ] 
+- [ ] Solve the transformation issue
+- [ ] Create datasets for right and left hemisphere
+- [ ] 
+- 
+- [x] Finish the implementation of the Dembek, 2019 pipeline (without permutation tests)
+- [x] Finish the implementation of Reich, 2019
+- [x] Gitignore the asv files
+- [x] Integrate the psm constructor additional filters
+- [x] Implement permutation tests from Dembek, 2019
+- [ ] Implement the Genovese formulation for the Benjamini-Hochberg type 1 error correction of Nguyen, 2019
+- [x] Add the STN shape in map plotting
+- [ ] Implement the exe_computeSweetSpot with method 'percentile' and 'largest cluster'
+
+
+
+
 MATLAB Class to handle Probabilistic Stimulation Map (PSM). It currently includes the following algorithms:
 
 
@@ -12,12 +33,3 @@ MATLAB Class to handle Probabilistic Stimulation Map (PSM). It currently include
 ¹ Mean score of the VTA with same amplitude
 
 
-TODO:
-- [x] Finish the implementation of the Dembek, 2019 pipeline (without permutation tests)
-- [x] Finish the implementation of Reich, 2019
-- [x] Gitignore the asv files
-- [x] Integrate the psm constructor additional filters
-- [x] Implement permutation tests from Dembek, 2019
-- [ ] Implement the Genovese formulation for the Benjamini-Hochberg type 1 error correction of Nguyen, 2019
-- [x] Add the STN shape in map plotting
-- [ ] Implement the exe_computeSweetSpot with method 'percentile' and 'largest cluster'
