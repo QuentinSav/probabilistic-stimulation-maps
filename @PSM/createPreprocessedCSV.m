@@ -5,7 +5,7 @@ disp("Reslicing voxsize = " + voxelSize);
 
 obj.util_setFilter('raw');
 
-new_folder = ['../../03_Data/reslicedVTAs/', num2str(1000*voxelSize), 'um/'];
+new_folder = ['../../03_Data/reslicedVTAsLeft/', num2str(1000*voxelSize), 'um/'];
 
 if  ~exist(new_folder, 'dir')
     mkdir(new_folder)
