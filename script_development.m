@@ -2,6 +2,8 @@
 % clear;
 % close all;
 
+
+a = b
 % load table
 load('multicentricTableAllImprovedOnlyRev04.mat');
 tableMulticentric = renamevars(tableMulticentric, 'relativeImprovement', 'clinicalScore');
