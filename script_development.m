@@ -2,10 +2,8 @@
 % clear;
 % close all;
 
-
-a = b
 % load table
-load('multicentricTableAllImprovedOnlyRev04.mat');
+load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev04.mat');
 tableMulticentric = renamevars(tableMulticentric, 'relativeImprovement', 'clinicalScore');
 
 voxelSizes = linspace(0.3, 2, 18);
