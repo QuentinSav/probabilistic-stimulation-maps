@@ -5,23 +5,16 @@
 % REQUIREMEMT
 % Open a patient in 3D MNI Space with Lead DBS, then run this script
 
-%% mean improvement map with different ranges 
-% 0--33rd percentile
+% Adapted from Khoa Nguyen script
 
-meanImprovementMap = ea_load_nii( 'map.nii.gz' );
+meanImprovementMap = ea_load_nii( '../../03_Data/06_Maps/map_v2.nii.gz' );
+
 tmpIdx = find( meanImprovementMap.img ~= 0 );
 uniqueMeanImprovementValues = unique( meanImprovementMap.img( tmpIdx ) );
-% Autumn color map and go from red to orange to yellow
+
 cmap = colMapGen([1 0.1 0.1], [0.1 0.1 1], 100, 'midCol',[1 1 1]);
 
-lowerThreshold = prctile( meanImprovementMap.img( tmpIdx ), 0 );
-upperThreshold = prctile( meanImprovementMap.img( tmpIdx ), 33 );
-tmpIdx = find( meanImprovementMap.img > lowerThreshold & meanImprovementMap.img < upperThreshold );
-colorTable = zeros( numel( tmpIdx ),3 );
-for index = 1:numel( tmpIdx )
-    colorTable( index, : ) = cmap( uniqueMeanImprovementValues == ...
-        meanImprovementMap.img( tmpIdx( index ) ), : );
-end
+
 if ~isempty(tmpIdx)
     hold on
     [ xx, yy, zz ] = ind2sub( size( meanImprovementMap.img ), tmpIdx );
@@ -29,14 +22,18 @@ if ~isempty(tmpIdx)
     worldCoordinates = PSM.util_transform(voxelCoordinates, meanImprovementMap, 'VoxelToWorld');
     markerSize = 20;
     % use this line to plot the whole image
-    indexSlice = 1:size( worldCoordinates, 1 );
+    %indexSlice = 1:size( worldCoordinates, 1 );
     % use this line for axial slices
-%     indexSlice = find( worldCoordinates( :, 3 ) == 0 );
+    %indexSlice = find( worldCoordinates( :, 3 ) == -12 );
     % or this line for sagittal 
     %indexSlice = find( worldCoordinates( :, 1 ) == 10 );
-    % or this line for coronal 
-    %indexSlice = find( worldCoordinates( :, 2 ) == 10 );
-    
+    % or this line for coronal
+    indexSlice = find( worldCoordinates( :, 2 ) == -12);
+    colorTable = zeros( numel( tmpIdx ),3 );
+    for index = 1:numel( tmpIdx )
+        colorTable( index, : ) = cmap( uniqueMeanImprovementValues == ...
+        meanImprovementMap.img( tmpIdx( index ) ), : );
+    end
     hMeanImprovement = scatter3( worldCoordinates( indexSlice, 1 ),...
         worldCoordinates( indexSlice, 2 ),...
         worldCoordinates( indexSlice, 3 ),...
@@ -64,11 +61,11 @@ if ~isempty(tmpIdx)
     % use this line to plot the whole image
 %     indexSlice = 1:size( worldCoordinates, 1 );
     % use this line for axial slices
-    indexSlice = find( worldCoordinates( :, 3 ) == 0 );
+    %indexSlice = find( worldCoordinates( :, 3 ) == -10 );
     % or this line for sagittal 
     %indexSlice = find( worldCoordinates( :, 1 ) == 10 );
     % or this line for coronal 
-    %indexSlice = find( worldCoordinates( :, 2 ) == 10 );
+    indexSlice = find( worldCoordinates( :, 2 ) == -12 );
     
     hMeanImprovement = scatter3( worldCoordinates( indexSlice, 1 ),...
         worldCoordinates( indexSlice, 2 ),...
@@ -97,11 +94,11 @@ if ~isempty(tmpIdx)
     % use this line to plot the whole image
 %     indexSlice = 1:size( worldCoordinates, 1 );
     % use this line for axial slices
-    indexSlice = find( worldCoordinates( :, 3 ) == 0 );
+    %indexSlice = find( worldCoordinates( :, 3 ) == 0 );
     % or this line for sagittal 
     %indexSlice = find( worldCoordinates( :, 1 ) == 10 );
     % or this line for coronal 
-    %indexSlice = find( worldCoordinates( :, 2 ) == 10 );
+    indexSlice = find( worldCoordinates( :, 2 ) == -12 );
     
     hMeanImprovement = scatter3( worldCoordinates( indexSlice, 1 ),...
         worldCoordinates( indexSlice, 2 ),...

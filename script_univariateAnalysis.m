@@ -3,7 +3,9 @@ clear all;
 close all;
 
 % load table
-load('multicentricTableAllImprovedOnlyRev04.mat');
+load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev04.mat');
+
+%%
 tableMulticentric(tableMulticentric.centerID == 2, :) = [];
 
 %% Bern
@@ -21,7 +23,7 @@ subplot(2, 1, 2)
 scatter(tableMulticentric.amplitude, tableMulticentric.efficiency);
 [rho_eff, p_eff] = corr(tableMulticentric.amplitude, tableMulticentric.efficiency);
 xlabel('Amplitude');
-ylabel('Efficiency')
+ylabel('Efficiency');
 title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
 
 %% Cologne

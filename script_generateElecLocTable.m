@@ -78,4 +78,3 @@ for k = 1:height(tableMulticentric)
     tableMulticentric.contactCoord(k) = {coord};
 
 end
-
