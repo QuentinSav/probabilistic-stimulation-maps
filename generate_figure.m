@@ -68,6 +68,64 @@ psm_eff.compute();
 fun_evaluate_Nguyen2019_eff_vs_relImp(psm_rImp, 'relImp');
 fun_evaluate_Nguyen2019_eff_vs_relImp(psm_eff, 'eff');
 
+%% Results figure 2
+
+% load table
+load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev04.mat');
+
+% Multicenter
+figure;
+subplot(2, 1, 1)
+scatter(tableMulticentric.amplitude, tableMulticentric.relativeImprovement);
+[rho_imp, p_imp] = corr(tableMulticentric.amplitude, tableMulticentric.relativeImprovement);
+xlabel('Amplitude');
+ylabel('Relative Improvement')
+title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+
+subplot(2, 1, 2)
+scatter(tableMulticentric.amplitude, tableMulticentric.efficiency);
+[rho_eff, p_eff] = corr(tableMulticentric.amplitude, tableMulticentric.efficiency);
+xlabel('Amplitude');
+ylabel('Efficiency');
+title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+
+% Bern
+tableBern = tableMulticentric(tableMulticentric.centerID == 1, :);
+
+figure;
+subplot(2, 1, 1)
+scatter(tableBern.amplitude, tableBern.relativeImprovement);
+[rho_imp, p_imp] = corr(tableBern.amplitude, tableBern.relativeImprovement);
+xlabel('Amplitude');
+ylabel('Relative Improvement')
+title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+
+subplot(2, 1, 2)
+scatter(tableBern.amplitude, tableBern.efficiency);
+[rho_eff, p_eff] = corr(tableBern.amplitude, tableBern.efficiency);
+xlabel('Amplitude');
+ylabel('Efficiency');
+title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+
+% Cologne
+tableCologne = tableMulticentric(tableMulticentric.centerID == 1, :);
+
+figure;
+subplot(2, 1, 1)
+scatter(tableCologne.amplitude, tableCologne.relativeImprovement);
+[rho_imp, p_imp] = corr(tableCologne.amplitude, tableCologne.relativeImprovement);
+xlabel('Amplitude');
+ylabel('Relative Improvement')
+title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+
+subplot(2, 1, 2)
+scatter(tableCologne.amplitude, tableCologne.efficiency);
+[rho_eff, p_eff] = corr(tableCologne.amplitude, tableCologne.efficiency);
+xlabel('Amplitude');
+ylabel('Efficiency');
+title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+
+
 %% Result figure 3-4-5-6:
 
 clc
@@ -105,19 +163,85 @@ psm_Nowacki2022 = PSM(tableMulticentric(:, :), ...
     'centerID', 0, ...
     'mode', 'analysis');
 
-%%
+%% Figure 3
 
 psm_Nguyen2019.compute();
 R2_Nguyen2019 = psm_Nguyen2019.evaluate('overlap_ratio');
+CoM_Nguyen2019 = psm_Nguyen2019.results.CoM;
+psm_Nguyen2019 = [];
 
-
-%%
 psm_Dembek2019.compute();
+R2_Dembek2019 = psm_Dembek2019.evaluate('overlap_ratio');
+CoM_Dembek2019 = psm_Dembek2019.results.CoM;
 psm_Dembek2019 = [];
 
 psm_Reich2019.compute();
+R2_Reich2019 = psm_Reich2019.evaluate('overlap_ratio');
+CoM_Reich2019 = psm_Reich2019.results.CoM;
 psm_Reich2019 = [];
 
 psm_Nowacki2022.compute();
+R2_Nowacki2022 = psm_Nowacki2019.evaluate('overlap_ratio');
+CoM_Nowacki2022 = psm_Nowacki2019.results.CoM;
 psm_Nowacki2022 = [];
+
+%% figure 4
+
+data = [R2_Nguyen2019, R2_Dembek2019, R2_Reich2019, R2_Nowacki2022];
+variableNames = {'Nguyen et al., 2019', 'Dembek et al., 2019', 'Reich et al., 2019', 'Nowacki et al., 2022'};
+
+figure('Name', 'results_3')
+boxplot(data, variableNames);
+
+%% figure 6
+
+CoM_Nguyen2019 = [ 10, -12, -8;
+        10, -12, -7;
+        10, -12, -6;
+        10, -12, -5;
+        10, -12, -4];
+
+CoM_Dembek2019 = 1+[ 10, -12, -8;
+        10, -12, -7;
+        10, -12, -6;
+        10, -12, -5;
+        10, -12, -4];
+
+CoM_Reich2019 = 2+[ 10, -12, -8;
+        10, -12, -7;
+        10, -12, -6;
+        10, -12, -5;
+        10, -12, -4];
+
+CoM_Nowacki2022 = 3+[ 10, -12, -8;
+        10, -12, -7;
+        10, -12, -6;
+        10, -12, -5;
+        10, -12, -4];
+
+CoM = {CoM_Nguyen2019, CoM_Dembek2019, CoM_Reich2019, CoM_Nowacki2022};
+
+colors = [0, 0.4470, 0.7410; 
+          0.9290, 0.6940, 0.1250;
+	      0.4660, 0.6740, 0.1880;
+	      0.6350, 0.0780, 0.1840];
+
+gcf
+hold on
+
+for k = 1:4
+    
+    scatter3(CoM{k}(:, 1), CoM{k}(:, 2), CoM{k}(:, 3), 30, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	colors(k, :))
+    
+    scatter3(mean(CoM{k}(:, 1)), mean(CoM{k}(:, 2)), mean(CoM{k}(:, 3)), 100, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	colors(k, :))
+
+end
+
+
 
