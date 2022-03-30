@@ -24,18 +24,11 @@ classdef PSM < handle
         data
         param
         frame
-                state
-
-    end
-
-    properties (Access = public)
-
-        % Object state
-
+        state
         mode
 
     end
-
+    
     methods
         function obj = PSM(varargin)
 
@@ -46,7 +39,7 @@ classdef PSM < handle
                 'Nguyen2019', ...
                 'Dembek2019', ...
                 'Reich2019', ...
-                'Nguyen2021', ...
+                'Nowacki2022', ...
                 'Proposed1', ...
                 'Proposed2', ...
                 'Proposed3',};
@@ -106,7 +99,7 @@ classdef PSM < handle
 
         % GENERAL ---------------------------------------------------------
         compute(obj);
-        evaluate(obj, metricType);
+        R2_kFold = evaluate(obj, metricType);
         preprocess(obj, state);
 
         % DISPLAY ---------------------------------------------------------
@@ -146,6 +139,7 @@ classdef PSM < handle
         exe_computeGLM(obj);
         exe_normalizeScores(obj);
         overfitFlag = exe_computePredictions(obj, type, k);
+        exe_computeCenterOfMass(obj);
 
         meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
         activatedVoxels = util_getActivatedVoxels(obj);

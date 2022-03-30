@@ -66,7 +66,6 @@ if any(strcmp(featuresType, 'indexVTAs'))
     obj.features.indexVTAs = activatedVoxels.indexVTAs;
 end
 
-
 if any(strcmp(featuresType, 'weights'))
     obj.features.weights = activatedVoxels.weights;
 

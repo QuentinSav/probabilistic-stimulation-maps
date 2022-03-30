@@ -11,5 +11,5 @@ obj.map.containerTemplate = ea_make_nii(img, obj.features.voxelSize, - obj.featu
 % Creates the transformation matrix of the template
 obj.map.containerTemplate.mat = diag([obj.features.voxelSize, 1]);
 obj.map.containerTemplate.mat(1:3, 4) = obj.features.containerOffset.*obj.features.voxelSize;
-disp(obj.features.voxelSize)
+
 end

@@ -1,63 +1,38 @@
-% clc;
-% clear;
-% close all;
-
 % load table
-load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev04.mat');
-tableMulticentric = renamevars(tableMulticentric, 'relativeImprovement', 'clinicalScore');
 
-voxelSizes = linspace(0.3, 2, 18);
-folderData = '/home/brainstimmaps/RESEARCH/20xx_Projects/2008_BetterMaps/03_Data/ML_datasets';
+%% Image result 1
 
-for k = 1:height(tableMulticentric)
-    tableMulticentric.filename{k} = ['../../03_Data/reslicedVTAs/1500um/', num2str(k), '.nii'];
-end
+load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev05.mat');
 
-psm = PSM(tableMulticentric, ...
-    'mode', 'standard', ...
-    'algorithm', 'Proposed1', ...
+psm_rImp = PSM(tableMulticentric(:, :), ...
+    'algorithm', 'Nguyen2019', ...
     'hemisphere', 'Both', ...
     'bypassCheck', true, ...
-    'centerID', 0);
+    'centerID', 0, ...
+    'mode', 'analysis');
 
-% psm.compute();
-% psm.evaluate('predictor');
+psm_rImp.compute();
 
-for k = 1:length(voxelSizes)
-    
-    psm = PSM(tableMulticentric, ...
-    'mode', 'standard', ...
-    'algorithm', 'Proposed1', ...
-    'hemisphere', 'Left', ...
+tableMulticentric = renamevars(tableMulticentric, 'clinicalScore', 'relativeImprovement');
+tableMulticentric = renamevars(tableMulticentric, 'efficiency', 'clinicalScore');
+
+psm_eff = PSM(tableMulticentric(:, :), ...
+    'algorithm', 'Nguyen2019', ...
+    'hemisphere', 'Both', ...
     'bypassCheck', true, ...
-    'centerID', 0);
+    'centerID', 0, ...
+    'mode', 'analysis');
 
-    psm.createPreprocessedCSV(voxelSizes(k));
-    
-    % Plot une VTA 
-    VTA_saved = psm.util_loadVTA(1);
-    
-    %psm.show_image(VTA)
+psm_eff.compute();
 
-    drawnow
-end
+R2_relImp = fun_evaluate_Nguyen2019_eff_vs_relImp(psm_rImp, 'relImp');
+R2_eff = fun_evaluate_Nguyen2019_eff_vs_relImp(psm_eff, 'eff');
 
-% psm.compute();
-% psm.evaluate('predictor');
+disp('R2 overlap with efficiency Sweet spot: ')
+disp(['eff  = ', num2str(R2_eff(1))]);   
+disp(['rImp = ', num2str(R2_eff(2))]);    
 
-%%
-load('../../03_Data/ML_datasets/trilinear_interpolation/dataset_1500um.mat')
+disp('R2 overlap with relative improvement Sweet spot: ')
+disp(['eff  = ', num2str(R2_relImp(1))]);   
+disp(['rImp = ', num2str(R2_relImp(2))]);    
 
-VTA_dataset.mat = container_affine;
-VTA_dataset.img = reshape(X(1, 2:end), ...
-    container_shape(1), ...
-    container_shape(2), ...
-    container_shape(3));
-
-% Plot une VTA 
-psm.util_setFilter('raw');
-psm.state = 'idle';
-VTA_saved = psm.util_loadVTA(1);
-    
-psm.show_image(VTA_saved);
-psm.show_image(VTA_dataset);

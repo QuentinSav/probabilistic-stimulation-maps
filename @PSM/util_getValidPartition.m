@@ -15,6 +15,15 @@ if strcmpi(obj.mode, 'standard')
         'Stratify', true);
     obj.param.validationMethod = [100*num2str(0.2),'% Out-of-sample'];
     return
+
+elseif strcmpi(obj.mode, 'analysis')
+    rng(100);
+    hPartition = cvpartition(obj.data.clinical.table.centerID, ...
+        'KFold', 10, ...
+        'Stratify', true);
+    obj.param.validationMethod = ['10-Fold CV'];
+    return
+
 end
 
 if strcmpi(method, 'LOO')

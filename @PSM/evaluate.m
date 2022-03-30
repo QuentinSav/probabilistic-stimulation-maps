@@ -1,14 +1,18 @@
-function evaluate(obj, metricType)
+function R2_kFold = evaluate(obj, metricType)
 % Function that performs a linear regression of the predictions
 
 disp('--------------------------------------------------');
 disp('Evaluation');
 
-if strcmpi(metricType, 'overlapRatio')
+date_str = datestr(now, 'mm-dd-yy');
+
+if strcmpi(metricType, 'overlap_ratio')
     metric = obj.results.overlap.ratio;
     groundTruth = obj.results.score;
     
     obj.show_image('SweetSpot')
+    ea_save_nii(obj.map.sweetspot, ['../../03_Data/06_Maps/sweetspot_', obj.algorithm, '_', date_str, '.nii']);
+    ea_save_nii(obj.map.significantBetterMean, ['../../03_Data/06_Maps/signBetterMean_', obj.algorithm, '_', date_str, '.nii']);
     
 elseif strcmpi(metricType, 'predictor')
     metric = obj.results.regression.predictionsTesting;
@@ -16,31 +20,53 @@ elseif strcmpi(metricType, 'predictor')
 end
 
 % Linear regression model
-%mdl = fitlm(metric./obj.data.testing.table.amplitude, obj.features.regression.y.testing./obj.data.testing.table.amplitude);
-mdl = fitlm(metric, groundTruth);
-
-disp("Linear regression:      R² (ordinary) = " + mdl.Rsquared.Ordinary);
-disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);
-disp(' ');
+mdl = fitlm(100*metric, 100*groundTruth);
 
 % Compute Spearman correlation
-% [rho, p] = corr(metric, obj.results.score, 'Type', 'Spearman');
-% disp("Spearman correlation:   rho = " + rho);
-% disp("                        p = " + p);
-% disp(' ');
-% 
-% % Compute Pearson correlation
-% [rho, p] = corr(metric, obj.results.score, 'Type', 'Pearson');
-% disp("Pearson correlation:    rho = " + rho);
-% disp("                        p = " + p);
-% disp(' ');
+[spearman_rho, spearman_p] = corr(100*metric', 100*groundTruth', 'Type', 'Spearman');
 
-figure('Name', 'Evaluation');
+% % Compute Pearson correlation
+[pearson_rho, pearson_p] = corr(100*metric', 100*groundTruth', 'Type', 'Pearson');
+
+f1 = figure('Name', 'Overall results', ...
+    'Position', [200 200 450 450]);
 hold on;
 plot(mdl);
-axis([0 1 0 1]);
+axis([0 100 0 100]);
+axis square
 xlabel('Overlap ratio (%)');
-ylabel('Efficiency (Ground Truth)');
-plot(linspace(0,1,2), linspace(0,1,2),'k--')
+ylabel('Relative improvement (%)');
+title('')
+f1.Children(2).Children(4).Marker = 'o';
+f1.Children(2).Children(4).MarkerSize = 4;
+f1.Children(2).Children(4).MarkerFaceColor = [102 153 204]/255;
+f1.Children(2).Children(4).MarkerEdgeColor = 'None';
+legend off
+
+disp("Overall results -------------------------- ");
+disp("Linear regression:      R² (ordinary) = " + mdl.Rsquared.Ordinary);
+disp("                        R² (adjusted) = " + mdl.Rsquared.Adjusted);
+disp("                        theta_0 = " + mdl.Coefficients.Estimate(1) + ...
+                            " p-value = " + mdl.Coefficients.pValue(1));
+disp("                        theta_1 = " + mdl.Coefficients.Estimate(2) + ...
+                            " p-value = " + mdl.Coefficients.pValue(2));
+disp(' ');
+disp("Spearman correlation:   rho = " + spearman_rho);
+disp("                        p = " + spearman_p);
+disp(' ');
+disp("Pearson correlation:    rho = " + pearson_rho);
+disp("                        p = " + pearson_p);
+disp(' ');
+
+for k = 1:max(obj.results.kFold)
+    
+    metric_kFold = obj.results.overlap.ratio(obj.results.kFold==k);
+    groundTruth_kFold = obj.results.score(obj.results.kFold==k);
+
+    mdl = fitlm(100*metric_kFold, 100*groundTruth_kFold);
+
+    R2_kFold(k) = mdl.Rsquared.Adjusted;
+
+end
 
 end

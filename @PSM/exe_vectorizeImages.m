@@ -44,7 +44,6 @@ elseif strcmpi(obj.state, 'testing')
     vectorizedScores = obj.data.testing.table.clinicalScore;
     obj.features.regression.y.testing = vectorizedScores;
 
-
 else 
     
     vectorizedVTAs = reshape(obj.map.weightsArray.img, nVoxel, obj.data.clinical.n)';
@@ -66,7 +65,5 @@ else
     vectorizedScores = obj.data.clinical.table.clinicalScore;
     obj.features.regression.y.clinical = vectorizedScores;
 
-
 end    
-
 end
