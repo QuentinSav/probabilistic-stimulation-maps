@@ -6,8 +6,8 @@ groundTruth = obj.results.score;
 
 if strcmpi(ss_type, 'eff')
     % Linear regression model
-    mdl_1 = fitlm(100*metric, 100*groundTruth);
-    mdl_2 = fitlm(100*metric, 100*groundTruth.*obj.data.testing.table.amplitude');
+    mdl_1 = fitlm(metric, groundTruth);
+    mdl_2 = fitlm(metric, groundTruth.*obj.data.testing.table.amplitude');
 
     f1 = figure('Name', 'A - eff eff', ...
         'Position', [200 200 450 450]);
@@ -15,8 +15,8 @@ if strcmpi(ss_type, 'eff')
     plot(mdl_1);
     axis([0 100 0 100]);
     axis square
-    xlabel('Overlap ratio (%)');
-    ylabel('Efficiency (-)');
+    xlabel('Overlap ratio');
+    ylabel('Efficiency');
     title('')
     f1.Children(2).Children(4).Marker = 'o';
     f1.Children(2).Children(4).MarkerSize = 4;
@@ -29,8 +29,8 @@ if strcmpi(ss_type, 'eff')
     plot(mdl_2);
     axis([0 100 0 100]);
     axis square
-    xlabel('Overlap ratio (%)');
-    ylabel('Relative improvement (%)');
+    xlabel('Overlap ratio');
+    ylabel('Relative improvement');
     title('')
     f2.Children(2).Children(4).Marker = 'o';
     f2.Children(2).Children(4).MarkerSize = 4;
@@ -50,8 +50,8 @@ if strcmpi(ss_type, 'eff')
 
 elseif strcmpi(ss_type, 'relImp')
     % Linear regression model
-    mdl_1 = fitlm(100*metric, 100*groundTruth./obj.data.testing.table.amplitude');
-    mdl_2 = fitlm(100*metric, 100*groundTruth);
+    mdl_1 = fitlm(metric, groundTruth./obj.data.testing.table.amplitude');
+    mdl_2 = fitlm(metric, groundTruth);
 
     f1 = figure('Name', 'C - eff rI', ...
         'Position', [200 200 450 450]);
@@ -59,8 +59,8 @@ elseif strcmpi(ss_type, 'relImp')
     plot(mdl_1);
     axis([0 100 0 100]);
     axis square
-    xlabel('Overlap ratio (%)');
-    ylabel('Efficiency (-)');
+    xlabel('Overlap ratio');
+    ylabel('Efficiency');
     title('')
     f1.Children(2).Children(4).Marker = 'o';
     f1.Children(2).Children(4).MarkerSize = 4;
@@ -74,8 +74,8 @@ elseif strcmpi(ss_type, 'relImp')
     plot(mdl_2);
     axis([0 100 0 100]);
     axis square
-    xlabel('Overlap ratio (%)');
-    ylabel('Relative improvement (%)');
+    xlabel('Overlap ratio');
+    ylabel('Relative improvement');
     title('')
     f2.Children(2).Children(4).Marker = 'o';
     f2.Children(2).Children(4).MarkerSize = 4;

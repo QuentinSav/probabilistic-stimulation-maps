@@ -52,6 +52,9 @@ function compute(obj)
 
         obj.train();
         obj.test();
+
+        ea_save_nii(obj.map.sweetspot, ['../../03_Data/06_Maps/sweetspot_', obj.algorithm, '_', num2str(k), '.nii']);
+        ea_save_nii(obj.map.significantBetterMean, ['../../03_Data/06_Maps/signBetterMean_', obj.algorithm, '_', num2str(k), '.nii']);
     
     end
 end

@@ -74,57 +74,119 @@ fun_evaluate_Nguyen2019_eff_vs_relImp(psm_eff, 'eff');
 load('../../03_Data/01_Tables/multicentricTableAllImprovedOnlyRev04.mat');
 
 % Multicenter
-figure;
-subplot(2, 1, 1)
-scatter(tableMulticentric.amplitude, tableMulticentric.relativeImprovement);
-[rho_imp, p_imp] = corr(tableMulticentric.amplitude, tableMulticentric.relativeImprovement);
-xlabel('Amplitude');
-ylabel('Relative Improvement')
-title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+disp('Multicenter --------------------------------------------------------')
+figure('Name', 'fig_2A_multi', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableMulticentric.amplitude, tableMulticentric.relativeImprovement, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
 
-subplot(2, 1, 2)
-scatter(tableMulticentric.amplitude, tableMulticentric.efficiency);
-[rho_eff, p_eff] = corr(tableMulticentric.amplitude, tableMulticentric.efficiency);
-xlabel('Amplitude');
-ylabel('Efficiency');
-title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+xlabel('Pulse amplitude (mA)');
+ylabel('Relative improvement (%)');
+
+[rho_s_imp, p_s_imp] = corr(tableMulticentric.amplitude, tableMulticentric.relativeImprovement, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableMulticentric.amplitude, tableMulticentric.relativeImprovement, 'Type', 'Pearson');
+
+disp(['Correlation between PA and relative improvement: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
+
+
+figure('Name', 'fig_2B_multi', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableMulticentric.amplitude, tableMulticentric.efficiency, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
+
+xlabel('Pulse amplitude (mA)');
+ylabel('Efficiency (-)');
+
+[rho_s_imp, p_s_imp] = corr(tableMulticentric.amplitude, tableMulticentric.efficiency, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableMulticentric.amplitude, tableMulticentric.efficiency, 'Type', 'Pearson');
+
+disp(['Correlation between PA and efficiency: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
 
 % Bern
+disp('Bern ---------------------------------------------------------------')
 tableBern = tableMulticentric(tableMulticentric.centerID == 1, :);
 
-figure;
-subplot(2, 1, 1)
-scatter(tableBern.amplitude, tableBern.relativeImprovement);
-[rho_imp, p_imp] = corr(tableBern.amplitude, tableBern.relativeImprovement);
-xlabel('Amplitude');
-ylabel('Relative Improvement')
-title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+figure('Name', 'fig_2C_Bern', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableBern.amplitude, tableBern.relativeImprovement, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
 
-subplot(2, 1, 2)
-scatter(tableBern.amplitude, tableBern.efficiency);
-[rho_eff, p_eff] = corr(tableBern.amplitude, tableBern.efficiency);
-xlabel('Amplitude');
-ylabel('Efficiency');
-title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+xlabel('Pulse amplitude (mA)');
+ylabel('Relative improvement (%)');
+
+[rho_s_imp, p_s_imp] = corr(tableBern.amplitude, tableBern.relativeImprovement, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableBern.amplitude, tableBern.relativeImprovement, 'Type', 'Pearson');
+
+disp(['Correlation between PA and relative improvement: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
+
+
+figure('Name', 'fig_2D_Bern', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableBern.amplitude, tableBern.efficiency, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
+
+xlabel('Pulse amplitude (mA)');
+ylabel('Efficiency (-)');
+
+[rho_s_imp, p_s_imp] = corr(tableBern.amplitude, tableBern.efficiency, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableBern.amplitude, tableBern.efficiency, 'Type', 'Pearson');
+
+disp(['Correlation between PA and efficiency: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
 
 % Cologne
-tableCologne = tableMulticentric(tableMulticentric.centerID == 1, :);
+disp('Cologne ------------------------------------------------------------')
+tableCologne = tableMulticentric(tableMulticentric.centerID == 2, :);
 
-figure;
-subplot(2, 1, 1)
-scatter(tableCologne.amplitude, tableCologne.relativeImprovement);
-[rho_imp, p_imp] = corr(tableCologne.amplitude, tableCologne.relativeImprovement);
-xlabel('Amplitude');
-ylabel('Relative Improvement')
-title(['Correlation (spearman): \rho = ', num2str(rho_imp), 'p = ', num2str(p_imp)]);
+figure('Name', 'fig_2E_Cologne', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableCologne.amplitude, tableCologne.relativeImprovement, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
 
-subplot(2, 1, 2)
-scatter(tableCologne.amplitude, tableCologne.efficiency);
-[rho_eff, p_eff] = corr(tableCologne.amplitude, tableCologne.efficiency);
-xlabel('Amplitude');
-ylabel('Efficiency');
-title(['Correlation (spearman): \rho = ', num2str(rho_eff), 'p = ', num2str(p_eff)]);
+xlabel('Pulse amplitude (mA)');
+ylabel('Relative improvement (%)');
 
+[rho_s_imp, p_s_imp] = corr(tableCologne.amplitude, tableCologne.relativeImprovement, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableCologne.amplitude, tableCologne.relativeImprovement, 'Type', 'Pearson');
+
+disp(['Correlation between PA and relative improvement: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
+
+
+figure('Name', 'fig_2F_Cologne', ...
+        'Position', [200 200 350 350]);
+s = scatter(tableCologne.amplitude, tableCologne.efficiency, 6, ...
+        'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	[102 153 204]/255);
+
+xlabel('Pulse amplitude (mA)');
+ylabel('Efficiency (-)');
+
+[rho_s_imp, p_s_imp] = corr(tableCologne.amplitude, tableCologne.efficiency, 'Type', 'Spearman');
+[rho_p_imp, p_p_imp] = corr(tableCologne.amplitude, tableCologne.efficiency, 'Type', 'Pearson');
+
+disp(['Correlation between PA and efficiency: ']);
+disp(['    (spearman) rho = ', num2str(rho_s_imp), ' (p = ', num2str(p_s_imp), ')'])
+disp(['    (pearson)  rho = ', num2str(rho_p_imp), ' (p = ', num2str(p_p_imp), ')'])
 
 %% Result figure 3-4-5-6:
 
@@ -167,57 +229,34 @@ psm_Nowacki2022 = PSM(tableMulticentric(:, :), ...
 
 psm_Nguyen2019.compute();
 R2_Nguyen2019 = psm_Nguyen2019.evaluate('overlap_ratio');
-CoM_Nguyen2019 = psm_Nguyen2019.results.CoM;
-psm_Nguyen2019 = [];
+CoM_Nguyen2019 = psm_Nguyen2019.results.CoM;psm_Nguyen2019.show_image('SweetSpot');
 
 psm_Dembek2019.compute();
 R2_Dembek2019 = psm_Dembek2019.evaluate('overlap_ratio');
 CoM_Dembek2019 = psm_Dembek2019.results.CoM;
-psm_Dembek2019 = [];
+psm_Dembek2019.show_image('SweetSpot');
 
 psm_Reich2019.compute();
 R2_Reich2019 = psm_Reich2019.evaluate('overlap_ratio');
 CoM_Reich2019 = psm_Reich2019.results.CoM;
-psm_Reich2019 = [];
+psm_Reich2019.show_image('SweetSpot');
 
 psm_Nowacki2022.compute();
-R2_Nowacki2022 = psm_Nowacki2019.evaluate('overlap_ratio');
-CoM_Nowacki2022 = psm_Nowacki2019.results.CoM;
-psm_Nowacki2022 = [];
+R2_Nowacki2022 = psm_Nowacki2022.evaluate('overlap_ratio');
+CoM_Nowacki2022 = psm_Nowacki2022.results.CoM;
+psm_Nowacki2022.show_image('SweetSpot');
+
 
 %% figure 4
 
-data = [R2_Nguyen2019, R2_Dembek2019, R2_Reich2019, R2_Nowacki2022];
+data = [R2_Nguyen2019; R2_Dembek2019; R2_Reich2019; R2_Nowacki2022]';
 variableNames = {'Nguyen et al., 2019', 'Dembek et al., 2019', 'Reich et al., 2019', 'Nowacki et al., 2022'};
 
 figure('Name', 'results_3')
 boxplot(data, variableNames);
+ylabel('Coefficient of determination R²')
 
 %% figure 6
-
-CoM_Nguyen2019 = [ 10, -12, -8;
-        10, -12, -7;
-        10, -12, -6;
-        10, -12, -5;
-        10, -12, -4];
-
-CoM_Dembek2019 = 1+[ 10, -12, -8;
-        10, -12, -7;
-        10, -12, -6;
-        10, -12, -5;
-        10, -12, -4];
-
-CoM_Reich2019 = 2+[ 10, -12, -8;
-        10, -12, -7;
-        10, -12, -6;
-        10, -12, -5;
-        10, -12, -4];
-
-CoM_Nowacki2022 = 3+[ 10, -12, -8;
-        10, -12, -7;
-        10, -12, -6;
-        10, -12, -5;
-        10, -12, -4];
 
 CoM = {CoM_Nguyen2019, CoM_Dembek2019, CoM_Reich2019, CoM_Nowacki2022};
 
@@ -231,17 +270,14 @@ hold on
 
 for k = 1:4
     
-    scatter3(CoM{k}(:, 1), CoM{k}(:, 2), CoM{k}(:, 3), 30, ...
+    scatter3(CoM{k}(:, 1), CoM{k}(:, 2), CoM{k}(:, 3), 60, ...
         'o', ...
         'MarkerEdgeColor', 'None', ...
         'MarkerFaceColor', 	colors(k, :))
     
-    scatter3(mean(CoM{k}(:, 1)), mean(CoM{k}(:, 2)), mean(CoM{k}(:, 3)), 100, ...
+    scatter3(nanmean(CoM{k}(:, 1)), nanmean(CoM{k}(:, 2)), nanmean(CoM{k}(:, 3)), 200, ...
         'o', ...
         'MarkerEdgeColor', 'None', ...
         'MarkerFaceColor', 	colors(k, :))
 
 end
-
-
-
