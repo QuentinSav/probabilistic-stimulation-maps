@@ -230,21 +230,25 @@ psm_Nowacki2022 = PSM(tableMulticentric(:, :), ...
 psm_Nguyen2019.compute();
 R2_Nguyen2019 = psm_Nguyen2019.evaluate('overlap_ratio');
 CoM_Nguyen2019 = psm_Nguyen2019.results.CoM;psm_Nguyen2019.show_image('SweetSpot');
+psm_Nguyen2019 = [];
 
 psm_Dembek2019.compute();
 R2_Dembek2019 = psm_Dembek2019.evaluate('overlap_ratio');
 CoM_Dembek2019 = psm_Dembek2019.results.CoM;
 psm_Dembek2019.show_image('SweetSpot');
+psm_Dembek2019 = [];
 
 psm_Reich2019.compute();
 R2_Reich2019 = psm_Reich2019.evaluate('overlap_ratio');
 CoM_Reich2019 = psm_Reich2019.results.CoM;
 psm_Reich2019.show_image('SweetSpot');
+psm_Reich2019 = [];
 
 psm_Nowacki2022.compute();
 R2_Nowacki2022 = psm_Nowacki2022.evaluate('overlap_ratio');
 CoM_Nowacki2022 = psm_Nowacki2022.results.CoM;
 psm_Nowacki2022.show_image('SweetSpot');
+psm_Nowacki2022 = [];
 
 
 %% figure 4
@@ -281,3 +285,15 @@ for k = 1:4
         'MarkerFaceColor', 	colors(k, :))
 
 end
+
+% Dummy graph for the legend
+figure
+hold on
+for k = 1:4
+    
+scatter(1,1, 'o', ...
+        'MarkerEdgeColor', 'None', ...
+        'MarkerFaceColor', 	colors(k, :))
+end
+
+legend({'Nguyen et al., 2019', 'Debek et al., 2019',  'Reich et al. 2019', 'Nowacki et al. 2022'})
