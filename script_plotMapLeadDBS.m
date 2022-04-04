@@ -10,16 +10,22 @@
     %% User input
     
     map_v = 'v4';
-    anat_plane = 'axial';
+    anat_plane = ['coronal'];
     
+    % sagital:   ~ 12
     % coronal: ~ -15
     % axial: ~ -8
-    % sagital:   ~ 12
 
-    slice_mni = -8;
-
-    %%
-	map = ea_load_nii( ['../../03_Data/06_Maps/map_', map_v, '.nii.gz'] );
+    switch anat_plane
+        case 'sagital'
+            slice_mni = 12;
+        case 'coronal'
+            slice_mni = -15;
+        case 'axial'
+            slice_mni = -8;
+    end
+           
+	map = ea_load_nii( '/home/brainstimmaps/RESEARCH/20xx_Projects/2008_BetterMaps/01_Documents/00_Manuscripts/Figures/figure_report/Results/maps/map_1/map_v@raw.nii.gz' );
 	tmpIdx = find(map.img);
 
     maxMap = max(abs(map.img), [], 'all');
@@ -43,11 +49,6 @@
             case 'full'
                 % use this line to plot the whole image
 	            indexSlice = 1:size( worldCoordinates, 1 );
-            
-            case 'axial'
-                % use this line for axial slices
-                view(0, 90)
-	            indexSlice = find( worldCoordinates( :, 3 ) == slice_mni );
 	    
             case 'sagital'
                 % or this line for sagittal 
@@ -58,7 +59,11 @@
                 % or this line for coronal 
                 view(0, 0);
 	            indexSlice = find( worldCoordinates( :, 2 ) == slice_mni );
-
+            
+            case 'axial'
+                % use this line for axial slices
+                view(0, 90)
+	            indexSlice = find( worldCoordinates( :, 3 ) == slice_mni );
         end
 	         
 	    hMeanImprovement = scatter3( worldCoordinates( indexSlice, 1 ),...

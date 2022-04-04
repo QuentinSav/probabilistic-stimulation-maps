@@ -7,10 +7,10 @@ end
 
 disp("Reslicing voxsize = " + voxelSize);
 
-obj.util_setFilter('rounded');
+obj.util_setFilter('raw');
 
 if ~strcmpi(voxelSize, 'original')
-    new_folder = ['../../03_Data/reslicedVTAsLeft/', num2str(1000*voxelSize), 'um/'];
+    new_folder = ['../../03_Data/reslicedVTAs/', num2str(1000*voxelSize), 'um/'];
     
     if  ~exist(new_folder, 'dir')
         mkdir(new_folder)
@@ -42,6 +42,6 @@ if strcmpi('voxelSize', 'original')
     X = logical(X);
 end
 
-save(["../../03_Data/ML_datasets/dataset_" + 1000*voxelSize + "um.mat"], "X", "y", "container_affine", "container_shape")
+save(["../../03_Data/05_Datasets/dataset_" + 1000*voxelSize + "um.mat"], "X", "y", "container_affine", "container_shape")
 
 end
