@@ -31,7 +31,11 @@ classdef PSM < handle
     
     methods
         function obj = PSM(varargin)
-
+            
+            % Add path of python module
+            addpath('./py/')
+            
+            % Set state of object
             obj.state = 'idle';
 
             % Define expected and default input arguments
@@ -40,8 +44,8 @@ classdef PSM < handle
                 'Dembek2019', ...
                 'Reich2019', ...
                 'Nowacki2022', ...
-                'Proposed1', ...
-                'Proposed2', ...
+                'best_ML', ...
+                'elastic_net', ...
                 'Proposed3',};
             defaultAlgorithm = 'Nguyen2019';
             expectedHemiphere = {
@@ -114,55 +118,5 @@ classdef PSM < handle
 
     methods (Access = public)
 
-        % SETUP -----------------------------------------------------------
-        util_createPipeline(obj);
-        util_screenData(obj);
-        hPartition = util_getValidPartition(obj, method, varargin);
-        status = util_checkVoxelSize(obj);
-
-        % TRAINING (map generation) ---------------------------------------
-        train(obj); % High-level function
-
-        % Low-level function
-        util_setFilter(obj, method);
-        exe_compileFeatures(obj, features, nPermutationImages);
-        exe_computeFeatureImages(obj, imageTypes, targetImage);
-        exe_thresholdImages(obj, threshold);
-        exe_computeStatTests(obj, statTestType, h0Type, alpha, targetImage);
-        exe_computeFalsePosCorrection(obj, method, nPermutations);
-        exe_computeSignMeanImage(obj);
-        exe_computePermutationImages(obj);
-        exe_computeSweetSpot(obj, method, varargin);
-        exe_vectorizeImage(obj);
-        exe_computeGradientDescent(obj, type, regularization);
-        exe_getScoreWeights(obj);
-        exe_computeGLM(obj);
-        exe_normalizeScores(obj);
-        overfitFlag = exe_computePredictions(obj, type, k);
-        exe_computeCenterOfMass(obj);
-
-        meanScoresFeatures = util_getMeanScoreSameAmplitude(obj)
-        activatedVoxels = util_getActivatedVoxels(obj);
-        util_matVectVTA(obj); % for proposed pipeline
-        permutedScores = util_computePermutedScores(obj, nPermutationImages);
-        Q = util_getSummaryStat(obj, pImage);
-
-        % TESTING ---------------------------------------------------------
-        test(obj); % High-level function
-
-        % Low level function
-        exe_computeOverlap(obj);
-
-    end
-
-    methods (Static)
-
-        % GENERAL UTILITY -------------------------------------------------
-        voxsize = util_getVoxelSize(transform);
-        newCoordinates = util_transform(oldCoordinates, image, direction);
-        voxelArray = util_nii2voxelArray(image, type, outputSpace);
-        g = util_sigmoid(z);
-
-        util_showTemplateSTN();
     end
 end
