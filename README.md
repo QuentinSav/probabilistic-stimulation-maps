@@ -9,3 +9,4 @@ Sweet spot mapping method are very dependent on the dataset and all groups seem 
 # Results
 
 ![overall_results_2](https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/8e3f710f-0bd5-4a89-862d-777b06b751a5)
+*image_caption*
