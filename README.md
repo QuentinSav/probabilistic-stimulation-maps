@@ -5,3 +5,7 @@ Previous studies developed methods using FEA-based estimation of the volume of t
 The state-of-the-art methods were implement in a MATLAB class allowing fast implementation of new algorithms. A multicentric dataset of PD-STN patients from Bern and Cologne centers was used to train and test the models. Proposed method consisted in regularized voxel-wise regression and classification models. The state of the art and proposed methods were assessed using a 10-fold cross-validation. The coefficient of determination (R2) between the ground truth and the predictions was used measure the quality of the models. 
 The overall model comparison showed that the best model was a adaptation of the logistic regression to be used as a regression model with a median R2 value of 0.39. Voxel-wise regression analysis performed better than the previous sweet spot mapping methods. 
 Sweet spot mapping method are very dependent on the dataset and all groups seem to have a sweet spot generation method adapted to their own dataset. The proposed approach for probabilistic stimulation mapping may be a more complex and less instinctive approach than the previous approach with sweet spot but provides better estimation of the clinical outcome. It is very likely that further analysis using deep learning methods may further refine the maps. 
+
+# Results
+
+![overall_results_2](https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/8e3f710f-0bd5-4a89-862d-777b06b751a5)
