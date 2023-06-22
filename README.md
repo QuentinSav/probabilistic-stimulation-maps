@@ -7,11 +7,14 @@ The overall model comparison showed that the best model was a adaptation of the 
 Sweet spot mapping method are very dependent on the dataset and all groups seem to have a sweet spot generation method adapted to their own dataset. The proposed approach for probabilistic stimulation mapping may be a more complex and less instinctive approach than the previous approach with sweet spot but provides better estimation of the clinical outcome. It is very likely that further analysis using deep learning methods may further refine the maps. 
 
 # Results
+## Clinical improvement predictors
 
+| !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a2fc89f0-f6b6-4634-b588-a2e043fc5982"  width="60%" height="60%">|
+|:---:|
+|10-fold cross-validation summary of the probabilistic stimulation mapping methods (sweet spot methods in green, non-regularized linear regression in red, proposed approaches in blue)|
 
-<p align="center">
-  <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/8e3f710f-0bd5-4a89-862d-777b06b751a5" />
-</p>
+## Full effect - Partial effect predictors
 
-_10-fold cross-validation summary of the probabilistic stimulation mapping methods (sweet spot methods in green, non-regularized linear regression in red, proposed approaches in blue)._
-
+| !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/219c985c-195a-48b9-a897-4189ea0486d1"  width="60%" height="60%"> | !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/9ed556ce-47b2-4b9d-9338-4195c4d3d7d6"  width="60%" height="60%"> | !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/4995ba85-0c42-4794-bd49-b8e6d91a4abc"  width="60%" height="60%"> |
+|:---:|:---:|:---:|
+|Sagital slice (x = 12mm)|Coronal slice (y = −15mm)|Axial slice (z = −8mm)|
