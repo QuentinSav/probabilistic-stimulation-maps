@@ -13,14 +13,13 @@ Sweet spot mapping method are very dependent on the dataset and all groups seem 
 |:---:|
 |10-fold cross-validation summary of the probabilistic stimulation mapping methods (sweet spot methods in green, non-regularized linear regression in red, proposed approaches in blue)|
 
-## Full effect - Partial effect predictors
+## Full effect - Partial effect classifiers
 
-| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="60%" height="60%">|
-|:---:|
-|ROC Curve for all cross validation folds|
+| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="90%" height="90%">| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="90%" height="85%"> |
+|:---:|:---:|
+|ROC Curve for all cross-validation folds of the logistic regression classifier|ROC Curve for all cross-validation folds of the logistic regression classifier preprocessed with PCA|
 
-
-
+The results obtained by the classification models were very promising. The logistic regression classifier (on the left) obtained an accuracy of 77%, with a true positive rate of 78% and a true negative rate of 73%. The logistic regression classifier preprocessed with PCA (on the right) also obtained an accuracy of 77%. The true positive rate of 78% and a true negative rate of 75%. It is interesting to note that the model preprocessed with the principal component analysis rely much more on the amplitude feature with a coefficient $\beta_{amp} = 3.54$ while the non preprocessed model had a coefficient of $\beta_{amp} = 0.34$. The model non preprocessed by a PCA developed a better anatomical understanding than the preprocessed one. The principal component analysis seems to have given a very large weight to the stimulation amplitude feature, and the model relies mainly on this one. With equal accuracy, a model that learned better the voxel importance is to be preferred. 
 
 ## Exemple of model coefficient plotted in the template space
 
