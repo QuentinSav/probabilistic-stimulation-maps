@@ -9,12 +9,21 @@ Sweet spot mapping method are very dependent on the dataset and all groups seem 
 # Results
 ## Clinical improvement predictors
 
-| !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a2fc89f0-f6b6-4634-b588-a2e043fc5982"  width="60%" height="60%">|
+| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a2fc89f0-f6b6-4634-b588-a2e043fc5982"  width="60%" height="60%">|
 |:---:|
 |10-fold cross-validation summary of the probabilistic stimulation mapping methods (sweet spot methods in green, non-regularized linear regression in red, proposed approaches in blue)|
 
 ## Full effect - Partial effect predictors
 
-| !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/219c985c-195a-48b9-a897-4189ea0486d1"  width="60%" height="60%"> | !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/9ed556ce-47b2-4b9d-9338-4195c4d3d7d6"  width="60%" height="60%"> | !<img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/4995ba85-0c42-4794-bd49-b8e6d91a4abc"  width="60%" height="60%"> |
+| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="60%" height="60%">|
+|:---:|
+|ROC Curve for all cross validation folds|
+
+
+
+
+## Exemple of model coefficient plotted in the template space
+
+| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/219c985c-195a-48b9-a897-4189ea0486d1"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/9ed556ce-47b2-4b9d-9338-4195c4d3d7d6"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/4995ba85-0c42-4794-bd49-b8e6d91a4abc"  width="80%" height="80%"> |
 |:---:|:---:|:---:|
 |Sagital slice (x = 12mm)|Coronal slice (y = −15mm)|Axial slice (z = −8mm)|
