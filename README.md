@@ -13,6 +13,8 @@ Sweet spot mapping method are very dependent on the dataset and all groups seem 
 |:---:|
 |10-fold cross-validation summary of the probabilistic stimulation mapping methods (sweet spot methods in green, non-regularized linear regression in red, proposed approaches in blue)|
 
+The overall model comparison showed that the best model was an adaptation of the logistic regression to be used as a regression model with a median R2 value of 39%.
+
 ## Full effect - Partial effect classifiers
 
 | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="90%" height="90%">| <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/a0517dac-2bd2-4d56-a052-0a899f91f607"  width="90%" height="85%"> |
@@ -26,3 +28,8 @@ The results obtained by the classification models were very promising. The logis
 | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/219c985c-195a-48b9-a897-4189ea0486d1"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/9ed556ce-47b2-4b9d-9338-4195c4d3d7d6"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/4995ba85-0c42-4794-bd49-b8e6d91a4abc"  width="80%" height="80%"> |
 |:---:|:---:|:---:|
 |Sagital slice (x = 12mm)|Coronal slice (y = −15mm)|Axial slice (z = −8mm)|
+
+The images above show the heatmap of the regression coefficients in the subthalamic nucleus (in orange) region.
+
+# Discussion
+Sweet spot mapping method are very dependent on the dataset and all groups seem to have a sweet spot generation method adapted to their own dataset. The proposed approach for probabilistic stimulation mapping may be a more complex and less interpretable approach than the previous approach with sweet spot, but provides better estimation of the clinical outcome and is not computationally more expensive.
