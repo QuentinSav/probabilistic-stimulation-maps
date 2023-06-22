@@ -23,7 +23,7 @@ The overall model comparison showed that the best model was an adaptation of the
 
 The results obtained by the classification models were very promising. The logistic regression classifier (on the left) obtained an accuracy of 77%, with a true positive rate of 78% and a true negative rate of 73%. The logistic regression classifier preprocessed with PCA (on the right) also obtained an accuracy of 77%. The true positive rate of 78% and a true negative rate of 75%. It is interesting to note that the model preprocessed with the principal component analysis rely much more on the amplitude feature with a coefficient $\beta_{amp} = 3.54$ while the non preprocessed model had a coefficient of $\beta_{amp} = 0.34$. The model non preprocessed by a PCA developed a better anatomical understanding than the preprocessed one. The principal component analysis seems to have given a very large weight to the stimulation amplitude feature, and the model relies mainly on this one. With equal accuracy, a model that learned better the voxel importance is to be preferred. 
 
-## Exemple of model coefficient plotted in the template space
+## Exemple of model coefficients plotted in the template space
 
 | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/219c985c-195a-48b9-a897-4189ea0486d1"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/9ed556ce-47b2-4b9d-9338-4195c4d3d7d6"  width="80%" height="80%"> | <img src="https://github.com/QuentinSav/probabilistic-stimulation-maps/assets/61971430/4995ba85-0c42-4794-bd49-b8e6d91a4abc"  width="80%" height="80%"> |
 |:---:|:---:|:---:|
